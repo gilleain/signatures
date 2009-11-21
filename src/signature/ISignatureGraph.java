@@ -26,4 +26,6 @@ public interface ISignatureGraph {
 	 */
 	public ISignatureVertex getVertex(DAG.Node node);
 
+	
+	public ISignatureVertex get(Object vertex);
 }

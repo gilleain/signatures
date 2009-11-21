@@ -19,8 +19,25 @@ public class Graph {
 	
 	public List<Edge> edges;
 	
-	public Graph() {
+	public Graph(String graphString) {
 		this.edges = new ArrayList<Edge>();
+		for (String edgeString : graphString.split(":")) {
+			String[] v = edgeString.split("-");
+			this.edges.add(new Edge(new Vertex(v[0]), new Vertex(v[1])));
+		}
+		
+	}
+	
+	public Vertex get(Vertex v) {
+		for (Edge e : this.edges) {
+			if (e.a == v) return e.a;
+			if (e.b == v) return e.b;
+		}
+		return null;
+	}
+	
+	public Vertex first() {
+		return this.edges.get(0).a;
 	}
 	
 	public void addEdge(Vertex a, Vertex b) {

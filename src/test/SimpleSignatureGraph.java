@@ -30,5 +30,12 @@ public class SimpleSignatureGraph implements ISignatureGraph {
 	public ISignatureVertex getVertex(DAG.Node node) {
 		return node.getVertex();
 	}
+	
+	public ISignatureVertex get(Object o) {
+		if (o instanceof Vertex) {
+			return new SimpleSignatureVertex(this.graph.get((Vertex)o));
+		}
+		throw new Error();
+	}
 
 }
