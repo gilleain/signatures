@@ -8,6 +8,7 @@ public class Test {
 		
 		Vertex root = graph.first();
 		SimpleSignature signature = new SimpleSignature(graph, root);
+		System.out.println(signature.toString());
 	}
 
 }
