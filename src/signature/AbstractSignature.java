@@ -25,6 +25,50 @@ public abstract class AbstractSignature {
 		this.endNodeSymbol = endNodeSymbol;
 	}
 	
+	public void create(int rootVertexIndex) {
+		this.dag = new DAG(rootVertexIndex);
+		List<DAG.Node> rootLayer = new ArrayList<DAG.Node>();
+		rootLayer.add(dag.new Node(rootVertexIndex));
+		dag.addLayer(rootLayer);
+		buildLayer(rootLayer, new ArrayList<DAG.Arc>());
+	}
+	
+	private void buildLayer(List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
+		List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
+		List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
+		for (DAG.Node node : previousLayer) {
+			for (int connectedVertex : getConnected(node.vertexIndex)) {
+				addNode(node, connectedVertex, layerArcs, usedArcs, nextLayer);
+			}
+		}
+		if (nextLayer.isEmpty()) {
+			return;
+		} else {
+			dag.addLayer(nextLayer);
+		}
+	}
+
+	private void addNode(DAG.Node node, int vertexIndex,
+			List<DAG.Arc> layerArcs, List<DAG.Arc> usedArcs, 
+			List<DAG.Node> nextLayer) {
+		DAG.Arc arc = dag.new Arc(node.vertexIndex, vertexIndex);
+		if (usedArcs.contains(arc)) return;
+		DAG.Node existingNode = null;
+		for (DAG.Node otherNode : nextLayer) {
+			if (otherNode.vertexIndex == vertexIndex) {
+				existingNode = otherNode;
+				break;
+			}
+		}
+		if (existingNode == null) {
+			existingNode = dag.new Node(vertexIndex);
+			nextLayer.add(existingNode);
+		}
+		node.addChild(existingNode);
+		existingNode.addParent(node);
+		layerArcs.add(arc);
+	}
+	
 	/**
 	 * Get the symbol to use in the output signature string for this vertex of 
 	 * the input graph.

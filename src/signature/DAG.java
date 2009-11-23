@@ -27,6 +27,12 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 		public List<Node> children;
 		
+		public Node(int vertexIndex) {
+			this.vertexIndex = vertexIndex;
+			this.parents = new ArrayList<Node>();
+			this.children = new ArrayList<Node>();
+		}
+		
 		public Node(ISignatureVertex vertex) {
 			this.vertex = vertex;
 			this.parents = new ArrayList<Node>();
@@ -72,6 +78,13 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	private List<List<Node>> layers;
 	
+	public DAG(int rootVertexIndex) {
+		this.layers = new ArrayList<List<Node>>();
+		List<Node> rootLayer = new ArrayList<Node>();
+		rootLayer.add(new Node(rootVertexIndex));
+		this.layers.add(rootLayer);
+	}
+	
 	/**
 	 * Create a DAG from a graph, starting at the root vertex.
 	 * @param graph the signature graph wrapper instance
@@ -97,6 +110,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		return 0;	//TODO
 	}
 
+	public void addLayer(List<Node> layer) {
+		this.layers.add(layer);
+	}
+	
 	private void buildLayer(List<Node> previousLayer, List<Arc> usedArcs) {
 		List<Node> nextLayer = new ArrayList<Node>();
 		List<Arc> layerArcs = new ArrayList<Arc>();
