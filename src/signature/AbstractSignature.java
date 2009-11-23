@@ -3,6 +3,29 @@ package signature;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The abstract base class for signatures. This class creates and manages a DAG
+ * and the input/output of signature strings.
+ * 
+ * To properly subclass this class, the constuctor of the derived class should
+ * follow this pattern:
+ * <pre>
+ *   public MySignature(GRAPH_TYPE inputGraph, int rootVertexIndex) {
+ *     super("[", "]");  // or super();
+ *     this.inputGraph = inputGraph;
+ *     create(rootVertexIndex);
+ *   } 
+ * </pre>
+ * 
+ * where GRAPH_TYPE is some type specific to the client library.
+ * 
+ * The abstract methods <code>getVertexSymbol</code>, <code>getConnected</code>,
+ *  and <code>getEdgeSymbol</code> also need to be implemented. The vertex 
+ * symbol can be anything except one of the branch or node symbols.
+ *  
+ * @author maclean
+ *
+ */
 public abstract class AbstractSignature {
 	
 	public static final char START_BRANCH_SYMBOL = '(';
@@ -76,7 +99,7 @@ public abstract class AbstractSignature {
 	 * @param vertexIndex the index of the vertex in the input graph
 	 * @return a String symbol
 	 */
-	public abstract String getSymbol(int vertexIndex);
+	public abstract String getVertexSymbol(int vertexIndex);
 	
 	/**
 	 * Get a list of the indices of the vertices connected to the vertex with 
@@ -122,7 +145,7 @@ public abstract class AbstractSignature {
 		
 		// print out the text that represents the node itself
 		buffer.append(this.startNodeSymbol);
-		buffer.append(getSymbol(node.vertexIndex));
+		buffer.append(getVertexSymbol(node.vertexIndex));
 		int color = dag.colorFor(node.vertexIndex);
 		if (color != 0) {
 			buffer.append(',').append(color);
