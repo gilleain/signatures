@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -10,13 +11,15 @@ import java.util.List;
  * @author maclean
  *
  */
-public class DAG {
+public class DAG implements Iterable<List<DAG.Node>>{
 	
 	/**
 	 * A node of the directed acyclic graph
 	 *
 	 */
 	public class Node {
+		
+		public int vertexIndex;
 		
 		public ISignatureVertex vertex;
 		
@@ -49,13 +52,13 @@ public class DAG {
 	 */
 	public class Arc {
 		
-		public Node head;
+		public int vertexIndexA;
 		
-		public Node tail;
+		public int vertexIndexB;
 		
-		public Arc(Node head, Node tail) {
-			this.head = head;
-			this.tail = tail;
+		public Arc(int a, int b) {
+			this.vertexIndexA = a;
+			this.vertexIndexB = b;
 		}
 	}
 	
@@ -82,6 +85,14 @@ public class DAG {
 		buildLayer(rootLayer, new ArrayList<Arc>());
 	}
 	
+	public Iterator<List<Node>> iterator() {
+		return layers.iterator();
+	}
+	
+	public int colorFor(int vertexIndex) {
+		return 0;	//TODO
+	}
+
 	private void buildLayer(List<Node> previousLayer, List<Arc> usedArcs) {
 		List<Node> nextLayer = new ArrayList<Node>();
 		List<Arc> layerArcs = new ArrayList<Arc>();
@@ -100,7 +111,7 @@ public class DAG {
 
 	private void addNode(Node node, ISignatureVertex vertex,
 			List<Arc> layerArcs, List<Arc> usedArcs, List<Node> nextLayer) {
-		Arc arc = new Arc(node, new Node(vertex));
+		Arc arc = new Arc(node.vertexIndex, -1);	//TODO
 		if (usedArcs.contains(arc)) return;
 		Node existingNode = null;
 		for (Node otherNode : nextLayer) {
