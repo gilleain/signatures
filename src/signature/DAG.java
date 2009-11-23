@@ -89,6 +89,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		return layers.iterator();
 	}
 	
+	public DAG.Node getRoot() {
+		return this.layers.get(0).get(0);
+	}
+	
 	public int colorFor(int vertexIndex) {
 		return 0;	//TODO
 	}

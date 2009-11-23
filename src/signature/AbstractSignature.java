@@ -54,7 +54,7 @@ public abstract class AbstractSignature {
 	public abstract String getEdgeSymbol(int vertexIndex, int otherVertexIndex);
 	
 	public String toString() {
-		DAG.Node root = null;	// TODO
+		DAG.Node root = this.dag.getRoot();
 		StringBuffer buffer = new StringBuffer();
 		print(buffer, root, null, new ArrayList<DAG.Arc>());
 		return buffer.toString();
