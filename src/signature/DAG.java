@@ -58,13 +58,23 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	public class Arc {
 		
-		public int vertexIndexA;
+		public int a;
 		
-		public int vertexIndexB;
+		public int b;
 		
 		public Arc(int a, int b) {
-			this.vertexIndexA = a;
-			this.vertexIndexB = b;
+			this.a = a;
+			this.b = b;
+		}
+		
+		public boolean equals(Object other) {
+			if (other instanceof Arc) {
+				Arc o = (Arc) other;
+				return (this.a == o.a && this.b == o.b)
+					|| (this.a == o.b && this.b == o.a);
+			} else {
+				return false;
+			}
 		}
 	}
 	
