@@ -92,7 +92,7 @@ public abstract class AbstractSignature {
 			nextLayer.add(existingNode);
 		}
 		node.addChild(existingNode);
-		existingNode.addParent(node);
+		dag.addParent(existingNode, node);
 		layerArcs.add(arc);
 	}
 	

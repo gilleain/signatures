@@ -159,6 +159,11 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    return node;
 	}
 	
+	public void addParent(DAG.Node node, DAG.Node parent) {
+	    node.parents.add(parent);
+	    this.parentCounts[node.vertexIndex]++;
+	}
+	
 	public int colorFor(int vertexIndex) {
 		return this.colors[vertexIndex];
 	}
