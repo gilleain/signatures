@@ -104,6 +104,8 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	private int[] parentCounts;
 	
+	private String[] labels;
+	
 	private Invariants invariants;
 	
 	/**
@@ -147,7 +149,11 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.invariants = new Invariants(vertexCount, this.nodes.size());
 	    this.parentCounts = new int[vertexCount];
 	    this.vertexCount = vertexCount;
-	    
+	    this.labels = new String[vertexCount];
+	}
+	
+	public void setLabel(int vertexIndex, String label) {
+	    this.labels[vertexIndex] = label;
 	}
 	
 	public void setColor(int vertexIndex, int color) {
@@ -194,13 +200,16 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    List<InvariantIntStringPair> pairs = 
 	        new ArrayList<InvariantIntStringPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
-	        pairs.add(new InvariantIntStringPair("",this.parentCounts[i]));
+	        pairs.add(
+	                new InvariantIntStringPair(
+	                        this.labels[i], this.parentCounts[i]));
 	    }
 	    Collections.sort(pairs);
 	    // TODO - uniqify
 	    for (int i = 0; i < pairs.size(); i++) {
 	        InvariantIntStringPair pair = 
-	            new InvariantIntStringPair("", this.parentCounts[i]);
+	            new InvariantIntStringPair(
+	                    this.labels[i], this.parentCounts[i]);
 	        int n = 1;
 	        for (InvariantIntStringPair otherPair : pairs) {
 	            if (pair.equals(otherPair)) {

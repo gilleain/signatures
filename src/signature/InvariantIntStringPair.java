@@ -5,19 +5,29 @@ public class InvariantIntStringPair implements
 
     public String string;
 
-    public int index;
+    public int value;
 
-    public InvariantIntStringPair(String string, int index) {
+    public InvariantIntStringPair(String string, int value) {
         this.string = string;
-        this.index = index;
+        this.value = value;
+    }
+    
+    public boolean equals(String string, int value) {
+        return this.value == value && this.string.equals(string);
     }
     
     public boolean equals(InvariantIntStringPair o) {
-        return this.string.equals(o.string);
+        return this.value == o.value && this.string.equals(o.string);
     }
 
     public int compareTo(InvariantIntStringPair o) {
-        return this.string.compareTo(o.string);
+        if (this.value < o.value) {
+            return -1;
+        } else if (this.value > o.value){
+            return 1;
+        } else {
+            return this.string.compareTo(o.string);
+        }
     }
 
 }
