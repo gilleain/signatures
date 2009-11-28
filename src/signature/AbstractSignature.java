@@ -54,10 +54,11 @@ public abstract class AbstractSignature {
 	
 	public void create(int rootVertexIndex) {
 		this.dag = new DAG(rootVertexIndex);
-		buildLayer(this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
+		build(this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
+		this.dag.initialize(this.getVertexCount());
 	}
 	
-	private void buildLayer(List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
+	private void build(List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
 		List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
 		List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
 		for (DAG.Node node : previousLayer) {
@@ -70,7 +71,7 @@ public abstract class AbstractSignature {
 			return;
 		} else {
 			dag.addLayer(nextLayer);
-			buildLayer(nextLayer, usedArcs);
+			build(nextLayer, usedArcs);
 		}
 	}
 
@@ -87,13 +88,20 @@ public abstract class AbstractSignature {
 			}
 		}
 		if (existingNode == null) {
-			existingNode = dag.new Node(vertexIndex);
+			existingNode = dag.makeNode(vertexIndex);
 			nextLayer.add(existingNode);
 		}
 		node.addChild(existingNode);
 		existingNode.addParent(node);
 		layerArcs.add(arc);
 	}
+	
+	/**
+	 * Get the number of vertices.
+	 * 
+	 * @return the number of vertices in the  input graph
+	 */
+	public abstract int getVertexCount();
 	
 	/**
 	 * Get the symbol to use in the output signature string for this vertex of 

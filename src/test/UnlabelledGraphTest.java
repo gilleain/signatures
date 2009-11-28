@@ -25,6 +25,8 @@ public class UnlabelledGraphTest {
 		
 		public List<Edge> edges;
 		
+		public int maxVertexIndex;
+		
 		public UnlabelledGraph(String graphString) {
 			this.edges = new ArrayList<Edge>();
 			for (String edgeString : graphString.split(",")) {
@@ -32,7 +34,13 @@ public class UnlabelledGraphTest {
 				int a = Integer.parseInt(vertexStrings[0]);
 				int b = Integer.parseInt(vertexStrings[1]);
 				this.edges.add(new Edge(a, b));
+				if (a > maxVertexIndex) maxVertexIndex = a;
+				if (b > maxVertexIndex) maxVertexIndex = b;
 			}
+		}
+		
+		public int getVertexCount() {
+		    return this.maxVertexIndex + 1;
 		}
 		
 		public int[] getConnected(int vertexIndex) {
@@ -71,6 +79,10 @@ public class UnlabelledGraphTest {
 			super.create(root);
 		}
 
+		public int getVertexCount() {
+		    return this.graph.getVertexCount();
+		}
+		
 		public int[] getConnected(int vertexIndex) {
 			return this.graph.getConnected(vertexIndex);
 		}
@@ -82,7 +94,7 @@ public class UnlabelledGraphTest {
 		public String getVertexSymbol(int vertexIndex) {
 			return ".";
 		}
-		
+
 	}
 	
 	/**

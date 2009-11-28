@@ -12,6 +12,8 @@ import java.util.List;
  *
  */
 public class DAG implements Iterable<List<DAG.Node>>{
+    
+    public enum Direction { UP, DOWN };
 	
 	/**
 	 * A node of the directed acyclic graph
@@ -96,6 +98,31 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	private List<List<Node>> layers;
 	
+	/**
+	 * The colors assigned to vertices of the input graph
+	 */
+	private int[] colors;
+	
+	/**
+	 * The invariants of the vertices of the input graph
+	 */
+	private int[] vertexInvariants;
+	
+	/**
+	 * The invariants of the nodes of the DAG
+	 */
+	private int[] nodeInvariants;
+	
+	/**
+	 * The counts of parents for nodes  
+	 */
+	private int[] parentCounts;
+	
+	/**
+	 * Convenience reference to the nodes of the DAG
+	 */
+	private List<DAG.Node> nodes;
+	
     /**
      * Create a DAG from a graph, starting at the root vertex.
      * @param rootVertex the vertex to start from
@@ -119,13 +146,55 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		return this.layers.get(0).get(0);
 	}
 	
+	public void initialize(int vertexCount) {
+	    this.colors = new int[vertexCount];
+	    this.vertexInvariants = new int[vertexCount];
+	    this.nodeInvariants = new int[this.nodes.size()];
+	    this.parentCounts = new int[vertexCount];
+	}
+	
+	public DAG.Node makeNode(int vertexIndex) {
+	    DAG.Node node = new DAG.Node(vertexIndex);
+	    this.nodes.add(node);
+	    return node;
+	}
+	
 	public int colorFor(int vertexIndex) {
-		return 0;	//TODO
+		return this.colors[vertexIndex];
 	}
 
 	public void addLayer(List<Node> layer) {
 		this.layers.add(layer);
 	}
+	
+	public void initializeVertexInvariants() {
+        // TODO
+	}
+	
+	public int[] createOrbit() {
+	    return null;   // TODO
+	}
+	
+	public void computeVertexInvariants() {
+        // TODO    
+	}
+	
+	public void updateVertexInvariants() {
+        // TODO    
+	}
+	
+	public void updateVertexInvariants(DAG.Direction direction) {
+	    if (direction == Direction.UP) {
+            // TODO	        
+	    } else {
+	        // TODO
+	    }
+	}
+	
+	public String canonize(int color) {
+	    return null;   // TODO
+	}
+	
 	
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
