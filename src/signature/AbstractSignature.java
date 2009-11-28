@@ -52,6 +52,32 @@ public abstract class AbstractSignature {
 	    return this.dag;
 	}
 	
+    public void canonize(int color, StringBuffer maxSignature) {
+        // assume that the atom invariants have been initialized
+        
+        this.dag.updateVertexInvariants();
+        
+        int[] orbit = this.dag.createOrbit();
+        
+        if (orbit.length < 2) {
+            // Color all uncolored atoms having two parents 
+            // or more according to their invariant.
+            String signature = this.toString();
+            if (signature.compareTo(maxSignature.toString()) < 0) {
+                int l = maxSignature.length();
+                maxSignature.replace(0, l, signature);
+            }
+            return;
+        } else {
+            for (int o : orbit) {
+                this.dag.setColor(o, color + 1);
+                Invariants invariantsCopy = this.dag.copyInvariants();
+                this.canonize(color + 1, maxSignature);
+                this.dag.setInvariants(invariantsCopy);
+            }
+        }
+    }
+	
 	public void create(int rootVertexIndex) {
 		this.dag = new DAG(rootVertexIndex);
 		build(this.dag.getRootLayer(), new ArrayList<DAG.Arc>());

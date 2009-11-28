@@ -118,6 +118,8 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	private int[] parentCounts;
 	
+	private Invariants invariants;
+	
 	/**
 	 * Convenience reference to the nodes of the DAG
 	 */
@@ -146,11 +148,24 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		return this.layers.get(0).get(0);
 	}
 	
+	public Invariants copyInvariants() {
+	    return (Invariants) this.invariants.clone();
+	}
+	
 	public void initialize(int vertexCount) {
 	    this.colors = new int[vertexCount];
 	    this.vertexInvariants = new int[vertexCount];
 	    this.nodeInvariants = new int[this.nodes.size()];
+	    this.invariants = new Invariants(vertexCount, this.nodes.size());
 	    this.parentCounts = new int[vertexCount];
+	}
+	
+	public void setColor(int vertexIndex, int color) {
+	    this.invariants.colors[vertexIndex] = color;
+	}
+	
+	public void setInvariants(Invariants invariants) {
+	    this.invariants = invariants;
 	}
 	
 	public DAG.Node makeNode(int vertexIndex) {
@@ -195,11 +210,6 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        // TODO
 	    }
 	}
-	
-	public String canonize(int color) {
-	    return null;   // TODO
-	}
-	
 	
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
