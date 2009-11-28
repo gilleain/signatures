@@ -50,6 +50,31 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		public void addChild(Node node) {
 			this.children.add(node);
 		}
+		
+		public String toString() {
+		    StringBuffer parentString = new StringBuffer();
+		    parentString.append('[');
+		    for (Node parent : this.parents) {
+		        parentString.append(parent.vertexIndex).append(',');
+		    }
+		    if (parentString.length() > 1) {
+		        parentString.setCharAt(parentString.length() - 1, ']');
+		    } else {
+		        parentString.append(']');
+		    }
+		    StringBuffer childString = new StringBuffer();
+		    childString.append('[');
+            for (Node child : this.children) {
+                childString.append(child.vertexIndex).append(',');
+            }
+            if (childString.length() > 1) {
+                childString.setCharAt(childString.length() - 1, ']');    
+            } else {
+                childString.append(']');
+            }
+            
+            return vertexIndex + " (" + parentString + ", " + childString + ")";
+		}
 	}
 	
 	/**
@@ -112,6 +137,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		return layers.iterator();
 	}
 	
+	public List<DAG.Node> getRootLayer() {
+	    return this.layers.get(0);
+	}
+	
 	public DAG.Node getRoot() {
 		return this.layers.get(0).get(0);
 	}
@@ -158,5 +187,14 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		node.addChild(existingNode);
 		existingNode.addParent(node);
 		layerArcs.add(arc);
+	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		for (List<Node> layer : this) {
+			buffer.append(layer);
+			buffer.append("\n");
+		}
+		return buffer.toString();
 	}
 }

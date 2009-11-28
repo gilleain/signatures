@@ -48,12 +48,13 @@ public abstract class AbstractSignature {
 		this.endNodeSymbol = endNodeSymbol;
 	}
 	
+	public DAG getDAG() {
+	    return this.dag;
+	}
+	
 	public void create(int rootVertexIndex) {
 		this.dag = new DAG(rootVertexIndex);
-		List<DAG.Node> rootLayer = new ArrayList<DAG.Node>();
-		rootLayer.add(dag.new Node(rootVertexIndex));
-		dag.addLayer(rootLayer);
-		buildLayer(rootLayer, new ArrayList<DAG.Arc>());
+		buildLayer(this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
 	}
 	
 	private void buildLayer(List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
@@ -64,10 +65,12 @@ public abstract class AbstractSignature {
 				addNode(node, connectedVertex, layerArcs, usedArcs, nextLayer);
 			}
 		}
+		usedArcs.addAll(layerArcs);
 		if (nextLayer.isEmpty()) {
 			return;
 		} else {
 			dag.addLayer(nextLayer);
+			buildLayer(nextLayer, usedArcs);
 		}
 	}
 
@@ -155,7 +158,7 @@ public abstract class AbstractSignature {
 		// now print any children, surrounded by branch symbols
 		boolean addedBranchSymbol = false;
 		for (DAG.Node child : node.children) {
-			DAG.Arc arc = dag.new Arc(parent.vertexIndex, node.vertexIndex);
+			DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
 			if (arcs.contains(arc)) {
 				continue;
 			} else {
