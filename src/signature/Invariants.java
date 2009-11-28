@@ -32,4 +32,9 @@ public class Invariants implements Cloneable {
         return copy;
     }
     
+    public String toString() {
+        return "colors: " + this.colors + ", node inv" + this.nodeInvariants
+                + ", vertex inv : " + this.vertexInvariants;
+    }
+    
 }
