@@ -56,14 +56,7 @@ public class UnlabelledGraphTest {
 		}
 		
 		public String toString() {
-			StringBuffer b = new StringBuffer();
-			for (Edge e : edges) {
-				b.append(String.valueOf(e.a));
-				b.append(':');
-				b.append(String.valueOf(e.b));
-				b.append(',');
-			}
-			return b.toString();
+		    return edges.toString();
 		}
 		
 	}
@@ -96,7 +89,7 @@ public class UnlabelledGraphTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String chain = "0:1,1:2,2:3";
+		String chain = "0:1,0:2,0:3,0:4";
 		UnlabelledGraphTest test = new UnlabelledGraphTest();
 		UnlabelledGraph graph = test.new UnlabelledGraph(chain);
 		UnlabelledGraphSignature signature = 
