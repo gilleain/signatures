@@ -218,8 +218,31 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    }
 	}
 	
-	public int[] createOrbit() {
-	    return null;   // TODO
+	public List<Integer> createOrbit() {
+	    int maxInvariant = 0;
+	    int invariantChoice = 0;
+	    List<Integer> orbit = new ArrayList<Integer>();
+	    
+	    for (int i = 0; i < this.vertexCount; i++) {
+	        int n = 0;
+	        for (int j = 0; j < this.vertexCount; j++) {
+	            if (this.invariants.vertexInvariants[j] == i 
+	                    && this.parentCounts[j] >= 2) {
+	                n++;
+	            }
+	        }
+	        if (maxInvariant < n) {
+	            maxInvariant = n;
+	            invariantChoice = i;
+	        }
+	    }
+	    
+	    for (int k = 0; k < this.vertexCount; k++) {
+	        if (this.invariants.vertexInvariants[k] == invariantChoice) {
+	            orbit.add(k);
+	        }
+	    }
+	    return orbit;
 	}
 	
 	public void computeVertexInvariants() {

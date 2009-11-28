@@ -57,9 +57,9 @@ public abstract class AbstractSignature {
         
         this.dag.updateVertexInvariants();
         
-        int[] orbit = this.dag.createOrbit();
+        List<Integer> orbit = this.dag.createOrbit();
         
-        if (orbit.length < 2) {
+        if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
             int tmpColor = color + 1;
