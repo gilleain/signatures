@@ -207,12 +207,9 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    Collections.sort(pairs);
 	    // TODO - uniqify
 	    for (int i = 0; i < pairs.size(); i++) {
-	        InvariantIntStringPair pair = 
-	            new InvariantIntStringPair(
-	                    this.labels[i], this.parentCounts[i]);
 	        int n = 1;
-	        for (InvariantIntStringPair otherPair : pairs) {
-	            if (pair.equals(otherPair)) {
+	        for (InvariantIntStringPair pair : pairs) {
+	            if (pair.equals(this.labels[i], this.parentCounts[i])) {
 	                this.invariants.vertexInvariants[i] = n;
 	                break;
 	            }
