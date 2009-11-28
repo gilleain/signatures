@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,21 +100,6 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	private List<List<Node>> layers;
 	
 	/**
-	 * The colors assigned to vertices of the input graph
-	 */
-	private int[] colors;
-	
-	/**
-	 * The invariants of the vertices of the input graph
-	 */
-	private int[] vertexInvariants;
-	
-	/**
-	 * The invariants of the nodes of the DAG
-	 */
-	private int[] nodeInvariants;
-	
-	/**
 	 * The counts of parents for nodes  
 	 */
 	private int[] parentCounts;
@@ -124,6 +110,11 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 * Convenience reference to the nodes of the DAG
 	 */
 	private List<DAG.Node> nodes;
+	
+	/**
+	 * A convenience record of the number of vertices
+	 */
+	private int vertexCount;
 	
     /**
      * Create a DAG from a graph, starting at the root vertex.
@@ -153,11 +144,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	}
 	
 	public void initialize(int vertexCount) {
-	    this.colors = new int[vertexCount];
-	    this.vertexInvariants = new int[vertexCount];
-	    this.nodeInvariants = new int[this.nodes.size()];
 	    this.invariants = new Invariants(vertexCount, this.nodes.size());
 	    this.parentCounts = new int[vertexCount];
+	    this.vertexCount = vertexCount;
+	    
 	}
 	
 	public void setColor(int vertexIndex, int color) {
@@ -179,8 +169,21 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.parentCounts[node.vertexIndex]++;
 	}
 	
+	public List<InvariantIntIntPair> getSortedInvariantPairs() {
+	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
+	    for (int i = 0; i < this.vertexCount; i++) {
+	        if (this.invariants.colors[i] == 0 && this.parentCounts[i] >= 2) {
+	            pairs.add(
+	                    new InvariantIntIntPair(
+	                            this.invariants.vertexInvariants[i], i));
+	        }
+	    }
+	    Collections.sort(pairs);
+	    return pairs;
+	}
+	
 	public int colorFor(int vertexIndex) {
-		return this.colors[vertexIndex];
+		return this.invariants.colors[vertexIndex];
 	}
 
 	public void addLayer(List<Node> layer) {
@@ -188,7 +191,25 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	}
 	
 	public void initializeVertexInvariants() {
-        // TODO
+	    List<InvariantIntStringPair> pairs = 
+	        new ArrayList<InvariantIntStringPair>();
+	    for (int i = 0; i < this.vertexCount; i++) {
+	        pairs.add(new InvariantIntStringPair("",this.parentCounts[i]));
+	    }
+	    Collections.sort(pairs);
+	    // TODO - uniqify
+	    for (int i = 0; i < pairs.size(); i++) {
+	        InvariantIntStringPair pair = 
+	            new InvariantIntStringPair("", this.parentCounts[i]);
+	        int n = 1;
+	        for (InvariantIntStringPair otherPair : pairs) {
+	            if (pair.equals(otherPair)) {
+	                this.invariants.vertexInvariants[i] = n;
+	                break;
+	            }
+	            n++;
+	        }
+	    }
 	}
 	
 	public int[] createOrbit() {

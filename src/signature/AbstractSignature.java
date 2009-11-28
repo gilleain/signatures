@@ -62,6 +62,11 @@ public abstract class AbstractSignature {
         if (orbit.length < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
+            int tmpColor = color + 1;
+            for (InvariantIntIntPair pair : this.dag.getSortedInvariantPairs()) {
+                this.dag.setColor(pair.index, tmpColor);
+                tmpColor++;
+            }
             String signature = this.toString();
             if (signature.compareTo(maxSignature.toString()) < 0) {
                 int l = maxSignature.length();
