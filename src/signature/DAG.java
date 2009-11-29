@@ -133,8 +133,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
-		this.parentCounts = new int[vertexCount];
+		
 		this.vertexCount = vertexCount;
+		this.parentCounts = new int[vertexCount];
+		this.labels = new String[vertexCount];
 	}
 	
 	public Iterator<List<Node>> iterator() {
@@ -155,7 +157,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
 	public void initialize(int vertexCount) {
 	    this.invariants = new Invariants(vertexCount, this.nodes.size());
-	    this.labels = new String[vertexCount];
+	    this.initializeVertexInvariants();
 	}
 	
 	public void setLabel(int vertexIndex, String label) {

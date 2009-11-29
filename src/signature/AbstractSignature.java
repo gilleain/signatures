@@ -86,6 +86,9 @@ public abstract class AbstractSignature {
 	public void create(int rootVertexIndex) {
 		this.dag = new DAG(rootVertexIndex, this.getVertexCount());
 		build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
+		for (int i = 0; i < this.getVertexCount(); i++) {
+		    this.dag.setLabel(i, this.getVertexSymbol(i));
+		}
 		this.dag.initialize(this.getVertexCount());
 	}
 	
