@@ -127,10 +127,12 @@ public class DAG implements Iterable<List<DAG.Node>>{
      */
 	public DAG(int rootVertexIndex, int vertexCount) {
 		this.layers = new ArrayList<List<Node>>();
-		List<Node> rootLayer = new ArrayList<Node>();
-		rootLayer.add(new Node(rootVertexIndex, 0));
-		this.layers.add(rootLayer);
 		this.nodes = new ArrayList<Node>();
+		List<Node> rootLayer = new ArrayList<Node>();
+		Node rootNode = new Node(rootVertexIndex, 0); 
+		rootLayer.add(rootNode);
+		this.layers.add(rootLayer);
+		this.nodes.add(rootNode);
 		this.parentCounts = new int[vertexCount];
 		this.vertexCount = vertexCount;
 	}
