@@ -68,7 +68,7 @@ public abstract class AbstractSignature {
                 tmpColor++;
             }
             String signature = this.toString();
-            if (signature.compareTo(maxSignature.toString()) < 0) {
+            if (signature.compareTo(maxSignature.toString()) > 0) {
                 int l = maxSignature.length();
                 maxSignature.replace(0, l, signature);
             }
