@@ -183,7 +183,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.parentCounts[node.vertexIndex]++;
 	}
 	
-	public List<InvariantIntIntPair> getSortedInvariantPairs() {
+	public List<InvariantIntIntPair> getInvariantPairs() {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
 	        if (this.invariants.colors[i] == 0 && this.parentCounts[i] >= 2) {

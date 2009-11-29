@@ -38,4 +38,7 @@ public class InvariantIntStringPair implements
         }
     }
 
+    public String toString() {
+        return this.string + "|" + this.value + "|" + this.originalIndex;
+    }
 }

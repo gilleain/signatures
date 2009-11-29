@@ -63,7 +63,7 @@ public abstract class AbstractSignature {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
             int tmpColor = color + 1;
-            for (InvariantIntIntPair pair : this.dag.getSortedInvariantPairs()) {
+            for (InvariantIntIntPair pair : this.dag.getInvariantPairs()) {
                 this.dag.setColor(pair.index, tmpColor);
                 tmpColor++;
             }
