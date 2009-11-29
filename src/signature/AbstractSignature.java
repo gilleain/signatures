@@ -84,17 +84,19 @@ public abstract class AbstractSignature {
     }
 	
 	public void create(int rootVertexIndex) {
-		this.dag = new DAG(rootVertexIndex);
-		build(this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
+		this.dag = new DAG(rootVertexIndex, this.getVertexCount());
+		build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
 		this.dag.initialize(this.getVertexCount());
 	}
 	
-	private void build(List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
+	private void build(int layer, 
+	        List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
 		List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
 		List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
 		for (DAG.Node node : previousLayer) {
 			for (int connectedVertex : getConnected(node.vertexIndex)) {
-				addNode(node, connectedVertex, layerArcs, usedArcs, nextLayer);
+				addNode(
+				  layer, node, connectedVertex, layerArcs, usedArcs, nextLayer);
 			}
 		}
 		usedArcs.addAll(layerArcs);
@@ -102,11 +104,11 @@ public abstract class AbstractSignature {
 			return;
 		} else {
 			dag.addLayer(nextLayer);
-			build(nextLayer, usedArcs);
+			build(layer + 1, nextLayer, usedArcs);
 		}
 	}
 
-	private void addNode(DAG.Node node, int vertexIndex,
+	private void addNode(int layer, DAG.Node node, int vertexIndex,
 			List<DAG.Arc> layerArcs, List<DAG.Arc> usedArcs, 
 			List<DAG.Node> nextLayer) {
 		DAG.Arc arc = dag.new Arc(node.vertexIndex, vertexIndex);
@@ -119,7 +121,7 @@ public abstract class AbstractSignature {
 			}
 		}
 		if (existingNode == null) {
-			existingNode = dag.makeNode(vertexIndex);
+			existingNode = dag.makeNode(vertexIndex, layer);
 			nextLayer.add(existingNode);
 		}
 		node.addChild(existingNode);

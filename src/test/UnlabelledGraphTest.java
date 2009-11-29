@@ -108,5 +108,8 @@ public class UnlabelledGraphTest {
 			test.new UnlabelledGraphSignature(graph, 0);
 		System.out.println(signature.getDAG());
 		System.out.println(graph + "\n" + signature.toString());
+		StringBuffer maxSignature = new StringBuffer();
+		signature.canonize(0, maxSignature);
+		System.out.println(maxSignature);
 	}
 }

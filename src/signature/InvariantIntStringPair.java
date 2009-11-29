@@ -6,10 +6,13 @@ public class InvariantIntStringPair implements
     public String string;
 
     public int value;
+    
+    public int originalIndex;
 
-    public InvariantIntStringPair(String string, int value) {
+    public InvariantIntStringPair(String string, int value, int originalIndex) {
         this.string = string;
         this.value = value;
+        this.originalIndex = originalIndex;
     }
     
     public boolean equals(String string, int value) {
