@@ -30,11 +30,14 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 		public int layer;
 		
-		public Node(int vertexIndex, int layer) {
+		public String label; // We use a label for the nodes to handle instances where we use bond orders. 
+		
+		public Node(int vertexIndex, int layer, String label) {
 			this.vertexIndex = vertexIndex;
 			this.layer = layer;
 			this.parents = new ArrayList<Node>();
 			this.children = new ArrayList<Node>();
+			this.label = label;
 		}
 	
 		public void addParent(Node node) {
@@ -67,7 +70,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
                 childString.append(']');
             }
             
-            return vertexIndex + " (" + parentString + ", " + childString + ")";
+            return vertexIndex + " " + label + " (" + parentString + ", " + childString + ")";
 		}
 	}
 	
@@ -123,20 +126,21 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
     /**
      * Create a DAG from a graph, starting at the root vertex.
+     * @param rootLabel 
      * @param rootVertex the vertex to start from
      */
-	public DAG(int rootVertexIndex, int vertexCount) {
+	public DAG(int rootVertexIndex, int vertexCount, String rootLabel) {
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
-		Node rootNode = new Node(rootVertexIndex, 0); 
+		Node rootNode = new Node(rootVertexIndex, 0, rootLabel); 
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
 		
 		this.vertexCount = vertexCount;
 		this.parentCounts = new int[vertexCount];
-		this.labels = new String[vertexCount];
+		
 	}
 	
 	public Iterator<List<Node>> iterator() {
@@ -172,9 +176,13 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.invariants = invariants;
 	}
 	
-	public DAG.Node makeNode(int vertexIndex, int layer) {
-	    DAG.Node node = new DAG.Node(vertexIndex, layer);
+	public DAG.Node makeNode(int vertexIndex, int layer, String label) {
+	    DAG.Node node = new DAG.Node(vertexIndex, layer, label);
 	    this.nodes.add(node);
+	    if (layers.size() <= layer) {
+	    	this.layers.add(new ArrayList<DAG.Node>());
+	    }
+	    this.layers.get(layer).add(node);
 	    return node;
 	}
 	
