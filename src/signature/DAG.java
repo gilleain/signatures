@@ -30,11 +30,14 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 		public int layer;
 		
-		public Node(int vertexIndex, int layer) {
+		public String label; // We use a label for the nodes to handle instances where we use bond orders. 
+		
+		public Node(int vertexIndex, int layer, String label) {
 			this.vertexIndex = vertexIndex;
 			this.layer = layer;
 			this.parents = new ArrayList<Node>();
 			this.children = new ArrayList<Node>();
+			this.label = label;
 		}
 	
 		public void addParent(Node node) {
@@ -67,7 +70,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
                 childString.append(']');
             }
             
-            return vertexIndex + " (" + parentString + ", " + childString + ")";
+            return vertexIndex + " " + label + " (" + parentString + ", " + childString + ")";
 		}
 	}
 	
@@ -123,20 +126,23 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
     /**
      * Create a DAG from a graph, starting at the root vertex.
+     * @param rootLabel 
      * @param rootVertex the vertex to start from
      */
-	public DAG(int rootVertexIndex, int vertexCount) {
+	public DAG(int rootVertexIndex, int vertexCount, String rootLabel) {
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
-		Node rootNode = new Node(rootVertexIndex, 0);
+		Node rootNode = new Node(rootVertexIndex, 0, rootLabel);
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
 		
+		this.labels = new String [vertexCount];
+		this.labels[rootVertexIndex] = rootLabel;
 		this.vertexCount = vertexCount;
 		this.parentCounts = new int[vertexCount];
-		this.labels = new String[vertexCount];
+		
 	}
 	
 	public Iterator<List<Node>> iterator() {
@@ -155,8 +161,8 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    return (Invariants) this.invariants.clone();
 	}
 	
-	public void initialize(int vertexCount) {
-	    this.invariants = new Invariants(vertexCount, this.nodes.size());
+	public void initialize() {
+	    this.invariants = new Invariants(this.vertexCount, this.nodes.size());
 	    this.initializeVertexInvariants();
 	}
 	
@@ -172,15 +178,21 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.invariants = invariants;
 	}
 	
-	public DAG.Node makeNode(int vertexIndex, int layer) {
-	    DAG.Node node = new DAG.Node(vertexIndex, layer);
+	public DAG.Node makeNode(int vertexIndex, int layer, String label) {
+	    DAG.Node node = new DAG.Node(vertexIndex, layer, label);
+	    this.labels[vertexIndex] = label;
 	    this.nodes.add(node);
+	    if (layers.size() <= layer) {
+	    	this.layers.add(new ArrayList<DAG.Node>());
+	    }
+	    this.layers.get(layer).add(node);
 	    return node;
 	}
 	
-	public void addParent(DAG.Node node, DAG.Node parent) {
-	    node.parents.add(parent);
-	    this.parentCounts[node.vertexIndex]++;
+	public void addRelation(DAG.Node childNode, DAG.Node parentNode) {
+	    childNode.parents.add(parentNode);
+	    this.parentCounts[childNode.vertexIndex]++;
+	    parentNode.children.add(childNode);
 	}
 	
 	public List<InvariantIntIntPair> getInvariantPairs() {
@@ -334,7 +346,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        increment = -1;
 	    } else {
 	        start = 0;
-	        end = this.layers.size() - 1;
+	        end = this.layers.size()-1;
 	        increment = 1;
 	    }
 	    
@@ -345,7 +357,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	}
 	
 	public void updateLayer(List<DAG.Node> layer, DAG.Direction direction) {
-	    List<InvariantList> vertexInvariantsList = 
+	    List<InvariantList> nodeInvariantList = 
             new ArrayList<InvariantList>();
         for (int i = 0; i < layer.size(); i++) {
             DAG.Node layerNode = layer.get(i);
@@ -355,23 +367,25 @@ public class DAG implements Iterable<List<DAG.Node>>{
             nodeInvariant.add(this.invariants.vertexInvariants[x]);
             
             List<Integer> relativeInvariants = new ArrayList<Integer>();
-            List<DAG.Node> relatives = (direction == Direction.UP)? layerNode.parents : layerNode.children;
-            for (Node relative : relatives) {
-                nodeInvariant.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
+
+            List<DAG.Node> relatives = (direction == Direction.UP) ? 
+                    layerNode.parents : layerNode.children;
+            for (Node relative : relatives ){
+            	nodeInvariant.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
             }
             Collections.sort(relativeInvariants);
             nodeInvariant.addAll(relativeInvariants);
-            vertexInvariantsList.add(nodeInvariant);
+            nodeInvariantList.add(nodeInvariant);
         }
         
-        Collections.sort(vertexInvariantsList);
+        Collections.sort(nodeInvariantList);
         
         int order = 1;
-        int first = vertexInvariantsList.get(0).originalIndex;
+        int first = nodeInvariantList.get(0).originalIndex;
         this.invariants.nodeInvariants[first] = order;
-        for (int i = 1; i < vertexInvariantsList.size(); i++) {
-            InvariantList a = vertexInvariantsList.get(i - 1);
-            InvariantList b = vertexInvariantsList.get(i);
+        for (int i = 1; i < nodeInvariantList.size(); i++) {
+            InvariantList a = nodeInvariantList.get(i - 1);
+            InvariantList b = nodeInvariantList.get(i);
             if (!a.equals(b)) {
                 order++;
             }
