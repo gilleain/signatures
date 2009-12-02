@@ -60,8 +60,7 @@ public class DAGTester {
 	Assert.assertEquals(expected,simpleDAGString);
 
 	}
-	
-	
+		
 	@Test 
 	public void testSimpleLabelledDAG(){ // throws Exception {
 	// Sets up a simple test case with a graph that looks like this:
