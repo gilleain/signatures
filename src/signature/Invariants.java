@@ -1,5 +1,7 @@
 package signature;
 
+import java.util.Arrays;
+
 public class Invariants implements Cloneable {
 
     /**
@@ -33,8 +35,9 @@ public class Invariants implements Cloneable {
     }
     
     public String toString() {
-        return "colors: " + this.colors + ", node inv" + this.nodeInvariants
-                + ", vertex inv : " + this.vertexInvariants;
+        return "colors: " + Arrays.toString(this.colors) + ", "
+        	+ "node inv" + Arrays.toString(this.nodeInvariants)
+        	+ ", vertex inv : " + Arrays.toString(this.vertexInvariants);
     }
     
 }

@@ -86,7 +86,7 @@ public abstract class AbstractSignature {
 	public void create(int rootVertexIndex) {
 		this.dag = new DAG(rootVertexIndex, this.getVertexCount(), this.getVertexSymbol(rootVertexIndex));
 		build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
-		this.dag.initialize(this.getVertexCount());
+		this.dag.initialize();
 	}
 	
 	private void build(int layer, 
@@ -124,8 +124,7 @@ public abstract class AbstractSignature {
 			existingNode = dag.makeNode(vertexIndex, layer, getVertexSymbol(vertexIndex));
 			//nextLayer.add(existingNode);
 		}
-		parentNode.addChild(existingNode);
-		dag.addParent(existingNode, parentNode);
+		dag.addRelation(existingNode, parentNode);
 		layerArcs.add(arc);
 	}
 	
