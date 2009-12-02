@@ -1,5 +1,7 @@
 package signature;
 
+import java.util.Arrays;
+
 public class InvariantArray implements Comparable<InvariantArray>{
     
     public final int[] invariants;
@@ -43,7 +45,7 @@ public class InvariantArray implements Comparable<InvariantArray>{
     }
     
     public String toString() {
-        return this.invariants + ", " + this.originalIndex;
+        return Arrays.toString(this.invariants) + ":" + this.originalIndex;
     }
 
 }
