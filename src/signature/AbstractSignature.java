@@ -79,6 +79,7 @@ public abstract class AbstractSignature {
                 Invariants invariantsCopy = this.dag.copyInvariants();
                 this.canonize(color + 1, maxSignature);
                 this.dag.setInvariants(invariantsCopy);
+                this.dag.setColor(o, 0);
             }
         }
     }

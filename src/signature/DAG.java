@@ -129,7 +129,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
-		Node rootNode = new Node(rootVertexIndex, 0); 
+		Node rootNode = new Node(rootVertexIndex, 0);
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
@@ -214,6 +214,8 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    }
 	    Collections.sort(pairs);
 	    
+	    if (pairs.size() == 0) return;
+	    
 	    int order = 1;
 	    this.invariants.vertexInvariants[pairs.get(0).originalIndex] = order;
 	    for (int i = 1; i < pairs.size(); i++) {
@@ -272,7 +274,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        if (layerInvariants[j] == null) {
 	            layerInvariants[j] = new int[this.layers.size()];
 	        }
-	        layerInvariants[j][node.layer] = this.invariants.vertexInvariants[i]; 
+	        layerInvariants[j][node.layer] = this.invariants.nodeInvariants[i]; 
 	    }
 	    
 	    List<InvariantArray> invariantLists = new ArrayList<InvariantArray>();
@@ -293,17 +295,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        }
 	        this.invariants.vertexInvariants[b.originalIndex] = order;
 	    }
-	    // BELOW COMMENTED OUT, AS IT (SHOULD) DO(ES) THE SAME AS ABOVE
-//	    for (int i = 0; i < this.vertexCount; i++) {
-//	        int invariantOrder = 1;
-//	        for (InvariantArray invariantList : invariantLists) {
-//	            if (invariantList.equals(layerInvariants[i])) {
-//	                this.invariants.vertexInvariants[i] = invariantOrder;
-//	                break;
-//	            }
-//	            invariantOrder++;
-//	        }
-//	    }
+
 	}
 	
 	public void updateVertexInvariants() {
@@ -338,11 +330,11 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    int start, end, increment;
 	    if (direction == Direction.UP) {
 	        start = this.layers.size() - 1;
-	        end = -1;
+	        end = 0;
 	        increment = -1;
 	    } else {
 	        start = 0;
-	        end = this.layers.size();
+	        end = this.layers.size() - 1;
 	        increment = 1;
 	    }
 	    
@@ -358,26 +350,18 @@ public class DAG implements Iterable<List<DAG.Node>>{
         for (int i = 0; i < layer.size(); i++) {
             DAG.Node layerNode = layer.get(i);
             int x = layerNode.vertexIndex;
-            InvariantList vertexInvariant = new InvariantList(i);
-            vertexInvariant.add(this.invariants.colors[x]);
-            vertexInvariant.add(this.invariants.vertexInvariants[x]);
+            InvariantList nodeInvariant = new InvariantList(this.nodes.indexOf(layerNode));
+            nodeInvariant.add(this.invariants.colors[x]);
+            nodeInvariant.add(this.invariants.vertexInvariants[x]);
             
             List<Integer> relativeInvariants = new ArrayList<Integer>();
-            for (DAG.Node node : this.nodes) {
-                List<DAG.Node> relatives = (direction == Direction.UP)?
-                        layerNode.parents : layerNode.children;
-                for (DAG.Node relative : relatives) {
-                    if (layerNode.vertexIndex == relative.vertexIndex) {
-                        int inv = 
-                            this.invariants.vertexInvariants[node.vertexIndex]; 
-                        relativeInvariants.add(inv);
-                                
-                    }
-                }
+            List<DAG.Node> relatives = (direction == Direction.UP)? layerNode.parents : layerNode.children;
+            for (Node relative : relatives) {
+                nodeInvariant.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
             }
             Collections.sort(relativeInvariants);
-            vertexInvariant.addAll(relativeInvariants);
-            vertexInvariantsList.add(vertexInvariant);
+            nodeInvariant.addAll(relativeInvariants);
+            vertexInvariantsList.add(nodeInvariant);
         }
         
         Collections.sort(vertexInvariantsList);
