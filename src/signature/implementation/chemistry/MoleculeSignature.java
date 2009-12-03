@@ -39,4 +39,8 @@ public class MoleculeSignature extends AbstractSignature {
         return this.molecule.getSymbolFor(vertexIndex);
     }
 
+    public String getMolecularSignature() {
+        return super.getGraphSignature();
+    }
+
 }
