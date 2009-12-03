@@ -114,4 +114,14 @@ public class Molecule {
         }
         return buffer.toString();
     }
+
+    public void addAtom(int i, String symbol) {
+        this.atoms.add(new Atom(i, symbol));
+    }
+
+    public void addBond(int atomNumberA, int atomNumberB, int order) {
+        Atom a = this.atoms.get(atomNumberA);
+        Atom b = this.atoms.get(atomNumberB);
+        this.bonds.add(new Bond(a, b, order));
+    }
 }

@@ -7,7 +7,9 @@ public class MoleculeSignature extends AbstractSignature {
     private Molecule molecule;
     
     public MoleculeSignature(Molecule molecule) {
+        super("[", "]");
         this.molecule = molecule;
+        super.create(0);
     }
 
     @Override
