@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,6 +38,14 @@ public abstract class AbstractSignature {
 	private final String endNodeSymbol;
 	
 	private DAG dag;
+	
+	private boolean isCanonicalLabel = false;
+	
+	private List<Integer> canonicalLabelMapping;
+	
+	private List<String> vertexSignatures;
+	
+	private String graphSignature;
 
 	public AbstractSignature() {
 		this.startNodeSymbol = "";
@@ -52,7 +61,7 @@ public abstract class AbstractSignature {
 	    return this.dag;
 	}
 	
-    public void canonize(int color, StringBuffer maxSignature) {
+    public void canonize(int color, StringBuffer canonicalVertexSignature) {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
@@ -69,16 +78,16 @@ public abstract class AbstractSignature {
                 tmpColor++;
             }
             String signature = this.toString();
-            if (signature.compareTo(maxSignature.toString()) > 0) {
-                int l = maxSignature.length();
-                maxSignature.replace(0, l, signature);
+            if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
+                int l = canonicalVertexSignature.length();
+                canonicalVertexSignature.replace(0, l, signature);
             }
             return;
         } else {
             for (int o : orbit) {
                 this.dag.setColor(o, color + 1);
                 Invariants invariantsCopy = this.dag.copyInvariants();
-                this.canonize(color + 1, maxSignature);
+                this.canonize(color + 1, canonicalVertexSignature);
                 this.dag.setInvariants(invariantsCopy);
                 this.dag.setColor(o, 0);
             }
@@ -221,4 +230,35 @@ public abstract class AbstractSignature {
 		}
 	}
 	
+	
+	private void generateVertexSignatures() {
+		// Loop through all vertices and create a vertex signature for each one them. 
+		for ( int vertexId = 0; vertexId < this.getVertexCount(); vertexId++) {
+			dag.reinitializeDAG(vertexId, this.getVertexSymbol(vertexId));
+			this.vertexSignatures.add(this.toCanonicalVertexString());
+		}
+	}
+	
+	
+	private void generateGraphSignature() {
+		// Use the lexicographically largest (or smallest) as the graph signature.
+		this.generateVertexSignatures();
+		Collections.sort(this.vertexSignatures);
+		this.graphSignature = this.vertexSignatures.get(0);
+	}
+	
+	
+	private String toCanonicalVertexString() {
+		// Convenience function that creates a String to hold the signature instead of a StringBuffer.
+		StringBuffer canonicalVertexStringBuffer = new StringBuffer();
+		this.canonize(0, canonicalVertexStringBuffer);
+		return canonicalVertexStringBuffer.toString();
+	}
+	
+
+	public String getGraphSignature(){
+		// Generates and returns a graph signature.
+		this.generateGraphSignature();
+		return this.graphSignature;
+	}
 }

@@ -145,6 +145,25 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 	}
 	
+	
+    /**
+     * Reinitialze a DAG starting at another root vertex.
+     * @param rootLabel 
+     * @param rootVertex the vertex to start from
+     */
+	public void reinitializeDAG(int rootVertexIndex, String rootLabel) {
+		this.layers.clear();
+		this.nodes.clear();
+		List<Node> rootLayer = new ArrayList<Node>();
+		Node rootNode = new Node(rootVertexIndex, 0, rootLabel);
+		rootLayer.add(rootNode);
+		this.layers.add(rootLayer);
+		this.nodes.add(rootNode);
+		
+		this.parentCounts = new int[vertexCount];
+		
+	}
+	
 	public Iterator<List<Node>> iterator() {
 		return layers.iterator();
 	}
