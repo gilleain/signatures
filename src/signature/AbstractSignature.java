@@ -271,4 +271,11 @@ public abstract class AbstractSignature {
 		this.generateGraphSignature();
 		return this.graphSignature;
 	}
+
+	
+	public String getVertexSignature(int vertexId){
+		// Generates and returns a graph signature.
+		this.generateVertexSignatures();
+		return this.vertexSignatures.get(vertexId);
+	}
 }
