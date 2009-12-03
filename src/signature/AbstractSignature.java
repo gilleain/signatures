@@ -54,6 +54,7 @@ public abstract class AbstractSignature {
 	
     public void canonize(int color, StringBuffer maxSignature) {
         // assume that the atom invariants have been initialized
+        if (this.getVertexCount() == 0) return;
         
         this.dag.updateVertexInvariants();
         
@@ -85,6 +86,7 @@ public abstract class AbstractSignature {
     }
 	
 	public void create(int rootVertexIndex) {
+	    if (this.getVertexCount() == 0) return;
 		this.dag = new DAG(rootVertexIndex, 
 		                   this.getVertexCount(), 
 		                   this.getVertexSymbol(rootVertexIndex));
