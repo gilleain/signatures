@@ -232,9 +232,14 @@ public abstract class AbstractSignature {
 	
 	
 	private void generateVertexSignatures() {
-		// Loop through all vertices and create a vertex signature for each one them. 
-		for ( int vertexId = 0; vertexId < this.getVertexCount(); vertexId++) {
+		// Loop through all vertices and create a vertex signature for each one them.
+	    
+	    this.vertexSignatures = new ArrayList<String>();
+	    this.create(0);
+        this.vertexSignatures.add(this.toCanonicalVertexString());
+		for ( int vertexId = 1; vertexId < this.getVertexCount(); vertexId++) {
 			dag.reinitializeDAG(vertexId, this.getVertexSymbol(vertexId));
+			this.create(vertexId);
 			this.vertexSignatures.add(this.toCanonicalVertexString());
 		}
 	}

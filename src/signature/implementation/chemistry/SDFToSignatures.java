@@ -13,7 +13,7 @@ public class SDFToSignatures {
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
             MoleculeSignature signature = new MoleculeSignature(molecule);
             // get graph signature
-            System.out.println(signature.toString());
+            System.out.println(signature.getGraphSignature());
         }
     }
 
