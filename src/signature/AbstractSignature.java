@@ -85,7 +85,9 @@ public abstract class AbstractSignature {
     }
 	
 	public void create(int rootVertexIndex) {
-		this.dag = new DAG(rootVertexIndex, this.getVertexCount(), this.getVertexSymbol(rootVertexIndex));
+		this.dag = new DAG(rootVertexIndex, 
+		                   this.getVertexCount(), 
+		                   this.getVertexSymbol(rootVertexIndex));
 		build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
 		this.dag.initialize();
 	}
@@ -122,8 +124,9 @@ public abstract class AbstractSignature {
 			}
 		}
 		if (existingNode == null) {
-			existingNode = dag.makeNode(vertexIndex, layer, getVertexSymbol(vertexIndex));
-			//nextLayer.add(existingNode);
+			existingNode = dag.makeNode(
+			        vertexIndex, layer, getVertexSymbol(vertexIndex));
+			nextLayer.add(existingNode);
 		}
 		dag.addRelation(existingNode, parentNode);
 		layerArcs.add(arc);

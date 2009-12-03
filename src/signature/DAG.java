@@ -178,16 +178,42 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    this.invariants = invariants;
 	}
 	
+	/**
+	 * Create and return a DAG.Node, while setting some internal references to
+	 * the same data. Does not add the node to a layer.
+	 * 
+	 * @param vertexIndex the index of the vertex in the original graph
+	 * @param layer the index of the layer
+	 * @param label the label of the vertex
+	 * @return the new node 
+	 */
 	public DAG.Node makeNode(int vertexIndex, int layer, String label) {
 	    DAG.Node node = new DAG.Node(vertexIndex, layer, label);
 	    this.labels[vertexIndex] = label;
 	    this.nodes.add(node);
-	    if (layers.size() <= layer) {
-	    	this.layers.add(new ArrayList<DAG.Node>());
-	    }
-	    this.layers.get(layer).add(node);
 	    return node;
 	}
+	
+	/**
+	 * Create and return a DAG.Node, while setting some internal references to
+     * the same data. Note: also adds the node to a layer, creating it if 
+     * necessary.
+     * 
+	 * @param vertexIndex the index of the vertex in the original graph
+     * @param layer the index of the layer
+     * @param label the label of the vertex
+     * @return the new node
+	 */
+	public DAG.Node makeNodeInLayer(int vertexIndex, int layer, String label) {
+        DAG.Node node = new DAG.Node(vertexIndex, layer, label);
+        this.labels[vertexIndex] = label;
+        this.nodes.add(node);
+        if (layers.size() <= layer) {
+          this.layers.add(new ArrayList<DAG.Node>());
+        }
+        this.layers.get(layer).add(node);
+        return node;
+    }
 	
 	public void addRelation(DAG.Node childNode, DAG.Node parentNode) {
 	    childNode.parents.add(parentNode);

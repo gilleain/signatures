@@ -22,10 +22,10 @@ public class DAGTester {
 	// Create the nodes.
 	DAG.Node parentNode = simpleDAG.getRoot();
 	// Add the first child.
-	DAG.Node childNode = simpleDAG.makeNode(1, 1, "Node");
+	DAG.Node childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
 	simpleDAG.addRelation(childNode, parentNode);
 	// Add the second child.
-	childNode = simpleDAG.makeNode(2, 1, "Node");
+	childNode = simpleDAG.makeNodeInLayer(2, 1, "Node");
 	simpleDAG.addRelation(childNode, parentNode);
 	
 	// Initialize the all invariants.
@@ -75,10 +75,10 @@ public class DAGTester {
 	// Create the nodes.
 	DAG.Node parentNode = simpleDAG.getRoot();
 	// Add the first child.
-	DAG.Node childNode = simpleDAG.makeNode(1, 1, "Node2");
+	DAG.Node childNode = simpleDAG.makeNodeInLayer(1, 1, "Node2");
 	simpleDAG.addRelation(childNode, parentNode);
 	// Add the second child.
-	childNode = simpleDAG.makeNode(2, 1, "Node1");
+	childNode = simpleDAG.makeNodeInLayer(2, 1, "Node1");
 	simpleDAG.addRelation(childNode, parentNode);
 	
 	// Initialize the all invariants.
