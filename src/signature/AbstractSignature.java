@@ -230,6 +230,12 @@ public abstract class AbstractSignature {
 		}
 	}
 	
+	private void resetDAG(int vertexRootIndex) {
+	    String rootSymbol = this.getVertexSymbol(vertexRootIndex);
+	    dag.resetDAG(vertexRootIndex, rootSymbol);
+	    build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
+        this.dag.initialize();
+	}
 	
 	private void generateVertexSignatures() {
 		// Loop through all vertices and create a vertex signature for each one them.
@@ -237,9 +243,8 @@ public abstract class AbstractSignature {
 		this.create(0);
 		this.vertexSignatures = new ArrayList<String>();
 		this.vertexSignatures.add(this.toCanonicalVertexString());
-		for ( int vertexId = 1; vertexId < this.getVertexCount(); vertexId++) {
-			dag.reinitializeDAG(vertexId, this.getVertexSymbol(vertexId));
-			this.create(vertexId);
+        for (int vertexIndex = 1; vertexIndex < this.getVertexCount(); vertexIndex++) {
+		    this.resetDAG(vertexIndex);
 			this.vertexSignatures.add(this.toCanonicalVertexString());
 		}
 	}
