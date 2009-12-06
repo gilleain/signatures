@@ -210,7 +210,9 @@ public abstract class AbstractSignature {
 		}
 		buffer.append(this.endNodeSymbol);
 		
-		// Need to sort the children here, so that they are printed in an order according to their invariants.
+		// Need to sort the children here, so that they are printed in an order 
+		// according to their invariants.
+		Collections.sort(node.children);
 		
 		// now print the sorted children, surrounded by branch symbols
 		boolean addedBranchSymbol = false;

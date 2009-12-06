@@ -20,7 +20,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 * A node of the directed acyclic graph
 	 *
 	 */
-	public class Node {
+	public class Node implements Comparable<Node> {
 		
 		public int vertexIndex;
 		
@@ -30,7 +30,15 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 		public int layer;
 		
-		public String label; // We use a label for the nodes to handle instances where we use bond orders. 
+		/**
+		 * A label for the nodes to handle bond orders
+		 */
+		public String label;  
+		
+		/**
+		 * The final computed invariant, used for sorting children when printing
+		 */
+		public int invariant;
 		
 		public Node(int vertexIndex, int layer, String label) {
 			this.vertexIndex = vertexIndex;
@@ -70,8 +78,24 @@ public class DAG implements Iterable<List<DAG.Node>>{
                 childString.append(']');
             }
             
-            return vertexIndex + " " + label + " (" + parentString + ", " + childString + ")";
+            return vertexIndex + " " 
+                 + label + " (" + parentString + ", " + childString + ")";
 		}
+
+        public int compareTo(Node o) {
+            int c = this.label.compareTo(o.label); 
+            if (c == 0) {
+                if (this.invariant < o.invariant) {
+                    return - 1;
+                } else if (this.invariant > o.invariant) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return c;
+            }
+        }
 	}
 	
 	/**
@@ -371,6 +395,11 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	            checkInvariantChange(
 	                    oldInvariants, this.invariants.vertexInvariants);
 	        
+	    }
+	    
+	    // finally, copy the node invariants into the nodes, for easy sorting
+	    for (int i = 0; i < this.nodes.size(); i++) {
+	        this.nodes.get(i).invariant = this.invariants.nodeInvariants[i];
 	    }
 	}
 	
