@@ -11,8 +11,12 @@ public class TestMoleculeSignature {
     @Test
     public void testSDF() {
         //String filename = "data/test.sdf";
-        String filename = "/home/lc/Molecules/ChEBI_complete.sdf";
-        int molNr = 1;
+        //String filename = "/home/lc/Molecules/ChEBI_complete.sdf";
+        //String filename = "/home/lc/disconnected.sdf";
+    	//String filename = "/home/lc/Molecules/atomPermuter.sdf";
+    	String filename = "/home/lc/Molecules/atomPermuterForOB0.sdf";
+    	//String filename = "/home/lc/Molecules/atomPermuterForOB4.sdf";
+        int molNr = 0;
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
         	System.out.println(++molNr);
             MoleculeSignature signature = new MoleculeSignature(molecule);

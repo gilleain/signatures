@@ -361,10 +361,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    while (invariantSame) {
 	        oldInvariants = (int[]) this.invariants.vertexInvariants.clone();
 	        
-	        updateNodeInvariants(Direction.DOWN);
+	        updateNodeInvariants(Direction.UP); // From the leaves to the root.
 	        computeVertexInvariants();
 	        
-	        updateNodeInvariants(Direction.UP);
+	        updateNodeInvariants(Direction.DOWN); // From the root to the leaves.
 	        computeVertexInvariants();
 	        
 	        invariantSame = 

@@ -247,6 +247,11 @@ public abstract class AbstractSignature {
 		    this.resetDAG(vertexIndex);
 			this.vertexSignatures.add(this.toCanonicalVertexString());
 		}
+        // DEBUG
+        for (String vertexSign : this.vertexSignatures){
+        	System.out.println(vertexSign);
+        }
+        // TO HERE
 	}
 	
 	
