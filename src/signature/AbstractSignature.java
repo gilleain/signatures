@@ -278,4 +278,9 @@ public abstract class AbstractSignature {
 		this.generateVertexSignatures();
 		return this.vertexSignatures.get(vertexId);
 	}
+
+    public List<String> getAllVertexSignatures() {
+        this.generateVertexSignatures();
+        return this.vertexSignatures;
+    }
 }
