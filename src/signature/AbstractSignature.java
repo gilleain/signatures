@@ -210,7 +210,9 @@ public abstract class AbstractSignature {
 		}
 		buffer.append(this.endNodeSymbol);
 		
-		// now print any children, surrounded by branch symbols
+		// Need to sort the children here, so that they are printed in an order according to their invariants.
+		
+		// now print the sorted children, surrounded by branch symbols
 		boolean addedBranchSymbol = false;
 		for (DAG.Node child : node.children) {
 			DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
