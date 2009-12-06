@@ -413,8 +413,9 @@ public class DAG implements Iterable<List<DAG.Node>>{
             
             List<Integer> relativeInvariants = new ArrayList<Integer>();
 
+            // If we go up we should check the children.
             List<DAG.Node> relatives = (direction == Direction.UP) ? 
-                    layerNode.parents : layerNode.children;
+                    layerNode.children : layerNode.parents;
             for (Node relative : relatives ){
             	nodeInvariant.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
             }
