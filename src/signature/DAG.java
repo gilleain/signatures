@@ -325,7 +325,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    int invariantChoice = 0;
 	    List<Integer> orbit = new ArrayList<Integer>();
 	    
-	    for (int i = 0; i < this.vertexCount; i++) {
+	    for (int i = 1; i <= this.vertexCount; i++) {// Vertex invariants range from 1 to the number of vertices.
 	        int n = 0;
 	        for (int j = 0; j < this.vertexCount; j++) {
 	            if (this.invariants.vertexInvariants[j] == i 
@@ -333,7 +333,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	                n++;
 	            }
 	        }
-	        if (maxInvariant < n) {
+	        if (maxInvariant < n) { // Pick the orbit with the lowest invariant if there is a tie between orbits.
 	            maxInvariant = n;
 	            invariantChoice = i;
 	        }
@@ -386,7 +386,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        oldInvariants = (int[]) this.invariants.vertexInvariants.clone();
 	        
 	        updateNodeInvariants(Direction.UP); // From the leaves to the root.
-	        computeVertexInvariants();
+	        computeVertexInvariants(); // Is this needed here ?
 	        
 	        updateNodeInvariants(Direction.DOWN); // From the root to the leaves.
 	        computeVertexInvariants();
