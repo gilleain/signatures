@@ -17,11 +17,11 @@ public class SDFToSignatures {
         		// get graph signature
         		System.out.println(signature.getGraphSignature());
         		molCount++;
-        		System.out.println("Current molecule: " + molCount);
+        		//System.out.println("Current molecule: " + molCount);
         	}
         	catch (Exception e) {}
         }
-        System.out.println("Total number of molecules: " + molCount);
+        //System.out.println("Total number of molecules: " + molCount);
     }
 
 }

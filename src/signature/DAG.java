@@ -386,7 +386,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        oldInvariants = (int[]) this.invariants.vertexInvariants.clone();
 	        
 	        updateNodeInvariants(Direction.UP); // From the leaves to the root.
-	        computeVertexInvariants(); // Is this needed here ?
+	        computeVertexInvariants(); // This is needed here otherwise there will be cases where a node invariant is reset when the tree is traversed down. This is not mentioned in Faulon's paper.
 	        
 	        updateNodeInvariants(Direction.DOWN); // From the root to the leaves.
 	        computeVertexInvariants();
@@ -415,12 +415,12 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	public void updateNodeInvariants(DAG.Direction direction) {
 	    int start, end, increment;
 	    if (direction == Direction.UP) {
-	        start = this.layers.size() - 1;
-	        end = 0;
+	        start = this.layers.size() - 1; 
+	        end = 0; // The root node is not included but it doesn't matter since it always is alone.
 	        increment = -1;
 	    } else {
 	        start = 0;
-	        end = this.layers.size()-1;
+	        end = this.layers.size()-1; // We do not include the leaf layer, perhaps we should. Does it matter?
 	        increment = 1;
 	    }
 	    
@@ -446,7 +446,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
             List<DAG.Node> relatives = (direction == Direction.UP) ? 
                     layerNode.children : layerNode.parents;
             for (Node relative : relatives ){
-            	nodeInvariant.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
+            	relativeInvariants.add(this.invariants.nodeInvariants[this.nodes.indexOf(relative)]);
             }
             Collections.sort(relativeInvariants);
             nodeInvariant.addAll(relativeInvariants);
