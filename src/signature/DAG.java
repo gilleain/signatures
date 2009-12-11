@@ -20,7 +20,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 * A node of the directed acyclic graph
 	 *
 	 */
-	public class Node implements Comparable<Node> {
+	public class Node implements Comparable<Node>, Visitable {
 		
 		public int vertexIndex;
 		
@@ -54,6 +54,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		
 		public void addChild(Node node) {
 			this.children.add(node);
+		}
+		
+		public void accept(DAGVisitor visitor) {
+		    visitor.visit(this);
 		}
 		
 		public String toString() {
@@ -277,6 +281,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
 	public int colorFor(int vertexIndex) {
 		return this.invariants.colors[vertexIndex];
+	}
+	
+	public void accept(DAGVisitor visitor) {
+	    this.getRoot().accept(visitor);
 	}
 
 	public void addLayer(List<Node> layer) {

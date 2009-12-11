@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,6 +60,13 @@ public abstract class AbstractSignature {
 	
 	public DAG getDAG() {
 	    return this.dag;
+	}
+	
+	public int[] getCanonicalLabelling() {
+	    CanonicalLabellingVisitor labeller = 
+	        new CanonicalLabellingVisitor(this.getVertexCount());
+	    this.dag.accept(labeller);
+	    return labeller.getLabelling();
 	}
 	
     public void canonize(int color, StringBuffer canonicalVertexSignature) {
