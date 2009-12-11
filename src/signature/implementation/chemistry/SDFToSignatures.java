@@ -13,11 +13,11 @@ public class SDFToSignatures {
         int molCount = 0;
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
         	try {
+        		molCount++;
+        		System.out.println("Current molecule: " + molCount);
         		MoleculeSignature signature = new MoleculeSignature(molecule);
         		// get graph signature
         		System.out.println(signature.getGraphSignature());
-        		molCount++;
-        		//System.out.println("Current molecule: " + molCount);
         	}
         	catch (Exception e) {}
         }
