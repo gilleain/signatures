@@ -43,8 +43,8 @@ public class MoleculeReader {
         Molecule molecule = new Molecule();
         // counts are on the fourth line
         String countLine = block.get(3);
-        int atomCount = Integer.parseInt(countLine.substring(0, 4).trim());
-        int bondCount = Integer.parseInt(countLine.substring(4, 7).trim());
+        int atomCount = Integer.parseInt(countLine.substring(0, 3).trim());
+        int bondCount = Integer.parseInt(countLine.substring(3, 6).trim());
         
         // atom block starts on the fifth line (4th index)
         int atomLineStart = 4;
@@ -60,8 +60,8 @@ public class MoleculeReader {
         int bondLineEnd   = bondLineStart + bondCount;
         for (int i = bondLineStart; i < bondLineEnd; i++) {
             String bondLine = block.get(i);
-            int atomNumberA = Integer.parseInt(bondLine.substring(0, 4).trim());
-            int atomNumberB = Integer.parseInt(bondLine.substring(4, 7).trim());
+            int atomNumberA = Integer.parseInt(bondLine.substring(0, 3).trim());
+            int atomNumberB = Integer.parseInt(bondLine.substring(3, 6).trim());
             int order = Integer.parseInt(bondLine.substring(7, 10).trim());
             molecule.addBond(atomNumberA - 1, atomNumberB - 1, order);
         }

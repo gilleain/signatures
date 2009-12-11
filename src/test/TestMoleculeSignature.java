@@ -40,6 +40,15 @@ public class TestMoleculeSignature {
     }
     
     @Test
+    public void testLargeExample() {
+        String filename = "data/large_example.sdf";
+        for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
+            MoleculeSignature signature = new MoleculeSignature(molecule);
+            System.out.println(signature.getGraphSignature());
+        }
+    }
+    
+    @Test
     public void testSDF() {
         //String filename = "data/test.sdf";
         //String filename = "/home/lc/Molecules/ChEBI_complete.sdf";

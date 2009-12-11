@@ -1,5 +1,7 @@
 package test;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +15,97 @@ public class DAGTester {
             int[] nodeInv, int[] vertexInv, Invariants invariants) {
         Assert.assertArrayEquals(nodeInv, invariants.nodeInvariants);
         Assert.assertArrayEquals(vertexInv, invariants.vertexInvariants);
+    }
+    
+    @Test
+    public void testColoring() {
+        // C12CC1C1
+        DAG ring = new DAG(0, 4, "C");
+        DAG.Node root = ring.getRoot();
+        
+        DAG.Node child1 = ring.makeNodeInLayer(1, 1, "C");
+        ring.addRelation(child1, root);
+        
+        DAG.Node child2 = ring.makeNodeInLayer(2, 1, "C");
+        ring.addRelation(child2, root);
+        
+        DAG.Node child3 = ring.makeNodeInLayer(3, 1, "C");
+        ring.addRelation(child3, root);
+        
+        DAG.Node child4 = ring.makeNodeInLayer(3, 2, "C");
+        ring.addRelation(child4, child1);
+        ring.addRelation(child4, child2);
+        
+        DAG.Node child5 = ring.makeNodeInLayer(1, 2, "C");
+        ring.addRelation(child5, child3);
+        
+        DAG.Node child6 = ring.makeNodeInLayer(2, 2, "C");
+        ring.addRelation(child6, child3);
+        
+        System.out.println(ring);
+        ring.initialize();
+        
+        ring.updateNodeInvariants(DAG.Direction.UP);
+        System.out.println(ring.copyInvariants());
+        
+        ring.computeVertexInvariants();
+        System.out.println(ring.copyInvariants());
+        
+        ring.updateNodeInvariants(DAG.Direction.DOWN);
+        System.out.println(ring.copyInvariants());
+        
+        ring.computeVertexInvariants();
+        System.out.println(ring.copyInvariants());
+        
+        ring.updateVertexInvariants();
+        System.out.println(ring.copyInvariants());
+        
+        List<Integer> orbit = ring.createOrbit();
+        System.out.println(orbit);
+        
+        ring.setColor(orbit.get(0), 1);
+        ring.updateVertexInvariants();
+        System.out.println(ring.copyInvariants());
+
+        orbit = ring.createOrbit();
+        System.out.println(orbit);
+        
+        ring.setColor(orbit.get(0), 2);
+        ring.updateVertexInvariants();
+        System.out.println(ring.copyInvariants());
+
+        orbit = ring.createOrbit();
+        System.out.println(orbit);
+        ring.setColor(orbit.get(0), 3);
+        System.out.println(ring.copyInvariants());
+    }
+    
+    @Test
+    public void testColoringForUnlabelledThreeCycle() {
+        DAG dag = new DAG(0, 3, "C");
+        DAG.Node root = dag.getRoot();
+        
+        DAG.Node childA = dag.makeNodeInLayer(1, 1, "C");
+        dag.addRelation(childA, root);
+        
+        DAG.Node childB = dag.makeNodeInLayer(2, 1, "C");
+        dag.addRelation(childB, root);
+        
+        DAG.Node childC = dag.makeNodeInLayer(2, 2, "C");
+        dag.addRelation(childC, childA);
+        
+        DAG.Node childD = dag.makeNodeInLayer(1, 2, "C");
+        dag.addRelation(childD, childB);
+        
+        System.out.println(dag);
+        dag.initialize();
+        
+        dag.updateVertexInvariants();
+        System.out.println(dag.copyInvariants());
+        
+        dag.setColor(1, 1);
+        dag.updateVertexInvariants();
+        System.out.println(dag.copyInvariants());
     }
 
     @Test 

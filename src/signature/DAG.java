@@ -248,9 +248,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
      * @return the new node
 	 */
 	public DAG.Node makeNodeInLayer(int vertexIndex, int layer, String label) {
-        DAG.Node node = new DAG.Node(vertexIndex, layer, label);
-        this.labels[vertexIndex] = label;
-        this.nodes.add(node);
+        DAG.Node node = this.makeNode(vertexIndex, layer, label);
         if (layers.size() <= layer) {
           this.layers.add(new ArrayList<DAG.Node>());
         }
@@ -307,35 +305,27 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        }
 	        this.invariants.vertexInvariants[b.originalIndex] = order;
 	    }
-//	    EQUIVALENT TO ABOVE, IN THEORY
-//	    for (int i = 0; i < pairs.size(); i++) {
-//	        int n = 1;
-//	        for (InvariantIntStringPair pair : pairs) {
-//	            if (pair.equals(this.labels[i], this.parentCounts[i])) {
-//	                this.invariants.vertexInvariants[i] = n;
-//	                break;
-//	            }
-//	            n++;
-//	        }
-//	    }
 	}
 	
 	public List<Integer> createOrbit() {
-	    int maxInvariant = 0;
+	    int maxOrbitSize = 0;
 	    int invariantChoice = 0;
 	    List<Integer> orbit = new ArrayList<Integer>();
 	    
-	    for (int i = 1; i <= this.vertexCount; i++) {// Vertex invariants range from 1 to the number of vertices.
-	        int n = 0;
+	    // Vertex invariants range from 1 to the number of vertices.
+	    for (int invariant = 1; invariant <= this.vertexCount; invariant++) {
+	        int orbitSize = 0;
 	        for (int j = 0; j < this.vertexCount; j++) {
-	            if (this.invariants.vertexInvariants[j] == i 
+	            if (this.invariants.vertexInvariants[j] == invariant 
 	                    && this.parentCounts[j] >= 2) {
-	                n++;
+	                orbitSize++;
 	            }
 	        }
-	        if (maxInvariant < n) { // Pick the orbit with the lowest invariant if there is a tie between orbits.
-	            maxInvariant = n;
-	            invariantChoice = i;
+	    // Pick the orbit with the lowest invariant 
+	    // if there is a tie between orbits.
+	        if (maxOrbitSize < orbitSize) { 
+	            maxOrbitSize = orbitSize;
+	            invariantChoice = invariant;
 	        }
 	    }
 	    

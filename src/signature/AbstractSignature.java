@@ -72,10 +72,12 @@ public abstract class AbstractSignature {
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-            int tmpColor = color + 1;
+//            int tmpColor = color + 1;
             for (InvariantIntIntPair pair : this.dag.getInvariantPairs()) {
-                this.dag.setColor(pair.index, tmpColor);
-                tmpColor++;
+//                this.dag.setColor(pair.index, tmpColor);
+//                tmpColor++;
+                this.dag.setColor(pair.index, color);
+                color++;
             }
             String signature = this.toString();
             if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
@@ -85,7 +87,7 @@ public abstract class AbstractSignature {
             return;
         } else {
             for (int o : orbit) {
-                this.dag.setColor(o, color + 1);
+                this.dag.setColor(o, color);
                 Invariants invariantsCopy = this.dag.copyInvariants();
                 this.canonize(color + 1, canonicalVertexSignature);
                 this.dag.setInvariants(invariantsCopy);
@@ -179,9 +181,8 @@ public abstract class AbstractSignature {
 	public abstract String getEdgeSymbol(int vertexIndex, int otherVertexIndex);
 	
 	public String toString() {
-		DAG.Node root = this.dag.getRoot();
 		StringBuffer buffer = new StringBuffer();
-		print(buffer, root, null, new ArrayList<DAG.Arc>());
+		print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
 		return buffer.toString();
 	}
 	
@@ -259,31 +260,39 @@ public abstract class AbstractSignature {
 	}
 	
 	
+	/**
+	 * Use the lexicographically largest (or smallest) as the graph signature
+	 */
 	private void generateGraphSignature() {
-		// Use the lexicographically largest (or smallest) as the graph signature.
 		this.generateVertexSignatures();
 		Collections.sort(this.vertexSignatures);
 		this.graphSignature = this.vertexSignatures.get(0);
 	}
 	
 	
+	/**
+	 * Convenience function that creates a String to hold the 
+     * signature instead of a StringBuffer.
+     * 
+	 * @return
+	 */
 	private String toCanonicalVertexString() {
-		// Convenience function that creates a String to hold the signature instead of a StringBuffer.
 		StringBuffer canonicalVertexStringBuffer = new StringBuffer();
-		this.canonize(0, canonicalVertexStringBuffer);
+//		this.canonize(0, canonicalVertexStringBuffer);
+		this.canonize(1, canonicalVertexStringBuffer);
 		return canonicalVertexStringBuffer.toString();
 	}
 	
 
 	public String getGraphSignature(){
-		// Generates and returns a graph signature.
+		// Generates and returns a graph signature
 		this.generateGraphSignature();
 		return this.graphSignature;
 	}
 
 	
 	public String getVertexSignature(int vertexId){
-		// Generates and returns a graph signature.
+		// Generates and returns a graph signature
 		this.generateVertexSignatures();
 		return this.vertexSignatures.get(vertexId);
 	}
