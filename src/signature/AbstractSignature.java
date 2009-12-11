@@ -79,7 +79,8 @@ public abstract class AbstractSignature {
                 this.dag.setColor(pair.index, color);
                 color++;
             }
-            String signature = this.toString();
+        
+            String signature = this.toString(); // Creating the root signature string.
             if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
                 int l = canonicalVertexSignature.length();
                 canonicalVertexSignature.replace(0, l, signature);
@@ -252,11 +253,6 @@ public abstract class AbstractSignature {
 		    this.resetDAG(vertexIndex);
 			this.vertexSignatures.add(this.toCanonicalVertexString());
 		}
-        // DEBUG
-        for (String vertexSign : this.vertexSignatures){
-        	System.out.println(vertexSign);
-        }
-        // TO HERE
 	}
 	
 	

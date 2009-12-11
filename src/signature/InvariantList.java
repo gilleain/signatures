@@ -16,6 +16,10 @@ public class InvariantList implements Comparable<InvariantList>{
     }
     
     public boolean equals(List<Integer> other) {
+    	// Check the size first. If it differs return false.
+    	if ( !(this.invariants.size() == other.size()) ){
+    		return false;
+    	}
         for (int i = 0; i < this.invariants.size(); i++) {
             if (this.invariants.get(i) == other.get(i)) {
                 continue;
