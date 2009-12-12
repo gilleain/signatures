@@ -2,7 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>signatures</groupId>
   <artifactId>signatures</artifactId>
+  <name>Signatures</name>
   <version>1.0-SNAPSHOT</version>
+  <description>A graph signature library</description>
+  <inceptionYear>2009</inceptionYear>
   <build>
     <sourceDirectory>src/main</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
