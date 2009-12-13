@@ -42,7 +42,9 @@ public abstract class AbstractSignature {
 	
 	private boolean isCanonicalLabel = false;
 	
-	private List<Integer> canonicalLabelMapping;
+	public List<List<Integer>> canonicalLabelMapping;
+
+	private List<Integer> currentCanonicalLabelMapping;
 	
 	private List<String> vertexSignatures;
 	
@@ -80,18 +82,18 @@ public abstract class AbstractSignature {
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-//            int tmpColor = color + 1;
             for (InvariantIntIntPair pair : this.dag.getInvariantPairs()) {
-//                this.dag.setColor(pair.index, tmpColor);
-//                tmpColor++;
                 this.dag.setColor(pair.index, color);
                 color++;
             }
-        
+            this.currentCanonicalLabelMapping = new ArrayList<Integer>();
             String signature = this.toString(); // Creating the root signature string.
             if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
                 int l = canonicalVertexSignature.length();
                 canonicalVertexSignature.replace(0, l, signature);
+                //this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
+                copyToCanonicalLabelMapping(this.currentCanonicalLabelMapping);
+                System.out.println(signature + this.currentCanonicalLabelMapping.toString());
             }
             return;
         } else {
@@ -214,6 +216,10 @@ public abstract class AbstractSignature {
 		// print out the text that represents the node itself
 		buffer.append(this.startNodeSymbol);
 		buffer.append(getVertexSymbol(node.vertexIndex));
+		// Add the vertexIndex if it hasn't already been added.
+		if ( !(inCurrentCanonicalMapping(node.vertexIndex)) ){
+			this.currentCanonicalLabelMapping.add(node.vertexIndex);
+		}
 		int color = dag.colorFor(node.vertexIndex);
 		if (color != 0) {
 			buffer.append(',').append(color);
@@ -255,10 +261,12 @@ public abstract class AbstractSignature {
 		// Loop through all vertices and create a vertex signature for each one them.
 
 		this.create(0);
+	    this.canonicalLabelMapping.add(new ArrayList<Integer>());
 		this.vertexSignatures = new ArrayList<String>();
 		this.vertexSignatures.add(this.toCanonicalVertexString());
         for (int vertexIndex = 1; vertexIndex < this.getVertexCount(); vertexIndex++) {
 		    this.resetDAG(vertexIndex);
+		    this.canonicalLabelMapping.add(new ArrayList<Integer>());
 			this.vertexSignatures.add(this.toCanonicalVertexString());
 		}
 	}
@@ -304,5 +312,52 @@ public abstract class AbstractSignature {
     public List<String> getAllVertexSignatures() {
         this.generateVertexSignatures();
         return this.vertexSignatures;
+    }
+    
+//    public boolean isCanonicallyLabelled() {
+//    	// Generate the vertex signatures and identify the graph signature.
+//    	this.generateVertexSignatures();
+//		Collections.sort(this.vertexSignatures);
+//		this.graphSignature = this.vertexSignatures.get(0);
+//		
+//		// See which of the vertex signatures match the graph signature and return true if any of these are ordered 0, 1, ..., n.
+//		// Where n is the number of vertices in the graph.
+//		int el = 0;
+//		for (String vertexSignature : this.vertexSignatures) {
+//			if ( this.graphSignature.equals(vertexSignature) ) {
+//				if ( isInIncreasingOrder(this.canonicalLabelMapping.get(this.vertexSignatures.get(el).))) {
+//					return true;
+//				}
+//			}
+//		el++;
+//		}
+//		return false;
+//    }
+    
+    private boolean isInIncreasingOrder(List<Integer> integerList) {
+    	for (int i = 1; i < integerList.size(); i++) {
+    		if ( integerList.get(i-1) > integerList.get(i) ) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    private boolean inCurrentCanonicalMapping(int id) {
+    	if ( this.currentCanonicalLabelMapping.isEmpty() ) {
+    		return false;
+    	}
+    	for (int el : this.currentCanonicalLabelMapping){
+    		if ( el == id )
+    			return true;
+    	}
+		return false;
+    	
+    }
+    
+    private void copyToCanonicalLabelMapping(List<Integer> labelList) {
+    	this.canonicalLabelMapping.get(this.canonicalLabelMapping.size()-1).clear();
+    	for ( int l : labelList ) {
+    		this.canonicalLabelMapping.get(this.canonicalLabelMapping.size()-1).add(l);
+    	}
     }
 }
