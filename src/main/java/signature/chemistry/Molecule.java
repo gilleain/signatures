@@ -1,4 +1,4 @@
-package signature.implementation.chemistry;
+package signature.chemistry;
 
 import java.util.ArrayList;
 import java.util.List;

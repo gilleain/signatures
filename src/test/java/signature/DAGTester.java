@@ -1,4 +1,4 @@
-package test;
+package signature;
 
 import java.util.List;
 
@@ -121,11 +121,14 @@ public class DAGTester {
         // First do all the initializations related to the nodes of the graph.
         // Create the nodes.
         DAG.Node parentNode = simpleDAG.getRoot();
+        DAG.Node childNode;
+        
         // Add the first child.
-        DAG.Node childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
-        simpleDAG.addRelation(childNode, parentNode);
-        // Add the second child.
         childNode = simpleDAG.makeNodeInLayer(2, 1, "Node");
+        simpleDAG.addRelation(childNode, parentNode);
+        
+        // Add the second child.
+        childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.

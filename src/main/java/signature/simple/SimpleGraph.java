@@ -1,4 +1,4 @@
-package signature.implementation.unlabelled;
+package signature.simple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * @author maclean
  *
  */
-public class UnlabelledGraph {
+public class SimpleGraph {
     
     public class Edge {
         public int a;
@@ -29,7 +29,7 @@ public class UnlabelledGraph {
     
     public int maxVertexIndex;
     
-    public UnlabelledGraph(String graphString) {
+    public SimpleGraph(String graphString) {
         this.edges = new ArrayList<Edge>();
         for (String edgeString : graphString.split(",")) {
             String[] vertexStrings = edgeString.split(":");

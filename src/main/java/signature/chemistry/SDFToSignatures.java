@@ -1,4 +1,4 @@
-package signature.implementation.chemistry;
+package signature.chemistry;
 
 public class SDFToSignatures {
 

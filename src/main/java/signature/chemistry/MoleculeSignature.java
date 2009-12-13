@@ -1,4 +1,4 @@
-package signature.implementation.chemistry;
+package signature.chemistry;
 
 import signature.AbstractSignature;
 
@@ -19,8 +19,8 @@ public class MoleculeSignature extends AbstractSignature {
 
     @Override
     public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
-        int bondOrder = 
-            this.molecule.getBondOrder(vertexIndex, otherVertexIndex);
+//        int bondOrder = 
+//            this.molecule.getBondOrder(vertexIndex, otherVertexIndex);
         return "";
 //        switch (bondOrder) {
 //            case 1: return "-";

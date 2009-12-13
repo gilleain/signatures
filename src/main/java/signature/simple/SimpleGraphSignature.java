@@ -1,18 +1,18 @@
-package signature.implementation.unlabelled;
+package signature.simple;
 
 import signature.AbstractSignature;
 
 /**
- * A test implementation of signatures for {@link UnlabelledGraph}s.
+ * A test implementation of signatures for {@link SimpleGraph}s.
  * 
  * @author maclean
  *
  */
-public class UnlabelledGraphSignature extends AbstractSignature {
+public class SimpleGraphSignature extends AbstractSignature {
     
-    public UnlabelledGraph graph;
+    public SimpleGraph graph;
     
-    public UnlabelledGraphSignature(UnlabelledGraph graph, int root) {
+    public SimpleGraphSignature(SimpleGraph graph, int root) {
         super();
         this.graph = graph;
         super.create(root);
