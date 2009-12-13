@@ -275,6 +275,7 @@ public abstract class AbstractSignature {
 	 * Use the lexicographically largest (or smallest) as the graph signature
 	 */
 	private void generateGraphSignature() {
+		this.canonicalLabelMapping = new ArrayList<List<Integer>>();
 		this.generateVertexSignatures();
 		Collections.sort(this.vertexSignatures);
 		this.graphSignature = this.vertexSignatures.get(0);
