@@ -49,6 +49,8 @@ public abstract class AbstractSignature {
 	
 	private String graphSignature;
 
+	private ArrayList<String> unsortedCopyVertexSignatures;
+
 	public AbstractSignature() {
 		this.startNodeSymbol = "";
 		this.endNodeSymbol = "";
@@ -330,7 +332,7 @@ public abstract class AbstractSignature {
     	this.generateVertexSignatures();
     	
     	// Deep copy the vertex signatures so that we know the original order. Move this to a function?
-		List<String> unsortedCopyVertexSignatures = new ArrayList<String>();
+		this.unsortedCopyVertexSignatures = new ArrayList<String>();
 		for (String vertexString : this.vertexSignatures) {
 			String tmpString = vertexString;			
 			unsortedCopyVertexSignatures.add(new String(tmpString.getBytes()));
@@ -356,8 +358,24 @@ public abstract class AbstractSignature {
     public List<Integer> canonicalLabel() {
     	List<Integer> mapping = new ArrayList<Integer>();
     	
+    	int elementToChange = 0;
     	while (!this.isCanonicallyLabelled()) {
-    		
+    		// Reorder the vertices of the graph.
+    		System.out.println(this.graphSignature);
+    		// Look for the vertexSignature corresponding to the graphSignature that has the lowest vertexId in the elementToChange position.
+    		int el = 0; int minValue = this.getVertexCount();
+    		for (String vertexSignature : unsortedCopyVertexSignatures) {
+    			if ( this.graphSignature.equals(vertexSignature) ) {
+    				//System.out.println(this.graphSignature);
+    				if ( minValue > this.canonicalLabelMapping.get(el).get(elementToChange) ){
+    					minValue = this.canonicalLabelMapping.get(el).get(elementToChange);
+    				}
+    			}
+    		}
+    		// Swap the order of vertexId minValue and elementToChange.
+    		// do the swapping here.
+    		mapping.add(minValue);
+    		elementToChange++;
     	}
     	
     	return mapping;
