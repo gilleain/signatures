@@ -92,7 +92,7 @@ public abstract class AbstractSignature {
                 canonicalVertexSignature.replace(0, l, signature);
                 //this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
                 copyToCanonicalLabelMapping(this.currentCanonicalLabelMapping);
-                System.out.println(signature + this.currentCanonicalLabelMapping.toString());
+                //System.out.println(signature + this.currentCanonicalLabelMapping.toString());
             }
             return;
         } else {
@@ -314,25 +314,35 @@ public abstract class AbstractSignature {
         return this.vertexSignatures;
     }
     
-//    public boolean isCanonicallyLabelled() {
-//    	// Generate the vertex signatures and identify the graph signature.
-//    	this.generateVertexSignatures();
-//		Collections.sort(this.vertexSignatures);
-//		this.graphSignature = this.vertexSignatures.get(0);
-//		
-//		// See which of the vertex signatures match the graph signature and return true if any of these are ordered 0, 1, ..., n.
-//		// Where n is the number of vertices in the graph.
-//		int el = 0;
-//		for (String vertexSignature : this.vertexSignatures) {
-//			if ( this.graphSignature.equals(vertexSignature) ) {
-//				if ( isInIncreasingOrder(this.canonicalLabelMapping.get(this.vertexSignatures.get(el).))) {
-//					return true;
-//				}
-//			}
-//		el++;
-//		}
-//		return false;
-//    }
+    public boolean isCanonicallyLabelled() {
+    	// Initialize the canonicalLabelMapping here. I'm not sure where this should be initialized.
+		this.canonicalLabelMapping = new ArrayList<List<Integer>>();
+    	// Generate the vertex signatures and identify the graph signature.
+    	this.generateVertexSignatures();
+    	
+    	// Deep copy the vertex signatures so that we know the original order. Move this to a function?
+		List<String> unsortedCopyVertexSignatures = new ArrayList<String>();
+		for (String vertexString : this.vertexSignatures) {
+			String tmpString = vertexString;			
+			unsortedCopyVertexSignatures.add(new String(tmpString.getBytes()));
+		}
+		Collections.sort(this.vertexSignatures);
+		this.graphSignature = this.vertexSignatures.get(0);
+		
+		// See which of the vertex signatures match the graph signature and return true if any of these are ordered 0, 1, ..., n-1.
+		// Where n is the number of vertices in the graph.
+		int el = 0;
+		for (String vertexSignature : unsortedCopyVertexSignatures) {
+			if ( this.graphSignature.equals(vertexSignature) ) {
+				//System.out.println(this.graphSignature);
+				if ( isInIncreasingOrder(this.canonicalLabelMapping.get(el)) ) {
+					return true;
+				}
+			}
+		el++;
+		}
+		return false;
+    }
     
     private boolean isInIncreasingOrder(List<Integer> integerList) {
     	for (int i = 1; i < integerList.size(); i++) {

@@ -50,12 +50,7 @@ public class TestMoleculeSignature {
     
     @Test
     public void testSDF() {
-        //String filename = "data/test.sdf";
-        //String filename = "/home/lc/Molecules/ChEBI_complete.sdf";
-        //String filename = "/home/lc/disconnected.sdf";
-    	//String filename = "/home/lc/Molecules/atomPermuter.sdf";
-    	String filename = "/home/lc/Molecules/atomPermuterForOB0.sdf";
-    	//String filename = "/home/lc/Molecules/atomPermuterForOB4.sdf";
+        String filename = "data/test.sdf";
         int molNr = 0;
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
         	System.out.println(++molNr);
@@ -64,6 +59,22 @@ public class TestMoleculeSignature {
             //System.out.println(signature.getVertexSignature(0));
         }
             
+    }
+
+    @Test
+    public void testCanonicalLabelling() {
+    	String filename = "data/multCycle.sdf";
+        for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
+            MoleculeSignature signature = new MoleculeSignature(molecule);
+            Assert.assertEquals(false, signature.isCanonicallyLabelled() );
+        }
+
+    	String filenameCanLabel = "data/multCycleCanLabel.sdf";
+        for (Molecule molecule : MoleculeReader.readSDFFile(filenameCanLabel)) {
+            MoleculeSignature signature = new MoleculeSignature(molecule);
+            Assert.assertEquals(true, signature.isCanonicallyLabelled() );
+        }
+
     }
 
 }
