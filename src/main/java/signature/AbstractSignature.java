@@ -74,6 +74,11 @@ public abstract class AbstractSignature {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
+        // Check if the canonicalLabelMapping is intialized.
+        if ( this.canonicalLabelMapping == null ) {
+        	this.canonicalLabelMapping = new ArrayList<List<Integer>>();
+        }
+        
         this.dag.updateVertexInvariants();
         
         List<Integer> orbit = this.dag.createOrbit();
@@ -85,7 +90,7 @@ public abstract class AbstractSignature {
                 this.dag.setColor(pair.index, color);
                 color++;
             }
-            this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+            //this.currentCanonicalLabelMapping = new ArrayList<Integer>();
             String signature = this.toString(); // Creating the root signature string.
             if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
                 int l = canonicalVertexSignature.length();
@@ -216,6 +221,10 @@ public abstract class AbstractSignature {
 		buffer.append(this.startNodeSymbol);
 		buffer.append(getVertexSymbol(node.vertexIndex));
 		// Add the vertexIndex if it hasn't already been added.
+		// First check if it has been created. is this a good way of doing it?
+		if ( this.currentCanonicalLabelMapping == null ) {
+			this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+		}
 		if ( !(inCurrentCanonicalMapping(node.vertexIndex)) ){
 			this.currentCanonicalLabelMapping.add(node.vertexIndex);
 		}
@@ -344,6 +353,16 @@ public abstract class AbstractSignature {
 		return false;
     }
     
+    public List<Integer> canonicalLabel() {
+    	List<Integer> mapping = new ArrayList<Integer>();
+    	
+    	while (!this.isCanonicallyLabelled()) {
+    		
+    	}
+    	
+    	return mapping;
+    }
+    
     private boolean isInIncreasingOrder(List<Integer> integerList) {
     	for (int i = 1; i < integerList.size(); i++) {
     		if ( integerList.get(i-1) > integerList.get(i) ) {
@@ -365,6 +384,9 @@ public abstract class AbstractSignature {
     }
     
     private void copyToCanonicalLabelMapping(List<Integer> labelList) {
+    	if (this.canonicalLabelMapping.isEmpty()) {
+    		this.canonicalLabelMapping.add(new ArrayList<Integer>());
+    	}
     	this.canonicalLabelMapping.get(this.canonicalLabelMapping.size()-1).clear();
     	for ( int l : labelList ) {
     		this.canonicalLabelMapping.get(this.canonicalLabelMapping.size()-1).add(l);

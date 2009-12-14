@@ -55,17 +55,18 @@ public class MoleculeReader {
             molecule.addAtom(atomIndex, symbol);
         }
         
-        // bond block starts right after the atom block
-        int bondLineStart = atomLineEnd;
-        int bondLineEnd   = bondLineStart + bondCount;
-        for (int i = bondLineStart; i < bondLineEnd; i++) {
-            String bondLine = block.get(i);
-            int atomNumberA = Integer.parseInt(bondLine.substring(0, 3).trim());
-            int atomNumberB = Integer.parseInt(bondLine.substring(3, 6).trim());
-            int order = Integer.parseInt(bondLine.substring(7, 10).trim());
-            molecule.addBond(atomNumberA - 1, atomNumberB - 1, order);
+        if ( atomCount > 1) {
+        	// bond block starts right after the atom block
+        	int bondLineStart = atomLineEnd;
+        	int bondLineEnd   = bondLineStart + bondCount;
+        	for (int i = bondLineStart; i < bondLineEnd; i++) {
+        		String bondLine = block.get(i);
+        		int atomNumberA = Integer.parseInt(bondLine.substring(0, 3).trim());
+        		int atomNumberB = Integer.parseInt(bondLine.substring(3, 6).trim());
+        		int order = Integer.parseInt(bondLine.substring(7, 10).trim());
+        		molecule.addBond(atomNumberA - 1, atomNumberB - 1, order);
+        	}
         }
-        
         return molecule;
     }
 
