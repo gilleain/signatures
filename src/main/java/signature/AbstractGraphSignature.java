@@ -19,13 +19,83 @@ public abstract class AbstractGraphSignature {
      */
     private final String separator;
     
+    /**
+     * This is the height the signature is created with, which cannot be 
+     * exceeded.
+     */
+    private int height;
+    
+    /**
+     * Create a graph signature with a default separator.
+     */
     public AbstractGraphSignature() {
-        this.separator = " + ";
+        this(" + ", -1);
     }
     
+    /**
+     * Create a graph signature with the given separator.
+     * 
+     * @param separator the separator to use
+     */
+    public AbstractGraphSignature(String separator) {
+        this(separator, -1);
+    }
+    
+    /**
+     * Create a graph signature with a default separator and the given height.
+     * 
+     * @param height the height of the vertex signatures made from this graph.
+     */
+    public AbstractGraphSignature(int height) {
+        this(" + ", height);
+    }
+    
+    /**
+     * Create a graph signature with the given separator and height.
+     * 
+     * @param separator the separator to use
+     * @param height the height of the vertex signatures made from this graph.
+     */
+    public AbstractGraphSignature(String separator, int height) {
+        this.separator = separator;
+        this.height = height;
+    }
+    
+    /**
+     * Get the height that the graph signature was created with.
+     *  
+     * @return the height
+     */
+    public int getHeight() {
+        return this.height;
+    }
+    
+    /**
+     * Get the vertex count of the graph that this is the signature of.
+     * 
+     * @return the vertex count
+     */
     public abstract int getVertexCount();
     
-    public abstract String signatureStringForVertex(int i);
+    /**
+     * Return the canonical signature string for the vertex at index 
+     * <code>vertexIndex</code> in the graph.
+     * 
+     * @param vertexIndex the vertex index
+     * @return the canonical signature string for this vertex
+     */
+    public abstract String signatureStringForVertex(int vertexIndex);
+    
+    /**
+     * Return the canonical signature string for the vertex at index 
+     * <code>vertexIndex</code> in the graph with a height of 
+     * <code>height</code>.
+     * 
+     * @param vertexIndex the vertex index
+     * @param height the maximum height of the signature
+     * @return the signature at the given height for a vertex 
+     */
+    public abstract String signatureStringForVertex(int vertexIndex, int height);
     
     /**
      * Run through the vertices of the graph, generating a signature string for

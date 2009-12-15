@@ -24,6 +24,8 @@ public abstract class AbstractVertexSignature {
     
     private DAG dag;
     
+    private int height;
+    
     /**
      * Create an abstract vertex signature with no start or end node symbols.
      */
@@ -43,6 +45,34 @@ public abstract class AbstractVertexSignature {
         this.startNodeSymbol = startNodeSymbol;
         this.endNodeSymbol = endNodeSymbol;
     }
+    
+    /**
+     * Get the height of the signature.
+     * 
+     * @return the height
+     */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * This is a kind of constructor that builds the internal representation of
+     * the signature given the index of the vertex to use as a root.
+     * 
+     * @param rootVertexIndex
+     *            the index in the graph of the root for this signature
+     * @param height
+     *            the maximum height of the signature
+     */
+    public void create(int rootVertexIndex, int height) {
+        this.height = height;
+        if (height == 0 || this.getVertexCount() == 0) return;
+        this.dag = new DAG(rootVertexIndex, 
+                           this.getVertexCount(), 
+                           this.getVertexSymbol(rootVertexIndex));
+        build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), this.height);
+        this.dag.initialize();
+    }
 
     /**
      * This is a kind of constructor that builds the internal representation of
@@ -52,16 +82,12 @@ public abstract class AbstractVertexSignature {
      *            the index in the graph of the root for this signature
      */
     public void create(int rootVertexIndex) {
-        if (this.getVertexCount() == 0) return;
-        this.dag = new DAG(rootVertexIndex, 
-                           this.getVertexCount(), 
-                           this.getVertexSymbol(rootVertexIndex));
-        build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>());
-        this.dag.initialize();
+        this.create(rootVertexIndex, -1);
     }
     
     private void build(int layer, 
-            List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs) {
+            List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs, int height) {
+        if (height == 0) return;
         List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
         List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
         for (DAG.Node node : previousLayer) {
@@ -75,7 +101,7 @@ public abstract class AbstractVertexSignature {
             return;
         } else {
             dag.addLayer(nextLayer);
-            build(layer + 1, nextLayer, usedArcs);
+            build(layer + 1, nextLayer, usedArcs, height - 1);
         }
     }
 
