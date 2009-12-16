@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -65,16 +67,19 @@ public class ColoredTreePanel extends JPanel {
         
         public int depth;
         
+        public int color;
+        
         public List<DrawNode> children = new ArrayList<DrawNode>();
         
         public String label;
         
         public DrawNode parent;
         
-        public DrawNode(String label, DrawNode parent, int d) {
+        public DrawNode(String label, DrawNode parent, int d, int color) {
             this.label = label;
             this.parent = parent;
             this.depth = d;
+            this.color = color;
         }
         
         public int countLeaves() {
@@ -114,12 +119,27 @@ public class ColoredTreePanel extends JPanel {
     
     private int height;
     
+    private Map<Integer, Color> colorMap;
+    
     public ColoredTreePanel(ColoredTree tree, int width, int height) {
         this.root = treeToTree(tree);
         this.maxDepth = tree.getHeight();
         this.width = width;
         this.height = height;
         this.setPreferredSize(new Dimension(width, height));
+        this.colorMap = makeColorMap();
+    }
+    
+    private Map<Integer, Color> makeColorMap() {
+        Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+        colorMap.put(1, Color.RED);
+        colorMap.put(2, Color.PINK);
+        colorMap.put(3, Color.ORANGE);
+        colorMap.put(4, Color.YELLOW);
+        colorMap.put(5, Color.GREEN);
+        colorMap.put(6, Color.BLUE);
+        colorMap.put(7, Color.MAGENTA);
+        return colorMap;
     }
 
     private DrawNode treeToTree(ColoredTree tree) {
@@ -127,7 +147,8 @@ public class ColoredTreePanel extends JPanel {
     }
     
     private DrawNode treeToTree(ColoredTree.Node treeNode, DrawNode parent) {
-        DrawNode node = new DrawNode(treeNode.label, parent, treeNode.height);
+        DrawNode node = new DrawNode(
+                treeNode.label, parent, treeNode.height, treeNode.color);
         if (parent != null) parent.children.add(node);
         node.parent = parent;
         for (ColoredTree.Node child : treeNode.children) {
@@ -160,7 +181,11 @@ public class ColoredTreePanel extends JPanel {
         int boundY = node.y - (rh / 2) - border;
         int boundW = rw + (2 * border);
         int boundH = rh + (2 * border);
-        g.setColor(Color.WHITE);
+        if (colorMap.containsKey(node.color)) {
+            g.setColor(this.colorMap.get(node.color));
+        } else {
+            g.setColor(Color.WHITE);
+        }
         g.fillRect(boundX, boundY, boundW, boundH);
         g.setColor(Color.BLACK);
         g.drawRect(boundX, boundY, boundW, boundH);
