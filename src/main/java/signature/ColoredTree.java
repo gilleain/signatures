@@ -14,24 +14,32 @@ import java.util.List;
  */
 public class ColoredTree {
     
-    public class Node {
+    public class Node implements VisitableColoredTree {
         
         public List<Node> children = new ArrayList<Node>();
         
-        public String label;
+        public final String label;
         
-        public Node parent;
+        public final Node parent;
         
-        public int color;
+        public final int color;
         
-        public int height;
+        public final int height;
         
         public Node(String label, Node parent, int height, int color) {
             this.label = label;
             this.parent = parent;
             this.color = color;
+            this.height = height;
             if (parent != null) {
                 parent.children.add(this);
+            }
+        }
+        
+        public void accept(ColoredTreeVisitor visitor) {
+            visitor.visit(this);
+            for (Node child : this.children) {
+                child.accept(visitor);
             }
         }
         
@@ -69,6 +77,10 @@ public class ColoredTree {
         this.height = 1;
     }
     
+    public void accept(ColoredTreeVisitor visitor) {
+        this.root.accept(visitor);
+    }
+    
     public Node getRoot() {
         return this.root;
     }
@@ -87,5 +99,9 @@ public class ColoredTree {
         StringBuilder builder = new StringBuilder();
         this.root.buildString(builder);
         return builder.toString();
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }

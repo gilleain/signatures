@@ -61,6 +61,20 @@ public class TestMoleculeSignature {
    }
    
    @Test
+   public void testCage() {
+       String signatureString = "[C]([C]([C,2]([C]([C,3][C,4]))[C]([C,5]" +
+                                "[C,3]([C,6]([C,1]))))[C]([C]([C,7][C]" +
+                                "([C,1][C,8]))[C,5]([C,8]([C,6])))[C]([C,2]" +
+                                "[C,7]([C,4]([C,1]))))";
+       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
+       ColoredTree tree = atomSignature.parse(signatureString);
+       Assert.assertEquals(signatureString, tree.toString());
+       Molecule molecule = new MoleculeBuilder().fromTree(tree);
+       Assert.assertEquals(16, molecule.getAtomCount());
+       Assert.assertEquals(24, molecule.getBondCount());
+   }
+   
+   @Test
    public void testRoundtrip() {
        Molecule molecule = new Molecule();
        molecule.addAtom("C");
