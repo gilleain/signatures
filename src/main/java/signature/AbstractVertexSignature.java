@@ -280,5 +280,47 @@ public abstract class AbstractVertexSignature {
         print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
         return buffer.toString();
     }
+    
+    public ColoredTree parse(String s) {
+        ColoredTree tree = null;
+        ColoredTree.Node parent = null;
+        ColoredTree.Node current = null;
+        int currentHeight = 1;
+        int color = 0;
+        int j = 0;
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == AbstractVertexSignature.START_BRANCH_SYMBOL) {
+                parent = current;
+                currentHeight++;
+                tree.updateHeight(currentHeight);
+            } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
+                parent = parent.parent;
+                currentHeight--;
+            } else if (c == '[') {  // TODO : use start node symbol
+                j = i + 1;
+            } else if (c == ']') {  // TODO : use end node symbol
+                String ss;
+                if (k < j) {    // no color
+                    ss = s.substring(j, i);
+                    color = 0;
+                } else {        // color
+                    ss = s.substring(j, k - 1);
+                    color = Integer.parseInt(s.substring(k, i));    
+                }
+                if (tree == null) {
+                    tree = new ColoredTree(ss);
+                    parent = tree.getRoot();
+                    current = tree.getRoot();
+                } else {
+                    current = tree.makeNode(ss, parent, currentHeight, color);
+                }
+            } else if (c == ',') {
+                k = i + 1;
+            } 
+        }
+        return tree;
+    }
 
 }
