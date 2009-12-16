@@ -1,6 +1,7 @@
 package signature.chemistry;
 
 import signature.AbstractGraphBuilder;
+import signature.ColoredTree;
 
 public class MoleculeBuilder extends AbstractGraphBuilder {
     
@@ -23,6 +24,11 @@ public class MoleculeBuilder extends AbstractGraphBuilder {
     @Override
     public void makeVertex(String label) {
         this.molecule.addAtom(label);
+    }
+    
+    public Molecule fromTree(ColoredTree tree) {
+        super.makeFromColoredTree(tree);
+        return this.molecule;
     }
 
 }

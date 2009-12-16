@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
+import signature.chemistry.MoleculeBuilder;
 import signature.chemistry.MoleculeReader;
 import signature.chemistry.MoleculeSignature;
 
@@ -46,6 +47,25 @@ public class TestMoleculeSignature {
        AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
        ColoredTree tree = atomSignature.parse(signatureString);
        Assert.assertEquals(signatureString, tree.toString());
+   }
+   
+   @Test
+   public void testRoundtrip() {
+       Molecule molecule = new Molecule();
+       molecule.addAtom("C");
+       molecule.addAtom("C");
+       molecule.addAtom("C");
+       molecule.addAtom("C");
+       molecule.addBond(0, 1, 1);
+       molecule.addBond(0, 3, 1);
+       molecule.addBond(1, 2, 1);
+       molecule.addBond(2, 3, 1);
+       AtomSignature atomSignature = new AtomSignature(molecule, 0);
+       String signatureString = atomSignature.toCanonicalString();
+       ColoredTree tree = atomSignature.parse(signatureString);
+       MoleculeBuilder builder = new MoleculeBuilder();
+       Molecule builtMolecule = builder.fromTree(tree);
+       Assert.assertEquals(molecule.toString(), builtMolecule.toString());
    }
     
     @Test

@@ -38,6 +38,26 @@ public class ColoredTree {
         public boolean isColored() {
             return this.color != 0;
         }
+        
+        public void buildString(StringBuilder builder) {
+            if (this.isColored()) {
+                builder.append("[").append(this.label);
+                builder.append(",").append(this.color).append("]");
+            } else {
+                builder.append("[").append(this.label).append("]");
+            }
+            if (this.children.size() > 0) { builder.append("("); }
+            for (Node child : this.children) {
+                child.buildString(builder);
+            }
+            if (this.children.size() > 0) { builder.append(")"); }
+        }
+        
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            this.buildString(builder);
+            return builder.toString();
+        }
     }
     
     private int height;
@@ -65,22 +85,7 @@ public class ColoredTree {
     
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        buildString(this.root, builder);
+        this.root.buildString(builder);
         return builder.toString();
     }
-    
-    private void buildString(Node node, StringBuilder builder) {
-        if (node.isColored()) {
-            builder.append("[").append(node.label);
-            builder.append(",").append(node.color).append("]");
-        } else {
-            builder.append("[").append(node.label).append("]");
-        }
-        if (node.children.size() > 0) { builder.append("("); }
-        for (Node child : node.children) {
-            buildString(child, builder);
-        }
-        if (node.children.size() > 0) { builder.append(")"); }
-    }
-
 }
