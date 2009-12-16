@@ -351,6 +351,7 @@ public abstract class AbstractSignature {
                         minValue = i;
                     }
                 }
+                el++;
             }
             // Swap the order of vertexId minValue and elementToChange.
             // do the swapping here.
