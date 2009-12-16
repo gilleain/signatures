@@ -29,8 +29,12 @@ public class SimpleGraph {
     
     public int maxVertexIndex;
     
-    public SimpleGraph(String graphString) {
+    public SimpleGraph() {
         this.edges = new ArrayList<Edge>();
+    }
+    
+    public SimpleGraph(String graphString) {
+        this();
         for (String edgeString : graphString.split(",")) {
             String[] vertexStrings = edgeString.split(":");
             int a = Integer.parseInt(vertexStrings[0]);
@@ -39,6 +43,10 @@ public class SimpleGraph {
             if (a > maxVertexIndex) maxVertexIndex = a;
             if (b > maxVertexIndex) maxVertexIndex = b;
         }
+    }
+    
+    public void makeEdge(int a, int b) {
+        this.edges.add(new Edge(a, b));
     }
     
     public int getVertexCount() {

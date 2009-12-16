@@ -1,0 +1,35 @@
+package signature.chemistry;
+
+import signature.AbstractVertexSignature;
+
+public class AtomSignature extends AbstractVertexSignature {
+    
+    private Molecule molecule;
+    
+    public AtomSignature(Molecule molecule, int atomNumber) {
+        super("[", "]");
+        this.molecule = molecule;
+        this.create(atomNumber);
+    }
+
+    @Override
+    public int[] getConnected(int vertexIndex) {
+        return this.molecule.getConnected(vertexIndex);
+    }
+
+    @Override
+    public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
+        return "";
+    }
+
+    @Override
+    public int getVertexCount() {
+        return this.molecule.getAtomCount();
+    }
+
+    @Override
+    public String getVertexSymbol(int vertexIndex) {
+        return this.molecule.getSymbolFor(vertexIndex);
+    }
+
+}

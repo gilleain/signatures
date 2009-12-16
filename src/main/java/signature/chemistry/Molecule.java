@@ -114,6 +114,11 @@ public class Molecule {
         }
         return buffer.toString();
     }
+    
+    public void addAtom(String symbol) {
+        int i = this.atoms.size();
+        this.addAtom(i, symbol);
+    }
 
     public void addAtom(int i, String symbol) {
         this.atoms.add(new Atom(i, symbol));
