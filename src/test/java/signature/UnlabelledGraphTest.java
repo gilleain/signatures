@@ -1,5 +1,7 @@
 package signature;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import signature.simple.SimpleGraph;
@@ -30,9 +32,11 @@ public class UnlabelledGraphTest {
         String signatureString = "[.]([.]([.,1])[.]([.,1]))";
         SimpleVertexSignature sig = new SimpleVertexSignature();
         ColoredTree tree = sig.parse(signatureString);
+        Assert.assertEquals(signatureString, tree.toString());
+        
         SimpleGraphBuilder builder = new SimpleGraphBuilder();
         SimpleGraph graph = builder.fromTree(tree);
-        System.out.println(graph);
+        System.out.println(graph + "\n" + tree);
     }
 	
 }

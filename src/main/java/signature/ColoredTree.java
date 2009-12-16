@@ -62,5 +62,25 @@ public class ColoredTree {
             this.height = height;
         }
     }
+    
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        buildString(this.root, builder);
+        return builder.toString();
+    }
+    
+    private void buildString(Node node, StringBuilder builder) {
+        if (node.isColored()) {
+            builder.append("[").append(node.label);
+            builder.append(",").append(node.color).append("]");
+        } else {
+            builder.append("[").append(node.label).append("]");
+        }
+        if (node.children.size() > 0) { builder.append("("); }
+        for (Node child : node.children) {
+            buildString(child, builder);
+        }
+        if (node.children.size() > 0) { builder.append(")"); }
+    }
 
 }
