@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeReader;
 import signature.chemistry.MoleculeSignature;
@@ -38,6 +39,14 @@ public class TestMoleculeSignature {
         
         Assert.assertEquals(moleculeSignature, permSignatureString);
     }
+   
+   @Test
+   public void testColoredTreeCreation() {
+       String signatureString = "[C]([C]([C,1])[C]([C,1]))";
+       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
+       ColoredTree tree = atomSignature.parse(signatureString);
+       Assert.assertEquals(signatureString, tree.toString());
+   }
     
     @Test
     public void testLargeExample() {
