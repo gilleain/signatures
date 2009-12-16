@@ -50,6 +50,17 @@ public class TestMoleculeSignature {
    }
    
    @Test
+   public void testOddCycleReadin() {
+       String signatureString = "[C]([C]([C,2]([C,1]))[C]([C,1]))";
+       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
+       ColoredTree tree = atomSignature.parse(signatureString);
+       Assert.assertEquals(signatureString, tree.toString());
+       Molecule molecule = new MoleculeBuilder().fromTree(tree);
+       Assert.assertEquals(5, molecule.getAtomCount());
+       Assert.assertEquals(5, molecule.getBondCount());
+   }
+   
+   @Test
    public void testRoundtrip() {
        Molecule molecule = new Molecule();
        molecule.addAtom("C");

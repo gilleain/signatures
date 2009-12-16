@@ -75,6 +75,10 @@ public class Molecule {
         return this.atoms.size();
     }
     
+    public int getBondCount() {
+        return this.bonds.size();
+    }
+    
     public int[] getConnected(int atomIndex) {
         List<Integer> connectedList = new ArrayList<Integer>();
         
