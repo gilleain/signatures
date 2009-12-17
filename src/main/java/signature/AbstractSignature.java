@@ -72,6 +72,12 @@ public abstract class AbstractSignature {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
+        // Only add a new list of Integers if this is the first time this function is called for a particular root vertex.
+        if ( color == 1 ) {
+        	this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+        	this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping); 
+        }
+        
         this.dag.updateVertexInvariants();
         
         List<Integer> orbit = this.dag.createOrbit();
@@ -189,8 +195,13 @@ public abstract class AbstractSignature {
 	
 	public String toString() {
 	    StringBuffer buffer = new StringBuffer();
-	    this.currentCanonicalLabelMapping = new ArrayList<Integer>();
-	    this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping);
+
+	    this.currentCanonicalLabelMapping.clear();
+	    //this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+	    // This can't be added here. For several colors it will create several elements starting with the same vertex ID.
+	    // Only the labelling that corresponds to the mapping for the vertex signature should be stored.
+	    // Hence, the line below and the line above were moved to canonize.
+	    //this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping);
 	    print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
 	    return buffer.toString();
 	}
@@ -321,15 +332,25 @@ public abstract class AbstractSignature {
         // See which of the vertex signatures match the graph signature and 
         // return true if any of these are ordered 0, 1, ..., n-1.
         // Where n is the number of vertices in the graph.
-        for (int i = 0; i < this.getVertexCount(); i++) {
-            String vertexSignature = this.vertexSignatures.get(i);
-            List<Integer> labels = this.canonicalLabelMapping.get(i);
-            boolean canonical = this.graphSignature.equals(vertexSignature);
-            if (canonical && isInIncreasingOrder(labels)) {
-                return true;
-            }
-        }
+//        for (int i = 0; i < this.getVertexCount(); i++) {
+//            String vertexSignature = this.vertexSignatures.get(i);
+//            List<Integer> labels = this.canonicalLabelMapping.get(i);
+//            boolean canonical = this.graphSignature.equals(vertexSignature);
+//            if (canonical && isInIncreasingOrder(labels)) {
+//                return true;
+//            }
+//        }
+//        return false;
+
+        // It have to be the first vertexSignature that corresponds to the graphSignature otherwise it is impossible.
+        String vertexSignature = this.vertexSignatures.get(0);
+        List<Integer> labels = this.canonicalLabelMapping.get(0);
+        boolean canonical = this.graphSignature.equals(vertexSignature);
+        if (canonical && isInIncreasingOrder(labels)) {
+        	return true;
+        }	
         return false;
+
     }
     
     public List<Integer> canonicalLabel() {
