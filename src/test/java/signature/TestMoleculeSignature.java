@@ -120,8 +120,6 @@ public class TestMoleculeSignature {
     	String filename = "data/multCycle.sdf";
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
             MoleculeSignature signature = new MoleculeSignature(molecule);
-            // Make 
-            System.out.println(signature.getVertexCount());
             Assert.assertEquals(false, signature.isCanonicallyLabelled() );
         }
 
