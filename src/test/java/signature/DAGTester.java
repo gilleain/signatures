@@ -124,11 +124,11 @@ public class DAGTester {
         DAG.Node childNode;
         
         // Add the first child.
-        childNode = simpleDAG.makeNodeInLayer(2, 1, "Node");
+        childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
         simpleDAG.addRelation(childNode, parentNode);
         
         // Add the second child.
-        childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
+        childNode = simpleDAG.makeNodeInLayer(2, 1, "Node");
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.
