@@ -327,22 +327,9 @@ public abstract class AbstractSignature {
         sortedVertexSignatures.addAll(this.vertexSignatures);
         Collections.sort(sortedVertexSignatures);
 
-        this.graphSignature = sortedVertexSignatures.get(0);
-
-        // See which of the vertex signatures match the graph signature and 
-        // return true if any of these are ordered 0, 1, ..., n-1.
-        // Where n is the number of vertices in the graph.
-//        for (int i = 0; i < this.getVertexCount(); i++) {
-//            String vertexSignature = this.vertexSignatures.get(i);
-//            List<Integer> labels = this.canonicalLabelMapping.get(i);
-//            boolean canonical = this.graphSignature.equals(vertexSignature);
-//            if (canonical && isInIncreasingOrder(labels)) {
-//                return true;
-//            }
-//        }
-//        return false;
-
         // It have to be the first vertexSignature that corresponds to the graphSignature otherwise it is impossible.
+        // Check if the vertex ID:s are in increasing order.
+        this.graphSignature = sortedVertexSignatures.get(0);
         String vertexSignature = this.vertexSignatures.get(0);
         List<Integer> labels = this.canonicalLabelMapping.get(0);
         boolean canonical = this.graphSignature.equals(vertexSignature);
