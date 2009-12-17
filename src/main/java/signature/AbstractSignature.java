@@ -327,7 +327,9 @@ public abstract class AbstractSignature {
         sortedVertexSignatures.addAll(this.vertexSignatures);
         Collections.sort(sortedVertexSignatures);
 
-        // It have to be the first vertexSignature that corresponds to the graphSignature otherwise it is impossible.
+        // It has to be the first vertexSignature that corresponds to the graphSignature,
+        // otherwise it is impossible that it is the canonical labeling according to our deifinition,
+        // ie that the canonical labeling is an icreasing order of vertex ID:s when looking at the graph signature.
         // Check if the vertex ID:s are in increasing order.
         this.graphSignature = sortedVertexSignatures.get(0);
         String vertexSignature = this.vertexSignatures.get(0);
