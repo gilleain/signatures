@@ -14,29 +14,57 @@ import java.util.List;
  */
 public class ColoredTree {
     
-    public class Node {
+    public class Node implements VisitableColoredTree {
         
         public List<Node> children = new ArrayList<Node>();
         
-        public String label;
+        public final String label;
         
-        public Node parent;
+        public final Node parent;
         
-        public int color;
+        public final int color;
         
-        public int height;
+        public final int height;
         
         public Node(String label, Node parent, int height, int color) {
             this.label = label;
             this.parent = parent;
             this.color = color;
+            this.height = height;
             if (parent != null) {
                 parent.children.add(this);
             }
         }
         
+        public void accept(ColoredTreeVisitor visitor) {
+            visitor.visit(this);
+            for (Node child : this.children) {
+                child.accept(visitor);
+            }
+        }
+        
         public boolean isColored() {
             return this.color != 0;
+        }
+        
+        public void buildString(StringBuilder builder) {
+            if (this.isColored()) {
+                builder.append("[").append(this.label);
+                builder.append(",").append(this.color).append("]");
+            } else {
+                builder.append("[").append(this.label).append("]");
+            }
+            if (this.children.size() > 0) { builder.append("("); }
+            for (Node child : this.children) {
+                child.buildString(builder);
+            }
+            if (this.children.size() > 0) { builder.append(")"); }
+        }
+        
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            this.buildString(builder);
+            return builder.toString();
         }
     }
     
@@ -47,6 +75,10 @@ public class ColoredTree {
     public ColoredTree(String rootLabel) {
         this.root = new Node(rootLabel, null, 1, 0);
         this.height = 1;
+    }
+    
+    public void accept(ColoredTreeVisitor visitor) {
+        this.root.accept(visitor);
     }
     
     public Node getRoot() {
@@ -65,22 +97,11 @@ public class ColoredTree {
     
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        buildString(this.root, builder);
+        this.root.buildString(builder);
         return builder.toString();
     }
-    
-    private void buildString(Node node, StringBuilder builder) {
-        if (node.isColored()) {
-            builder.append("[").append(node.label);
-            builder.append(",").append(node.color).append("]");
-        } else {
-            builder.append("[").append(node.label).append("]");
-        }
-        if (node.children.size() > 0) { builder.append("("); }
-        for (Node child : node.children) {
-            buildString(child, builder);
-        }
-        if (node.children.size() > 0) { builder.append(")"); }
-    }
 
+    public int getHeight() {
+        return this.height;
+    }
 }

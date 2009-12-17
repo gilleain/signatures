@@ -26,12 +26,12 @@ public abstract class AbstractGraphBuilder {
         this.makeVertex(root.label);
         this.vertexCount = 1;
         for (ColoredTree.Node child : root.children) {
-            this.makeFromColoredTreeNode(root, child, 1);
+            this.makeFromColoredTreeNode(root, child, 0);
         }
     }
     
     private void makeFromColoredTreeNode(
-            ColoredTree.Node node, ColoredTree.Node parent, int parentIndex) {
+            ColoredTree.Node parent, ColoredTree.Node node, int parentIndex) {
         int vertexIndex;
         if (node.isColored()) {
             if (this.colorToVertexIndexMap.containsKey(node.color)) {
@@ -50,7 +50,7 @@ public abstract class AbstractGraphBuilder {
         
         this.makeEdge(parentIndex, vertexIndex);
         for (ColoredTree.Node child : node.children) {
-            this.makeFromColoredTreeNode(child, node, vertexIndex);
+            this.makeFromColoredTreeNode(node, child, vertexIndex);
         }
     }
     

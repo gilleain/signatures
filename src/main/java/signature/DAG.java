@@ -20,7 +20,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 * A node of the directed acyclic graph
 	 *
 	 */
-	public class Node implements Comparable<Node>, Visitable {
+	public class Node implements Comparable<Node>, VisitableDAG {
 		
 		public int vertexIndex;
 		
