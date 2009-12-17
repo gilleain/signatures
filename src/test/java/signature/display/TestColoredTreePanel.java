@@ -5,12 +5,21 @@ import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 
+import junit.framework.Assert;
+
+import org.junit.Test;
+
 
 import signature.ColoredTree;
 import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 
 public class TestColoredTreePanel {
+    
+    @Test
+    public void dummyTest() {
+        Assert.assertTrue(true);
+    }
     
     public static ColoredTree makeColoredTree(String signatureString) {
         AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
