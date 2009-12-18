@@ -21,10 +21,10 @@ public class UnlabelledGraphTest {
         String chain = "0:1,1:2,2:3,3:4";
         SimpleGraphSignature signature = signatureFromString(chain);
         System.out.println(signature.getDAG());
-        System.out.println(signature.toString());
-        StringBuffer maxSignature = new StringBuffer();
-        signature.canonize(0, maxSignature);
+        String uncanonizedString = signature.toString(); 
+        String maxSignature = signature.toCanonicalVertexString();
         System.out.println("max" + maxSignature);
+        Assert.assertEquals(uncanonizedString, maxSignature);
     }
     
     @Test

@@ -55,6 +55,7 @@ public abstract class AbstractSignature {
 	    this.startNodeSymbol = startNodeSymbol;
 	    this.endNodeSymbol = endNodeSymbol;
 	    this.canonicalLabelMapping = new ArrayList<List<Integer>>();
+	    this.currentCanonicalLabelMapping = new ArrayList<Integer>();
 	}
 	
 	public DAG getDAG() {
@@ -72,9 +73,13 @@ public abstract class AbstractSignature {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
-        // Only add a new list of Integers if this is the first time this function is called for a particular root vertex.
+        // Only add a new list of Integers if this is the first time this 
+        // function is called for a particular root vertex.
+        // The labelling that corresponds to the mapping for the vertex
+        // signature should be the only one stored.
+
         if ( color == 1 ) {
-        	this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+        	this.currentCanonicalLabelMapping.clear();
         	this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping); 
         }
         
@@ -195,13 +200,6 @@ public abstract class AbstractSignature {
 	
 	public String toString() {
 	    StringBuffer buffer = new StringBuffer();
-
-	    this.currentCanonicalLabelMapping.clear();
-	    //this.currentCanonicalLabelMapping = new ArrayList<Integer>();
-	    // This can't be added here. For several colors it will create several elements starting with the same vertex ID.
-	    // Only the labelling that corresponds to the mapping for the vertex signature should be stored.
-	    // Hence, the line below and the line above were moved to canonize.
-	    //this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping);
 	    print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
 	    return buffer.toString();
 	}
@@ -295,7 +293,7 @@ public abstract class AbstractSignature {
 	 * 
 	 * @return
 	 */
-	private String toCanonicalVertexString() {
+	public String toCanonicalVertexString() {
 	    StringBuffer canonicalVertexStringBuffer = new StringBuffer();
 	    this.canonize(1, canonicalVertexStringBuffer);
 	    return canonicalVertexStringBuffer.toString();
