@@ -79,7 +79,7 @@ public abstract class AbstractSignature {
         // signature should be the only one stored.
 
         if ( color == 1 ) {
-        	this.currentCanonicalLabelMapping.clear();
+        	this.currentCanonicalLabelMapping = new ArrayList<Integer>();
         	this.canonicalLabelMapping.add(this.currentCanonicalLabelMapping); 
         }
         
