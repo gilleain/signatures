@@ -86,8 +86,13 @@ public class Molecule {
     
     public Molecule(Molecule other, int[] permutation) {
         this();
+        Atom[] permutedAtoms = new Atom[permutation.length];
         for (Atom atom : other.atoms) {
-            this.atoms.add(new Atom(permutation[atom.index], atom.symbol));
+            int index = permutation[atom.index];
+            permutedAtoms[index] = new Atom(index, atom.symbol);
+        }
+        for (Atom atom : permutedAtoms) {
+            this.atoms.add(atom);
         }
         
         for (Bond bond : other.bonds) {
