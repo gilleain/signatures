@@ -71,6 +71,33 @@ public class Molecule {
         this.bonds = new ArrayList<Bond>();
     }
     
+    public Molecule(Molecule other) {
+        this();
+        for (Atom atom : other.atoms) {
+            this.atoms.add(new Atom(atom.index, atom.symbol));
+        }
+        
+        for (Bond bond : other.bonds) {
+            Atom oA = this.atoms.get(bond.a.index);
+            Atom oB = this.atoms.get(bond.b.index);
+            this.bonds.add(new Bond(oA, oB, bond.order));
+        }
+    }
+    
+    public Molecule(Molecule other, int[] permutation) {
+        this();
+        for (Atom atom : other.atoms) {
+            this.atoms.add(new Atom(permutation[atom.index], atom.symbol));
+        }
+        
+        for (Bond bond : other.bonds) {
+            Atom oA = this.atoms.get(permutation[bond.a.index]);
+            Atom oB = this.atoms.get(permutation[bond.b.index]);
+            this.bonds.add(new Bond(oA, oB, bond.order));
+        }
+
+    }
+
     public int getAtomCount() {
         return this.atoms.size();
     }
