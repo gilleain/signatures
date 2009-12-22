@@ -113,6 +113,34 @@ public abstract class AbstractGraphSignature {
         }
         return canonicalString;
     }
+    
+    /**
+     * For all the vertices in the graph, get the signature string and group the
+     * resulting list of strings into symmetry classes. All vertices in one
+     * symmetry class will have the same signature string, and therefore the
+     * same environment.
+     *  
+     * @return a list of symmetry classes
+     */
+    public List<SymmetryClass> getSymmetryClasses() {
+        List<SymmetryClass> symmetryClasses = new ArrayList<SymmetryClass>();
+        for (int i = 0; i < this.getVertexCount(); i++) {
+            String signatureString = this.signatureStringForVertex(i);
+            SymmetryClass foundClass = null;
+            for (SymmetryClass symmetryClass : symmetryClasses) {
+                if (symmetryClass.hasSignature(signatureString)) {
+                    foundClass = symmetryClass;
+                    break;
+                }
+            }
+            if (foundClass == null) {
+                foundClass = new SymmetryClass(signatureString);
+                symmetryClasses.add(foundClass);
+            } 
+            foundClass.addIndex(i);
+        }
+        return symmetryClasses;
+    }
 
     /**
      * Generate signature strings for each vertex of the graph, and count up
