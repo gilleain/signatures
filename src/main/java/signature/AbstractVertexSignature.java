@@ -176,10 +176,12 @@ public abstract class AbstractVertexSignature {
             }
         }
     }
-    
+
     /**
      * Get a canonical labelling for this signature.
-     * @return
+     * 
+     * @return 
+     *    the permutation necesary to transform the graph into a canonical form
      */
     public int[] getCanonicalLabelling() {
         CanonicalLabellingVisitor labeller = 

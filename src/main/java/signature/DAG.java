@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class DAG implements Iterable<List<DAG.Node>>{
     
+    /**
+     * The direction up and down the DAG. UP is from leaves to root.
+     *
+     */
     public enum Direction { UP, DOWN };
 	
 	/**
@@ -154,8 +158,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
     /**
      * Create a DAG from a graph, starting at the root vertex.
-     * @param rootLabel 
-     * @param rootVertex the vertex to start from
+     * 
+     * @param rootVertexIndex the vertex to start from
+     * @param vertexCount the number of vertices covered by this DAG
+     * @param rootLabel the string label for the root vertex  
      */
 	public DAG(int rootVertexIndex, int vertexCount, String rootLabel) {
 		this.layers = new ArrayList<List<Node>>();
@@ -176,8 +182,9 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
     /**
      * Reset a DAG starting at another root vertex.
-     * @param rootLabel 
-     * @param rootVertex the vertex to start from
+     * 
+     * @param rootVertexIndex the vertex to start from
+     * @param rootLabel the string label for the root vertex
      */
 	public void resetDAG(int rootVertexIndex, String rootLabel) {
 		this.layers.clear();

@@ -291,7 +291,7 @@ public abstract class AbstractSignature {
 	 * Convenience function that creates a String to hold the 
 	 * signature instead of a StringBuffer.
 	 * 
-	 * @return
+	 * @return the canonical vertex string
 	 */
 	public String toCanonicalVertexString() {
 	    StringBuffer canonicalVertexStringBuffer = new StringBuffer();
