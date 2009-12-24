@@ -1,6 +1,6 @@
 package signature;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class CanonicalLabellingTest {
         SimpleGraph graph = new SimpleGraph(graphString);
         SimpleGraphSignature signature = 
             new SimpleGraphSignature(graph, 1);
-        int[] labelling = signature.getCanonicalLabelling();
-        System.out.println(Arrays.toString(labelling));
+        List<Integer> labelling = signature.canonicalLabel();
+        System.out.println(labelling);
     }
 }

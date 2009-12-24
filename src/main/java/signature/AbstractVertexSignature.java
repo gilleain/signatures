@@ -26,6 +26,10 @@ public abstract class AbstractVertexSignature {
     
     private int height;
     
+    private List<Integer> currentCanonicalLabelMapping;
+    
+    private List<Integer> canonicalLabelMapping;
+    
     /**
      * Create an abstract vertex signature with no start or end node symbols.
      */
@@ -147,6 +151,15 @@ public abstract class AbstractVertexSignature {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
+        // Only add a new list of Integers if this is the first time this 
+        // function is called for a particular root vertex.
+        // The labelling that corresponds to the mapping for the vertex
+        // signature should be the only one stored.
+
+        if ( color == 1 ) {
+            this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+        }
+        
         this.dag.updateVertexInvariants();
         
         List<Integer> orbit = this.dag.createOrbit();
@@ -164,6 +177,7 @@ public abstract class AbstractVertexSignature {
             if (signature.compareTo(canonicalVertexSignature.toString()) > 0) {
                 int l = canonicalVertexSignature.length();
                 canonicalVertexSignature.replace(0, l, signature);
+                this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             }
             return;
         } else {
@@ -188,6 +202,10 @@ public abstract class AbstractVertexSignature {
             new CanonicalLabellingVisitor(this.getVertexCount());
         this.dag.accept(labeller);
         return labeller.getLabelling();
+    }
+    
+    public List<Integer> getCanonicalLabelMapping() {
+        return this.canonicalLabelMapping;
     }
     
     /**
@@ -235,6 +253,11 @@ public abstract class AbstractVertexSignature {
      */
     private void print(StringBuffer buffer, DAG.Node node,
             DAG.Node parent, List<DAG.Arc> arcs) {
+        
+        // Add the vertexIndex to the labels if it hasn't already been added.
+        if (!(this.currentCanonicalLabelMapping.contains(node.vertexIndex))) {
+            this.currentCanonicalLabelMapping.add(node.vertexIndex);
+        }
         
         // print out any symbol for the edge in the input graph
         if (parent != null) {

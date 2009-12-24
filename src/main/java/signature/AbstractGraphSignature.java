@@ -25,11 +25,19 @@ public abstract class AbstractGraphSignature {
      */
     private int height;
     
+    private final String startNodeSymbol;
+    
+    private final String endNodeSymbol;
+    
+    private String graphSignature; // XXX
+    
+    private List<List<Integer>> canonicalLabelMapping;  // XXX
+    
     /**
      * Create a graph signature with a default separator.
      */
     public AbstractGraphSignature() {
-        this(" + ", -1);
+        this(" + ", -1, "[", "]");
     }
     
     /**
@@ -38,7 +46,12 @@ public abstract class AbstractGraphSignature {
      * @param separator the separator to use
      */
     public AbstractGraphSignature(String separator) {
-        this(separator, -1);
+        this(separator, -1, "[", "]");
+    }
+    
+    public AbstractGraphSignature(
+            String separator, String startNodeSymbol, String endNodeSymbol) {
+        this(separator, -1, startNodeSymbol, endNodeSymbol);
     }
     
     /**
@@ -47,7 +60,7 @@ public abstract class AbstractGraphSignature {
      * @param height the height of the vertex signatures made from this graph.
      */
     public AbstractGraphSignature(int height) {
-        this(" + ", height);
+        this(" + ", height, "[", "]");
     }
     
     /**
@@ -56,9 +69,22 @@ public abstract class AbstractGraphSignature {
      * @param separator the separator to use
      * @param height the height of the vertex signatures made from this graph.
      */
-    public AbstractGraphSignature(String separator, int height) {
+    public AbstractGraphSignature(String separator, int height, 
+            String startNodeSymbol, String endNodeSymbol) {
         this.separator = separator;
         this.height = height;
+        this.startNodeSymbol = startNodeSymbol;
+        this.endNodeSymbol = endNodeSymbol;
+        
+        this.canonicalLabelMapping = new ArrayList<List<Integer>>();
+    }
+    
+    public String getStartNodeSymbol() {
+        return this.startNodeSymbol;
+    }
+    
+    public String getEndNodeSymbol() {
+        return this.endNodeSymbol;
     }
     
     /**
@@ -174,4 +200,89 @@ public abstract class AbstractGraphSignature {
         buffer.append(count).append(finalSignature);
         return buffer.toString();
     }
+    
+    /**
+     * Use the lexicographically largest (or smallest) as the graph signature
+     */
+    public String getGraphSignature(){
+        // Generates and returns a graph signature
+        List<String> vertexSignatures = this.getVertexSignatures();
+        Collections.sort(vertexSignatures);
+        this.graphSignature = vertexSignatures.get(0);
+        return this.graphSignature;
+    }
+
+    public List<String> getVertexSignatures() {
+        List<String> vertexSignatures = new ArrayList<String>();
+        for (int i = 0; i < this.getVertexCount(); i++) {
+            vertexSignatures.add(this.signatureStringForVertex(i));
+        }
+        return vertexSignatures;
+    }
+    
+    public boolean isCanonicallyLabelled() {
+        // Generate the vertex signatures and identify the graph signature.
+        List<String> vertexSignatures = this.getVertexSignatures();
+
+        // Sort a copy of the vertex signatures thus keeping the original order. 
+        List<String> sortedVertexSignatures = new ArrayList<String>();
+        sortedVertexSignatures.addAll(vertexSignatures);
+        Collections.sort(sortedVertexSignatures);
+
+        // It has to be the first vertexSignature that corresponds
+        // to the graphSignature,
+        // otherwise it is impossible that it is the 
+        // canonical labeling according to our definition,
+        // ie that the canonical labeling is an increasing order of vertex IDs
+        // when looking at the graph signature.
+        // Check if the vertex ID:s are in increasing order.
+        this.graphSignature = sortedVertexSignatures.get(0);
+        String vertexSignature = vertexSignatures.get(0);
+        List<Integer> labels = this.canonicalLabelMapping.get(0);
+        boolean canonical = this.graphSignature.equals(vertexSignature);
+        if (canonical && isInIncreasingOrder(labels)) {
+            return true;
+        }   
+        return false;
+
+    }
+    
+    public List<Integer> canonicalLabel() {
+        List<Integer> mapping = new ArrayList<Integer>();
+
+        int elementToChange = 0;
+        while (!this.isCanonicallyLabelled()) {
+            // Reorder the vertices of the graph.
+            // Look for the vertexSignature corresponding to the graphSignature 
+            // that has the lowest vertexId in the elementToChange position.
+            int el = 0; 
+            int minValue = this.getVertexCount();
+            List<Integer> currentLabels =  this.canonicalLabelMapping.get(el);
+            for (String vertexSignature : this.getVertexSignatures()) {
+                if ( this.graphSignature.equals(vertexSignature) ) {
+                    int i = currentLabels.get(elementToChange);
+                    if (minValue > i) {
+                        minValue = i;
+                    }
+                }
+                el++;
+            }
+            // Swap the order of vertexId minValue and elementToChange.
+            // do the swapping here.
+            mapping.add(minValue);
+            elementToChange++;
+        }
+
+        return mapping;
+    }
+    
+    private boolean isInIncreasingOrder(List<Integer> integerList) {
+        for (int i = 1; i < integerList.size(); i++) {
+            if (integerList.get(i - 1) > integerList.get(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+ 
 }

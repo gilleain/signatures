@@ -1,6 +1,6 @@
 package signature.simple;
 
-import signature.AbstractSignature;
+import signature.AbstractGraphSignature;
 
 /**
  * A test implementation of signatures for {@link SimpleGraph}s.
@@ -8,30 +8,39 @@ import signature.AbstractSignature;
  * @author maclean
  *
  */
-public class SimpleGraphSignature extends AbstractSignature {
+public class SimpleGraphSignature extends AbstractGraphSignature {
     
     public SimpleGraph graph;
     
     public SimpleGraphSignature(SimpleGraph graph, int root) {
         super();
         this.graph = graph;
-        super.create(root);
     }
 
     public int getVertexCount() {
         return this.graph.getVertexCount();
     }
-    
-    public int[] getConnected(int vertexIndex) {
-        return this.graph.getConnected(vertexIndex);
+
+    @Override
+    public String signatureStringForVertex(int vertexIndex) {
+        SimpleVertexSignature vertexSignature;
+        int height = super.getHeight();
+        if (height == -1) {
+            vertexSignature = 
+                new SimpleVertexSignature(vertexIndex, this.graph);
+        } else {
+            vertexSignature = 
+                new SimpleVertexSignature(vertexIndex, height, this.graph);
+        }
+        return vertexSignature.toCanonicalString();
     }
 
-    public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
-        return "";
+    @Override
+    public String signatureStringForVertex(int vertexIndex, int height) {
+        return null;
     }
 
-    public String getVertexSymbol(int vertexIndex) {
-        return ".";
+    public String toCanonicalString() {
+        return super.toCanonicalString();
     }
-
 }

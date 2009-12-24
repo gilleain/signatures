@@ -1,23 +1,16 @@
 package signature.chemistry;
 
-import signature.AbstractSignature;
+import signature.AbstractGraphSignature;
 
-public class MoleculeSignature extends AbstractSignature {
+public class MoleculeSignature extends AbstractGraphSignature {
     
     private Molecule molecule;
     
     public MoleculeSignature(Molecule molecule) {
-        super("[", "]");
+        super(" + ", "[", "]");
         this.molecule = molecule;
-        super.create(0);
     }
 
-    @Override
-    public int[] getConnected(int vertexIndex) {
-        return this.molecule.getConnected(vertexIndex);
-    }
-
-    @Override
     public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
 //        int bondOrder = 
 //            this.molecule.getBondOrder(vertexIndex, otherVertexIndex);
@@ -29,6 +22,10 @@ public class MoleculeSignature extends AbstractSignature {
 //            default: return "";
 //        }
     }
+    
+    public String getMolecularSignature() {
+        return super.getGraphSignature();
+    }
 
     @Override
     public int getVertexCount() {
@@ -36,12 +33,21 @@ public class MoleculeSignature extends AbstractSignature {
     }
 
     @Override
-    public String getVertexSymbol(int vertexIndex) {
-        return this.molecule.getSymbolFor(vertexIndex);
+    public String signatureStringForVertex(int vertexIndex) {
+        AtomSignature atomSignature;
+        int height = super.getHeight();
+        if (height == -1) {
+            atomSignature = new AtomSignature(this.molecule, vertexIndex);
+        } else {
+            atomSignature = new AtomSignature(this.molecule, vertexIndex, height);
+        }
+        return atomSignature.toCanonicalString();
     }
 
-    public String getMolecularSignature() {
-        return super.getGraphSignature();
+    @Override
+    public String signatureStringForVertex(int vertexIndex, int height) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -11,6 +11,12 @@ public class AtomSignature extends AbstractVertexSignature {
         this.molecule = molecule;
         this.create(atomNumber);
     }
+    
+    public AtomSignature(Molecule molecule, int atomNumber, int height) {
+        super("[", "]");
+        this.molecule = molecule;
+        this.create(atomNumber, height);
+    }
 
     @Override
     public int[] getConnected(int vertexIndex) {

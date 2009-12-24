@@ -20,9 +20,8 @@ public class UnlabelledGraphTest {
     public void testChain() {
         String chain = "0:1,1:2,2:3,3:4";
         SimpleGraphSignature signature = signatureFromString(chain);
-        System.out.println(signature.getDAG());
-        String uncanonizedString = signature.toString(); 
-        String maxSignature = signature.toCanonicalVertexString();
+        String uncanonizedString = signature.toCanonicalString(); 
+        String maxSignature = signature.getGraphSignature();
         System.out.println("max" + maxSignature);
         Assert.assertEquals(uncanonizedString, maxSignature);
     }
@@ -30,7 +29,7 @@ public class UnlabelledGraphTest {
     @Test
     public void testColoredTreeRoundtrip() {
         String signatureString = "[.]([.]([.,1])[.]([.,1]))";
-        SimpleVertexSignature sig = new SimpleVertexSignature();
+        SimpleVertexSignature sig = new SimpleVertexSignature(0, new SimpleGraph());
         ColoredTree tree = sig.parse(signatureString);
         Assert.assertEquals(signatureString, tree.toString());
         
