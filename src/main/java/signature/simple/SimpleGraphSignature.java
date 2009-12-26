@@ -1,6 +1,7 @@
 package signature.simple;
 
 import signature.AbstractGraphSignature;
+import signature.AbstractVertexSignature;
 
 /**
  * A test implementation of signatures for {@link SimpleGraph}s.
@@ -37,10 +38,15 @@ public class SimpleGraphSignature extends AbstractGraphSignature {
 
     @Override
     public String signatureStringForVertex(int vertexIndex, int height) {
-        return null;
+        return null;    // TODO
     }
 
     public String toCanonicalString() {
         return super.toCanonicalString();
+    }
+
+    @Override
+    public AbstractVertexSignature signatureForVertex(int vertexIndex) {
+        return new SimpleVertexSignature(vertexIndex, this.graph);
     }
 }

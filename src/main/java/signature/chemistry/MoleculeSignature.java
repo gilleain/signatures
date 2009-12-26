@@ -1,6 +1,7 @@
 package signature.chemistry;
 
 import signature.AbstractGraphSignature;
+import signature.AbstractVertexSignature;
 
 public class MoleculeSignature extends AbstractGraphSignature {
     
@@ -48,6 +49,11 @@ public class MoleculeSignature extends AbstractGraphSignature {
     public String signatureStringForVertex(int vertexIndex, int height) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public AbstractVertexSignature signatureForVertex(int vertexIndex) {
+        return new AtomSignature(this.molecule, vertexIndex);
     }
 
 }

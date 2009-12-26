@@ -123,6 +123,16 @@ public abstract class AbstractGraphSignature {
      */
     public abstract String signatureStringForVertex(int vertexIndex, int height);
     
+
+    /**
+     * Generate and return an AbstractVertexSignature rooted at the vertex with
+     * index <code>vertexIndex</code>.
+     * 
+     * @param vertexIndex the vertex to use
+     * @return an AbstractSignature object
+     */
+    public abstract AbstractVertexSignature signatureForVertex(int vertexIndex);
+    
     /**
      * Run through the vertices of the graph, generating a signature string for
      * each vertex, and return the one that is lexicographically minimal.
@@ -220,30 +230,53 @@ public abstract class AbstractGraphSignature {
         return vertexSignatures;
     }
     
+    // XXX TODO : rename this method, or the getSignatures method
+    public List<AbstractVertexSignature> getVertexSignatureObjects() {
+        List<AbstractVertexSignature> signatures = 
+            new ArrayList<AbstractVertexSignature>();
+        for (int i = 0; i < this.getVertexCount(); i++) {
+            signatures.add(this.signatureForVertex(i));
+        }
+        return signatures;
+    }
+    
     public boolean isCanonicallyLabelled() {
         // Generate the vertex signatures and identify the graph signature.
-        List<String> vertexSignatures = this.getVertexSignatures();
-
+//        List<String> vertexSignatures = this.getVertexSignatures();
+        
+        List<AbstractVertexSignature> vertexSignatureList = 
+            this.getVertexSignatureObjects();
+        AbstractVertexSignature first = vertexSignatureList.get(0); 
+        String firstString = first.toCanonicalString();
+        List<Integer> labels = first.getCanonicalLabelMapping();
+        for (int i = 1; i < this.getVertexCount(); i++) {
+            AbstractVertexSignature a = vertexSignatureList.get(i);
+            if (firstString.compareTo(a.toCanonicalString()) > 0) {
+                return false;
+            }
+        }
+        return this.isInIncreasingOrder(labels);
+        
         // Sort a copy of the vertex signatures thus keeping the original order. 
-        List<String> sortedVertexSignatures = new ArrayList<String>();
-        sortedVertexSignatures.addAll(vertexSignatures);
-        Collections.sort(sortedVertexSignatures);
-
-        // It has to be the first vertexSignature that corresponds
-        // to the graphSignature,
-        // otherwise it is impossible that it is the 
-        // canonical labeling according to our definition,
-        // ie that the canonical labeling is an increasing order of vertex IDs
-        // when looking at the graph signature.
-        // Check if the vertex ID:s are in increasing order.
-        this.graphSignature = sortedVertexSignatures.get(0);
-        String vertexSignature = vertexSignatures.get(0);
-        List<Integer> labels = this.canonicalLabelMapping.get(0);
-        boolean canonical = this.graphSignature.equals(vertexSignature);
-        if (canonical && isInIncreasingOrder(labels)) {
-            return true;
-        }   
-        return false;
+//        List<String> sortedVertexSignatures = new ArrayList<String>();
+//        sortedVertexSignatures.addAll(vertexSignatures);
+//        Collections.sort(sortedVertexSignatures);
+//
+//        // It has to be the first vertexSignature that corresponds
+//        // to the graphSignature,
+//        // otherwise it is impossible that it is the 
+//        // canonical labeling according to our definition,
+//        // ie that the canonical labeling is an increasing order of vertex IDs
+//        // when looking at the graph signature.
+//        // Check if the vertex ID:s are in increasing order.
+//        this.graphSignature = sortedVertexSignatures.get(0);
+//        String vertexSignature = vertexSignatures.get(0);
+//        List<Integer> labels = this.canonicalLabelMapping.get(0);
+//        boolean canonical = this.graphSignature.equals(vertexSignature);
+//        if (canonical && isInIncreasingOrder(labels)) {
+//            return true;
+//        }   
+//        return false;
 
     }
     
