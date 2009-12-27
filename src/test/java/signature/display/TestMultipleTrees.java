@@ -49,7 +49,7 @@ public class TestMultipleTrees {
         
         f.setLayout(new GridLayout(1, 6));
         MoleculeSignature molSig = new MoleculeSignature(molecule);
-        for (String signature : molSig.getVertexSignatures()) {
+        for (String signature : molSig.getVertexSignatureStrings()) {
             TestMultipleTrees.makePanel(f, signature, width, height);
         }
         f.setPreferredSize(new Dimension(6 * width, height));

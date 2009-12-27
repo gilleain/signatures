@@ -216,13 +216,19 @@ public abstract class AbstractGraphSignature {
      */
     public String getGraphSignature(){
         // Generates and returns a graph signature
-        List<String> vertexSignatures = this.getVertexSignatures();
+        List<String> vertexSignatures = this.getVertexSignatureStrings();
         Collections.sort(vertexSignatures);
         this.graphSignature = vertexSignatures.get(0);
         return this.graphSignature;
     }
 
-    public List<String> getVertexSignatures() {
+    /**
+     * Create the canonical signature strings for each vertex. They are 
+     * unsorted, so will be in the same order as the vertices.
+     * 
+     * @return a list of canonical signature strings
+     */
+    public List<String> getVertexSignatureStrings() {
         List<String> vertexSignatures = new ArrayList<String>();
         for (int i = 0; i < this.getVertexCount(); i++) {
             vertexSignatures.add(this.signatureStringForVertex(i));
@@ -230,8 +236,13 @@ public abstract class AbstractGraphSignature {
         return vertexSignatures;
     }
     
-    // XXX TODO : rename this method, or the getSignatures method
-    public List<AbstractVertexSignature> getVertexSignatureObjects() {
+    /**
+     * Create a list of vertex signatures, one for each vertex.They are 
+     * unsorted, so will be in the same order as the vertices.
+     * 
+     * @return a list of vertex signatures
+     */
+    public List<AbstractVertexSignature> getVertexSignatures() {
         List<AbstractVertexSignature> signatures = 
             new ArrayList<AbstractVertexSignature>();
         for (int i = 0; i < this.getVertexCount(); i++) {
@@ -240,44 +251,34 @@ public abstract class AbstractGraphSignature {
         return signatures;
     }
     
+    /**
+     * Test the the vertices in the graph, to see if the order they are in
+     * (confusingly called the 'labelling' of the graph) is canonical. The 
+     * order that is canonical according to this method may not be the same as
+     * the canonical order from another method.
+     * 
+     * @return true if the vertices are in a canonical order
+     */
     public boolean isCanonicallyLabelled() {
-        // Generate the vertex signatures and identify the graph signature.
-//        List<String> vertexSignatures = this.getVertexSignatures();
-        
-        List<AbstractVertexSignature> vertexSignatureList = 
-            this.getVertexSignatureObjects();
-        AbstractVertexSignature first = vertexSignatureList.get(0); 
+        // get the first signature string, to compare with the others
+        AbstractVertexSignature first = this.signatureForVertex(0); 
         String firstString = first.toCanonicalString();
-        List<Integer> labels = first.getCanonicalLabelMapping();
-        for (int i = 1; i < this.getVertexCount(); i++) {
-            AbstractVertexSignature a = vertexSignatureList.get(i);
-            if (firstString.compareTo(a.toCanonicalString()) > 0) {
-                return false;
-            }
-        }
-        return this.isInIncreasingOrder(labels);
-        
-        // Sort a copy of the vertex signatures thus keeping the original order. 
-//        List<String> sortedVertexSignatures = new ArrayList<String>();
-//        sortedVertexSignatures.addAll(vertexSignatures);
-//        Collections.sort(sortedVertexSignatures);
-//
-//        // It has to be the first vertexSignature that corresponds
-//        // to the graphSignature,
-//        // otherwise it is impossible that it is the 
-//        // canonical labeling according to our definition,
-//        // ie that the canonical labeling is an increasing order of vertex IDs
-//        // when looking at the graph signature.
-//        // Check if the vertex ID:s are in increasing order.
-//        this.graphSignature = sortedVertexSignatures.get(0);
-//        String vertexSignature = vertexSignatures.get(0);
-//        List<Integer> labels = this.canonicalLabelMapping.get(0);
-//        boolean canonical = this.graphSignature.equals(vertexSignature);
-//        if (canonical && isInIncreasingOrder(labels)) {
-//            return true;
-//        }   
-//        return false;
 
+        // the vertex indices must be ordered
+        List<Integer> labels = first.getCanonicalLabelMapping();
+        if (isInIncreasingOrder(labels)) {
+            
+            // check that no subsequent string is lexicographically smaller
+            for (int i = 1; i < this.getVertexCount(); i++) {
+                AbstractVertexSignature a = this.signatureForVertex(i);
+                if (firstString.compareTo(a.toCanonicalString()) > 0) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public List<Integer> canonicalLabel() {
@@ -291,7 +292,7 @@ public abstract class AbstractGraphSignature {
             int el = 0; 
             int minValue = this.getVertexCount();
             List<Integer> currentLabels =  this.canonicalLabelMapping.get(el);
-            for (String vertexSignature : this.getVertexSignatures()) {
+            for (String vertexSignature : this.getVertexSignatureStrings()) {
                 if ( this.graphSignature.equals(vertexSignature) ) {
                     int i = currentLabels.get(elementToChange);
                     if (minValue > i) {
