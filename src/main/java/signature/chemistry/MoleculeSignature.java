@@ -11,6 +11,10 @@ public class MoleculeSignature extends AbstractGraphSignature {
         super(" + ", "[", "]");
         this.molecule = molecule;
     }
+    
+    public static boolean isCanonicallyLabelled(Molecule molecule) {
+        return new MoleculeSignature(molecule).isCanonicallyLabelled();
+    }
 
     public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
 //        int bondOrder = 

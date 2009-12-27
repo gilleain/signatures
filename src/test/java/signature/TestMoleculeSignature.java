@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.chemistry.AtomPermutor;
 import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeBuilder;
@@ -128,7 +129,44 @@ public class TestMoleculeSignature {
             MoleculeSignature signatureCanLabel = new MoleculeSignature(molecule);
             Assert.assertEquals(true, signatureCanLabel.isCanonicallyLabelled() );
         }
-
+    }
+    
+    @Test
+    public void testCanonicalIsUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addBond(0, 1, 1);
+        molecule.addBond(1, 2, 1);
+        molecule.addBond(1, 3, 1);
+        molecule.addBond(2, 4, 1);
+        boolean atLeastOneIsCanonical = false;
+        boolean exactlyOneIsCanonical = true;
+        Molecule canonical = null;
+        if (MoleculeSignature.isCanonicallyLabelled(molecule)) {
+            atLeastOneIsCanonical = true;
+            canonical = molecule;
+        }
+        
+        AtomPermutor permutor = new AtomPermutor(molecule);
+        while (permutor.hasNext()) {
+            Molecule permutation = permutor.next();
+            if (MoleculeSignature.isCanonicallyLabelled(permutation)) {
+                if (atLeastOneIsCanonical) {
+                    exactlyOneIsCanonical = false;
+                } else {
+                    atLeastOneIsCanonical = true;
+                    canonical = permutation;
+                }
+            }
+        }
+        if (canonical != null) {
+            System.out.println(canonical);
+        }
+        Assert.assertTrue(atLeastOneIsCanonical && exactlyOneIsCanonical);
     }
 
 }
