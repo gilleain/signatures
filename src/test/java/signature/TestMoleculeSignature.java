@@ -1,5 +1,9 @@
 package signature;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -121,6 +125,7 @@ public class TestMoleculeSignature {
     	String filename = "data/multCycle.sdf";
         for (Molecule molecule : MoleculeReader.readSDFFile(filename)) {
             MoleculeSignature signature = new MoleculeSignature(molecule);
+            System.out.println(molecule.getAtomCount());
             Assert.assertEquals(false, signature.isCanonicallyLabelled() );
         }
 
@@ -129,6 +134,56 @@ public class TestMoleculeSignature {
             MoleculeSignature signatureCanLabel = new MoleculeSignature(molecule);
             Assert.assertEquals(true, signatureCanLabel.isCanonicallyLabelled() );
         }
+        
+        Molecule molecule = MoleculeReader.readSDFFile(filename).get(0);
+//        this.testCanonicalIsUnique(molecule);
+    }
+    
+    public void testCanonicalIsUnique(Molecule molecule) {
+        List<Molecule> canonical = new ArrayList<Molecule>();
+        List<int[]> permutations = new ArrayList<int[]>();
+        if (MoleculeSignature.isCanonicallyLabelled(molecule)) {
+            canonical.add(molecule);
+            permutations.add(new int[] {});
+            System.out.println(molecule + "\tCANON");
+        } else {
+            System.out.println(molecule);
+        }
+        
+        AtomPermutor permutor = new AtomPermutor(molecule);
+        while (permutor.hasNext()) {
+            Molecule permutation = permutor.next();
+            if (MoleculeSignature.isCanonicallyLabelled(permutation)) {
+                System.out.println(permutor.getRank() + "\t" + permutation + "\t" 
+                        + Arrays.toString(permutor.getCurrentPermutation())
+                        + "\tCANON");
+                canonical.add(permutation);
+                permutations.add(permutor.getCurrentPermutation());
+            } else {
+                System.out.println(permutor.getRank() + "\t" + permutation + "\t" 
+                        + Arrays.toString(permutor.getCurrentPermutation()));
+            }
+        }
+        for (int i = 0; i < canonical.size(); i++) { 
+//            System.out.println(canonical.get(i) 
+//                    + "\t" + Arrays.toString(permutations.get(i)));
+        }
+        Assert.assertTrue("No canonical example", canonical.size() > 0);
+        Assert.assertTrue("More than one canonical", canonical.size() == 1);
+    }
+    
+    @Test
+    public void testSquareCanonicalIsUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addBond(0, 1, 1);
+        molecule.addBond(0, 3, 1);
+        molecule.addBond(1, 2, 1);
+        molecule.addBond(2, 3, 1);
+        this.testCanonicalIsUnique(molecule);
     }
     
     @Test
@@ -139,34 +194,13 @@ public class TestMoleculeSignature {
         molecule.addAtom("C");
         molecule.addAtom("C");
         molecule.addAtom("C");
+        molecule.addAtom("C");
         molecule.addBond(0, 1, 1);
         molecule.addBond(1, 2, 1);
         molecule.addBond(1, 3, 1);
         molecule.addBond(2, 4, 1);
-        boolean atLeastOneIsCanonical = false;
-        boolean exactlyOneIsCanonical = true;
-        Molecule canonical = null;
-        if (MoleculeSignature.isCanonicallyLabelled(molecule)) {
-            atLeastOneIsCanonical = true;
-            canonical = molecule;
-        }
-        
-        AtomPermutor permutor = new AtomPermutor(molecule);
-        while (permutor.hasNext()) {
-            Molecule permutation = permutor.next();
-            if (MoleculeSignature.isCanonicallyLabelled(permutation)) {
-                if (atLeastOneIsCanonical) {
-                    exactlyOneIsCanonical = false;
-                } else {
-                    atLeastOneIsCanonical = true;
-                    canonical = permutation;
-                }
-            }
-        }
-        if (canonical != null) {
-            System.out.println(canonical);
-        }
-        Assert.assertTrue(atLeastOneIsCanonical && exactlyOneIsCanonical);
+        molecule.addBond(2, 5, 1);
+        this.testCanonicalIsUnique(molecule);
     }
 
 }
