@@ -173,6 +173,18 @@ public class TestMoleculeSignature {
     }
     
     @Test
+    public void testTriangleCanonicalIsUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addBond(0, 1, 1);
+        molecule.addBond(0, 2, 1);
+        molecule.addBond(1, 2, 1);
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
     public void testSquareCanonicalIsUnique() {
         Molecule molecule = new Molecule();
         molecule.addAtom("C");
@@ -183,6 +195,22 @@ public class TestMoleculeSignature {
         molecule.addBond(0, 3, 1);
         molecule.addBond(1, 2, 1);
         molecule.addBond(2, 3, 1);
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testPentagonCanonicalIsUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addBond(0, 1, 1);
+        molecule.addBond(0, 4, 1);
+        molecule.addBond(1, 2, 1);
+        molecule.addBond(2, 3, 1);
+        molecule.addBond(3, 4, 1);
         this.testCanonicalIsUnique(molecule);
     }
     

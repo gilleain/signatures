@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,7 +96,9 @@ public abstract class AbstractVertexSignature {
         List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
         List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
         for (DAG.Node node : previousLayer) {
-            for (int connectedVertex : getConnected(node.vertexIndex)) {
+            int[] connected = getConnected(node.vertexIndex);
+            Arrays.sort(connected);
+            for (int connectedVertex : connected) {
                 addNode(
                   layer, node, connectedVertex, layerArcs, usedArcs, nextLayer);
             }
