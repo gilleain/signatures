@@ -151,17 +151,24 @@ public class TestMoleculeSignature {
         }
         
         AtomPermutor permutor = new AtomPermutor(molecule);
+        List<Molecule> examples = new ArrayList<Molecule>();
+        examples.add(molecule);
         while (permutor.hasNext()) {
             Molecule permutation = permutor.next();
+            int group = assignAutomorphism(permutation, examples);
             if (MoleculeSignature.isCanonicallyLabelled(permutation)) {
-                System.out.println(permutor.getRank() + "\t" + permutation + "\t" 
+                System.out.println(permutor.getRank() + "\t" 
+                        + permutation + "\t" 
                         + Arrays.toString(permutor.getCurrentPermutation())
+                        + "\t" + group
                         + "\tCANON");
                 canonical.add(permutation);
                 permutations.add(permutor.getCurrentPermutation());
             } else {
-                System.out.println(permutor.getRank() + "\t" + permutation + "\t" 
-                        + Arrays.toString(permutor.getCurrentPermutation()));
+                System.out.println(permutor.getRank() + "\t" 
+                        + permutation + "\t" 
+                        + Arrays.toString(permutor.getCurrentPermutation())
+                        + "\t" + group);
             }
         }
         for (int i = 0; i < canonical.size(); i++) { 
@@ -170,6 +177,18 @@ public class TestMoleculeSignature {
         }
         Assert.assertTrue("No canonical example", canonical.size() > 0);
         Assert.assertTrue("More than one canonical", canonical.size() == 1);
+    }
+    
+    public int assignAutomorphism(Molecule molecule, List<Molecule> examples) {
+        for (int i = 0; i < examples.size(); i++) {
+            Molecule example = examples.get(i);
+            if (molecule.identical(example)) {
+                return i;
+            }
+        }
+        int groupID = examples.size();
+        examples.add(molecule);
+        return groupID;
     }
     
     @Test
@@ -211,6 +230,24 @@ public class TestMoleculeSignature {
         molecule.addBond(1, 2, 1);
         molecule.addBond(2, 3, 1);
         molecule.addBond(3, 4, 1);
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testHexagonCanonicalIsUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addAtom("C");
+        molecule.addBond(0, 1, 1);
+        molecule.addBond(0, 5, 1);
+        molecule.addBond(1, 2, 1);
+        molecule.addBond(2, 3, 1);
+        molecule.addBond(3, 4, 1);
+        molecule.addBond(4, 5, 1);
         this.testCanonicalIsUnique(molecule);
     }
     

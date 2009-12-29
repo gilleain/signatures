@@ -165,4 +165,24 @@ public class Molecule {
         Atom b = this.atoms.get(atomNumberB);
         this.bonds.add(new Bond(a, b, order));
     }
+    
+    public boolean identical(Molecule other) {
+        if (this.getBondCount() != other.getBondCount()) return false;
+        for (Bond bond : this.bonds) {
+            boolean hasPartner = false;
+            for (Bond otherBond : other.bonds) {
+                if ((bond.a.index == otherBond.a.index 
+                        && bond.b.index == otherBond.b.index) ||
+                    (bond.b.index == otherBond.a.index 
+                        && bond.a.index == otherBond.b.index)) {
+                    hasPartner = true;
+                    continue;
+                }
+            }
+            if (!hasPartner) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
