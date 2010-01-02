@@ -198,7 +198,7 @@ public abstract class AbstractVertexSignature {
      * Get a canonical labelling for this signature.
      * 
      * @return 
-     *    the permutation necesary to transform the graph into a canonical form
+     *    the permutation necessary to transform the graph into a canonical form
      */
     public int[] getCanonicalLabelling() {
         CanonicalLabellingVisitor labeller = 
@@ -307,6 +307,30 @@ public abstract class AbstractVertexSignature {
         StringBuffer buffer = new StringBuffer();
         print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
         return buffer.toString();
+    }
+    
+    public List<Integer> postorderCanonicalLabelling() {
+        List<Integer> labelling = new ArrayList<Integer>();
+        postorder(labelling, this.dag.getRoot(), new ArrayList<DAG.Arc>());
+        return labelling;
+    }
+    
+    private void postorder(
+            List<Integer> labelling, DAG.Node node, List<DAG.Arc> arcs) {
+        if (!labelling.contains(node.vertexIndex)) {
+            labelling.add(node.vertexIndex);
+        }
+//        for (int i = node.children.size() - 1; i > -1; i--) {
+        for (int i = 0; i < node.children.size(); i++) {
+            DAG.Node child = node.children.get(i);
+            DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
+            if (arcs.contains(arc)) {
+                continue;
+            } else {
+                arcs.add(arc);
+                postorder(labelling, child, arcs);
+            }
+        }
     }
     
     public ColoredTree parse(String s) {

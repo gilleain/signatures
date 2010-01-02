@@ -71,6 +71,13 @@ public class Molecule {
         this.bonds = new ArrayList<Bond>();
     }
     
+    public Molecule(String atomSymbol, int count) {
+        this();
+        for (int i = 0; i < count; i++) {
+            this.addAtom(atomSymbol);
+        }
+    }
+    
     public Molecule(Molecule other) {
         this();
         for (Atom atom : other.atoms) {
@@ -180,6 +187,23 @@ public class Molecule {
                 }
             }
             if (!hasPartner) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean bondsOrdered() {
+        for (int i = 1; i < this.bonds.size(); i++) {
+            Bond bondA = this.bonds.get(i - 1);
+            Bond bondB = this.bonds.get(i);
+            int aMin = Math.min(bondA.a.index, bondA.b.index);
+            int aMax = Math.max(bondA.a.index, bondA.b.index);
+            int bMin = Math.min(bondB.a.index, bondB.b.index);
+            int bMax = Math.max(bondB.a.index, bondB.b.index);
+            if (aMin < bMin || (aMin == bMin && aMax < bMax)) {
+                continue;
+            } else {
                 return false;
             }
         }

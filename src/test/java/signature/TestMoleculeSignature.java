@@ -12,6 +12,7 @@ import signature.chemistry.AtomPermutor;
 import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeBuilder;
+import signature.chemistry.MoleculeFactory;
 import signature.chemistry.MoleculeReader;
 import signature.chemistry.MoleculeSignature;
 
@@ -142,12 +143,13 @@ public class TestMoleculeSignature {
     public void testCanonicalIsUnique(Molecule molecule) {
         List<Molecule> canonical = new ArrayList<Molecule>();
         List<int[]> permutations = new ArrayList<int[]>();
+        boolean orderedA = molecule.bondsOrdered();
         if (MoleculeSignature.isCanonicallyLabelled(molecule)) {
             canonical.add(molecule);
             permutations.add(new int[] {});
-            System.out.println(molecule + "\tCANON");
+            System.out.println(molecule + "\tCANON" + "\t" + orderedA);
         } else {
-            System.out.println(molecule);
+            System.out.println(molecule + "\t" + orderedA);
         }
         
         AtomPermutor permutor = new AtomPermutor(molecule);
@@ -156,19 +158,33 @@ public class TestMoleculeSignature {
         while (permutor.hasNext()) {
             Molecule permutation = permutor.next();
             int group = assignAutomorphism(permutation, examples);
-            if (MoleculeSignature.isCanonicallyLabelled(permutation)) {
+            boolean ordered = permutation.bondsOrdered();
+            MoleculeSignature sig = new MoleculeSignature(permutation);
+            AbstractVertexSignature first = sig.signatureForVertex(0);
+            first.toCanonicalString();
+            List<Integer> sorted = first.getCanonicalLabelMapping();
+            List<Integer> unsorted = first.postorderCanonicalLabelling();
+            if (sig.isCanonicallyLabelled()) {
                 System.out.println(permutor.getRank() + "\t" 
                         + permutation + "\t" 
                         + Arrays.toString(permutor.getCurrentPermutation())
                         + "\t" + group
-                        + "\tCANON");
-                canonical.add(permutation);
+                        + "\tCANON"
+                        + "\t" + ordered
+                        + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
+                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted));
+                if (ordered) {
+                    canonical.add(permutation);
+                }
                 permutations.add(permutor.getCurrentPermutation());
             } else {
                 System.out.println(permutor.getRank() + "\t" 
                         + permutation + "\t" 
                         + Arrays.toString(permutor.getCurrentPermutation())
-                        + "\t" + group);
+                        + "\t" + group
+                        + "\t" + ordered
+                        + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
+                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted));
             }
         }
         for (int i = 0; i < canonical.size(); i++) { 
@@ -192,64 +208,66 @@ public class TestMoleculeSignature {
     }
     
     @Test
+    public void testFiveCycle() {
+        Molecule molecule = MoleculeFactory.fiveCycle();
+        AtomSignature atomSignature = new AtomSignature(molecule, 0);
+        System.out.println(atomSignature.toCanonicalString());
+    }
+    
+    @Test
+    public void testThreeStarCanonicalUnique() {
+        Molecule molecule = MoleculeFactory.threeStar();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testFourStarCanonicalUnique() {
+        Molecule molecule = MoleculeFactory.fourStar();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testFiveStarCanonicalUnique() {
+        Molecule molecule = MoleculeFactory.fiveStar();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
     public void testTriangleCanonicalIsUnique() {
-        Molecule molecule = new Molecule();
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(0, 2, 1);
-        molecule.addBond(1, 2, 1);
+        Molecule molecule = MoleculeFactory.threeCycle();
         this.testCanonicalIsUnique(molecule);
     }
     
     @Test
     public void testSquareCanonicalIsUnique() {
-        Molecule molecule = new Molecule();
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(0, 3, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(2, 3, 1);
+        Molecule molecule = MoleculeFactory.fourCycle();
         this.testCanonicalIsUnique(molecule);
     }
     
     @Test
     public void testPentagonCanonicalIsUnique() {
-        Molecule molecule = new Molecule();
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(0, 4, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(2, 3, 1);
-        molecule.addBond(3, 4, 1);
+        Molecule molecule = MoleculeFactory.fiveCycle();
         this.testCanonicalIsUnique(molecule);
     }
     
     @Test
     public void testHexagonCanonicalIsUnique() {
-        Molecule molecule = new Molecule();
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addAtom("C");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(0, 5, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(2, 3, 1);
-        molecule.addBond(3, 4, 1);
-        molecule.addBond(4, 5, 1);
+        Molecule molecule = MoleculeFactory.sixCycle();
         this.testCanonicalIsUnique(molecule);
     }
+    
+    @Test
+    public void testPropellaneCanonicalIsUnique() {
+        Molecule molecule = MoleculeFactory.propellane();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testPseudopropellaneCanonicalIsUnique() {
+        Molecule molecule = MoleculeFactory.pseudopropellane();
+        this.testCanonicalIsUnique(molecule);
+    }
+
     
     @Test
     public void testCanonicalIsUnique() {

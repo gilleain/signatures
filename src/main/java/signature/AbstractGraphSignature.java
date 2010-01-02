@@ -266,7 +266,8 @@ public abstract class AbstractGraphSignature {
 
         // the vertex indices must be ordered
         List<Integer> labels = first.getCanonicalLabelMapping();
-        if (isInIncreasingOrder(labels)) {
+        List<Integer> postLabels = first.postorderCanonicalLabelling(); 
+        if (isInIncreasingOrder(labels) || isInIncreasingOrder(postLabels)) {
             
             // check that no subsequent string is lexicographically smaller
             for (int i = 1; i < this.getVertexCount(); i++) {
@@ -310,7 +311,7 @@ public abstract class AbstractGraphSignature {
         return mapping;
     }
     
-    private boolean isInIncreasingOrder(List<Integer> integerList) {
+    public boolean isInIncreasingOrder(List<Integer> integerList) {
         for (int i = 1; i < integerList.size(); i++) {
             if (integerList.get(i - 1) > integerList.get(i)) {
                 return false;
