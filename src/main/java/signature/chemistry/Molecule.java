@@ -166,6 +166,10 @@ public class Molecule {
     public void addAtom(int i, String symbol) {
         this.atoms.add(new Atom(i, symbol));
     }
+    
+    public void addSingleBond(int atomNumberA, int atomNumberB) {
+        this.addBond(atomNumberA, atomNumberB, 1);
+    }
 
     public void addBond(int atomNumberA, int atomNumberB, int order) {
         Atom a = this.atoms.get(atomNumberA);

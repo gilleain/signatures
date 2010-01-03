@@ -260,6 +260,7 @@ public abstract class AbstractGraphSignature {
      * @return true if the vertices are in a canonical order
      */
     public boolean isCanonicallyLabelled() {
+        
         // get the first signature string, to compare with the others
         AbstractVertexSignature first = this.signatureForVertex(0); 
         String firstString = first.toCanonicalString();
@@ -280,6 +281,13 @@ public abstract class AbstractGraphSignature {
         } else {
             return false;
         }
+    }
+    
+    public void reconstructCanonicalGraph(
+            AbstractVertexSignature signature, AbstractGraphBuilder builder) {
+        String canonicalString = this.toCanonicalString();
+        ColoredTree tree = signature.parse(canonicalString);
+        builder.makeFromColoredTree(tree);
     }
     
     public List<Integer> canonicalLabel() {

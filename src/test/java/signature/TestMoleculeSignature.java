@@ -144,12 +144,20 @@ public class TestMoleculeSignature {
         List<Molecule> canonical = new ArrayList<Molecule>();
         List<int[]> permutations = new ArrayList<int[]>();
         boolean orderedA = molecule.bondsOrdered();
-        if (MoleculeSignature.isCanonicallyLabelled(molecule)) {
+        MoleculeSignature sigM = new MoleculeSignature(molecule);
+        List<SymmetryClass> symmetryClassesA = sigM.getSymmetryClasses();
+        AbstractVertexSignature firstM = sigM.signatureForVertex(0);
+        firstM.toCanonicalString();
+        List<Integer> groupwiseM = 
+            firstM.groupwiseCanonicalLabelling(symmetryClassesA);
+        if (sigM.isCanonicallyLabelled()) {
             canonical.add(molecule);
             permutations.add(new int[] {});
-            System.out.println(molecule + "\tCANON" + "\t" + orderedA);
+            System.out.println(molecule + "\tCANON" 
+                               + "\t" + orderedA 
+                               + "\t" + groupwiseM);
         } else {
-            System.out.println(molecule + "\t" + orderedA);
+            System.out.println(molecule + "\t" + orderedA + "\t" + groupwiseM);
         }
         
         AtomPermutor permutor = new AtomPermutor(molecule);
@@ -157,22 +165,36 @@ public class TestMoleculeSignature {
         examples.add(molecule);
         while (permutor.hasNext()) {
             Molecule permutation = permutor.next();
+            
             int group = assignAutomorphism(permutation, examples);
             boolean ordered = permutation.bondsOrdered();
             MoleculeSignature sig = new MoleculeSignature(permutation);
+            
+            MoleculeBuilder builder = new MoleculeBuilder();
+            sig.reconstructCanonicalGraph(sig.signatureForVertex(0), builder);
+            String result = "";
+            Molecule reconstruction = builder.getMolecule(); 
+            if (reconstruction.identical(permutation)) {
+                result = "CANON2";
+            }
+            
             AbstractVertexSignature first = sig.signatureForVertex(0);
             first.toCanonicalString();
+            List<SymmetryClass> symmetryClasses = sig.getSymmetryClasses();
             List<Integer> sorted = first.getCanonicalLabelMapping();
             List<Integer> unsorted = first.postorderCanonicalLabelling();
+            List<Integer> groupwise = 
+                first.groupwiseCanonicalLabelling(symmetryClasses);
             if (sig.isCanonicallyLabelled()) {
                 System.out.println(permutor.getRank() + "\t" 
                         + permutation + "\t" 
                         + Arrays.toString(permutor.getCurrentPermutation())
                         + "\t" + group
-                        + "\tCANON"
+                        + "\tCANON" + result + "\t"
                         + "\t" + ordered
                         + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
-                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted));
+                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted)
+                        + "\t" + groupwise + "\t" + sig.isInIncreasingOrder(groupwise));
                 if (ordered) {
                     canonical.add(permutation);
                 }
@@ -182,9 +204,11 @@ public class TestMoleculeSignature {
                         + permutation + "\t" 
                         + Arrays.toString(permutor.getCurrentPermutation())
                         + "\t" + group
+                        + "\t" + result
                         + "\t" + ordered
                         + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
-                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted));
+                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted)
+                        + "\t" + groupwise + "\t" + sig.isInIncreasingOrder(groupwise));
             }
         }
         for (int i = 0; i < canonical.size(); i++) { 
@@ -267,7 +291,18 @@ public class TestMoleculeSignature {
         Molecule molecule = MoleculeFactory.pseudopropellane();
         this.testCanonicalIsUnique(molecule);
     }
-
+    
+    @Test
+    public void testMathylCyclobutaneCanonicalIsUnique() {
+        Molecule molecule = MoleculeFactory.methylatedCyclobutane();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testSixcageCanonicalIsUnique() {
+        Molecule molecule = MoleculeFactory.sixCage();
+        this.testCanonicalIsUnique(molecule);
+    }
     
     @Test
     public void testCanonicalIsUnique() {

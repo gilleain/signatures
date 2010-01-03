@@ -309,6 +309,51 @@ public abstract class AbstractVertexSignature {
         return buffer.toString();
     }
     
+    public List<Integer> groupwiseCanonicalLabelling(
+            List<SymmetryClass> symmetryClasses) {
+        List<Integer> labels = new ArrayList<Integer>();
+        groupwise(labels, symmetryClasses, 
+                this.dag.getRoot(), new ArrayList<DAG.Arc>());
+        return labels;
+    }
+    
+    private void groupwise(List<Integer> labels, 
+                           List<SymmetryClass> symmetryClasses,
+                           DAG.Node node, List<DAG.Arc> arcs) {
+        int index = findIndex(node.vertexIndex, symmetryClasses, labels);
+        if (!labels.contains(index)) {
+            labels.add(index);
+        }
+        
+        Collections.sort(node.children);
+        for (int i = 0; i < node.children.size(); i++) {
+            DAG.Node child = node.children.get(i);
+            DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
+            if (arcs.contains(arc)) {
+                continue;
+            } else {
+                arcs.add(arc);
+                groupwise(labels, symmetryClasses, child, arcs);
+            }
+        }
+    }
+    
+    private int findIndex(int vertexIndex, 
+            List<SymmetryClass> symmetryClasses, List<Integer> labels) {
+        for (SymmetryClass symmetryClass : symmetryClasses) {
+            int index = symmetryClass.getMinimal(vertexIndex, labels);
+            if (index == -1) {
+                continue;
+            } else {
+                return index;
+            }
+        }
+        
+        // should really raise an exception here, as the symmetry classes must
+        // be a partition of the vertices...
+        return -1;
+    }
+    
     public List<Integer> postorderCanonicalLabelling() {
         List<Integer> labelling = new ArrayList<Integer>();
         postorder(labelling, this.dag.getRoot(), new ArrayList<DAG.Arc>());

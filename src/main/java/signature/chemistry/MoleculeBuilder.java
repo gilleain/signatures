@@ -31,4 +31,7 @@ public class MoleculeBuilder extends AbstractGraphBuilder {
         return this.molecule;
     }
 
+    public Molecule getMolecule() {
+        return this.molecule;
+    }
 }
