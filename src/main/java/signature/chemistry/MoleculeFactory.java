@@ -81,11 +81,17 @@ public class MoleculeFactory {
     
     public static Molecule methylatedCyclobutane() {
         Molecule molecule = new Molecule("C", 5);
+//        molecule.addSingleBond(0, 1);
+//        molecule.addSingleBond(1, 2);
+//        molecule.addSingleBond(1, 3);
+//        molecule.addSingleBond(1, 4);
+//        molecule.addSingleBond(2, 4);
+//        molecule.addSingleBond(3, 4);
         molecule.addSingleBond(0, 1);
-        molecule.addSingleBond(1, 2);
-        molecule.addSingleBond(1, 3);
-        molecule.addSingleBond(1, 4);
-        molecule.addSingleBond(2, 4);
+        molecule.addSingleBond(0, 2);
+        molecule.addSingleBond(0, 3);
+        molecule.addSingleBond(0, 4);
+        molecule.addSingleBond(2, 3);
         molecule.addSingleBond(3, 4);
         return molecule;
     }
