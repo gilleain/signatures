@@ -180,11 +180,17 @@ public class TestMoleculeSignature {
             boolean ordered = permutation.bondsOrdered();
             MoleculeSignature sig = new MoleculeSignature(permutation);
             
-            MoleculeBuilder builder = new MoleculeBuilder();
-            sig.reconstructCanonicalGraph(sig.signatureForVertex(0), builder);
+//            MoleculeBuilder builder = new MoleculeBuilder();
+//            sig.reconstructCanonicalGraph(sig.signatureForVertex(0), builder);
+//            String result = "";
+//            Molecule reconstruction = builder.getMolecule(); 
+//            if (reconstruction.identical(permutation)) {
+//                result = "CANON2";
+//            }
+            String canonicalEdgeString = sig.reconstructCanonicalEdgeString();
+            String permutationEdgeString = permutation.toEdgeString();
             String result = "";
-            Molecule reconstruction = builder.getMolecule(); 
-            if (reconstruction.identical(permutation)) {
+            if (canonicalEdgeString.equals(permutationEdgeString)) {
                 result = "CANON2";
             }
             
@@ -198,6 +204,8 @@ public class TestMoleculeSignature {
             if (sig.isCanonicallyLabelled()) {
                 System.out.println(permutor.getRank() + "\t" 
                         + permutation + "\t" 
+                        + canonicalEdgeString + "\t"
+                        + permutationEdgeString + "\t"
                         + Arrays.toString(permutor.getCurrentPermutation())
                         + "\t" + group
                         + "\tCANON" + result + "\t"
@@ -211,7 +219,9 @@ public class TestMoleculeSignature {
                 permutations.add(permutor.getCurrentPermutation());
             } else {
                 System.out.println(permutor.getRank() + "\t" 
-                        + permutation + "\t" 
+                        + permutation + "\t"
+                        + canonicalEdgeString + "\t"
+                        + permutationEdgeString + "\t"
                         + Arrays.toString(permutor.getCurrentPermutation())
                         + "\t" + group
                         + "\t" + result

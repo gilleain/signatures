@@ -419,5 +419,5 @@ public abstract class AbstractVertexSignature {
         }
         return tree;
     }
-
+    
 }

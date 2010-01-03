@@ -327,5 +327,16 @@ public abstract class AbstractGraphSignature {
         }
         return true;
     }
+    
+    public String reconstructCanonicalEdgeString() {
+        String canonicalString = this.toCanonicalString();
+        VirtualGraphBuilder builder = new VirtualGraphBuilder();
+        
+        // TODO this line does not really make sense - improve!
+        AbstractVertexSignature signature = this.signatureForVertex(0);
+        
+        builder.makeFromColoredTree(signature.parse(canonicalString));
+        return builder.toEdgeString();
+    }
  
 }

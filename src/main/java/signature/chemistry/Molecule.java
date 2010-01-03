@@ -1,6 +1,7 @@
 package signature.chemistry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,12 +24,17 @@ public class Molecule {
             this.symbol = symbol;
         }
         
+        public Atom(Atom other) {
+            this.index = other.index;
+            this.symbol = other.symbol;
+        }
+        
         public String toString() {
             return this.symbol + ":" + this.index;
         }
     }
     
-    public class Bond {
+    public class Bond implements Comparable<Bond> {
         
         public Atom a;
         
@@ -40,6 +46,12 @@ public class Molecule {
             this.a = a;
             this.b = b;
             this.order = order;
+        }
+        
+        public Bond(Bond other) {
+            this.a = new Atom(other.a);
+            this.b = new Atom(other.b);
+            this.order = other.order;
         }
         
         public int getConnected(int i) {
@@ -59,6 +71,26 @@ public class Molecule {
         
         public String toString() {
             return this.a + "-" + this.b + "(" + this.order + ")";
+        }
+
+        public int compareTo(Bond o) {
+            int thisMin = Math.min(this.a.index, this.b.index);
+            int thisMax = Math.max(this.a.index, this.b.index);
+            int oMin = Math.min(o.a.index, o.b.index);
+            int oMax = Math.max(o.a.index, o.b.index);
+            if (thisMin < oMin) {
+                return -1;
+            } else if (thisMin == oMin){
+                if (thisMax < oMax) {
+                    return -1;
+                } else if (thisMax == oMax) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
         }
     }
     
@@ -212,5 +244,23 @@ public class Molecule {
             }
         }
         return true;
+    }
+
+    public String toEdgeString() {
+        StringBuffer edgeString = new StringBuffer();
+        List<Bond> listCopy = new ArrayList<Bond>();
+        for (Bond bond : this.bonds) {
+            listCopy.add(new Bond(bond));
+        }
+        Collections.sort(listCopy);
+        for (Bond bond : listCopy) {
+            if (bond.a.index < bond.b.index) {
+                edgeString.append(bond.a.index).append(":").append(bond.b.index);
+            } else {
+                edgeString.append(bond.b.index).append(":").append(bond.a.index);
+            }
+            edgeString.append(",");
+        }
+        return edgeString.toString();
     }
 }
