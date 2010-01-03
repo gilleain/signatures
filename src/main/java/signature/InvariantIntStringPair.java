@@ -20,10 +20,12 @@ public class InvariantIntStringPair implements
     }
     
     public boolean equals(InvariantIntStringPair o) {
+        if (this.string == null || o.string == null) return false;
         return this.value == o.value && this.string.equals(o.string);
     }
 
     public int compareTo(InvariantIntStringPair o) {
+        if (this.string == null || o.string == null) return 0;
         int c = this.string.compareTo(o.string);
         if (c == 0) {
             if (this.value < o.value) {

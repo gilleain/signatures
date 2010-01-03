@@ -14,6 +14,7 @@ public class InvariantArray implements Comparable<InvariantArray>{
     }
     
     public boolean equals(int[] other) {
+        if (this.invariants == null || other == null) return false;
         for (int i = 0; i < this.invariants.length; i++) {
             if (this.invariants[i] == other[i]) {
                 continue;
@@ -34,6 +35,7 @@ public class InvariantArray implements Comparable<InvariantArray>{
     }
 
     public int compareTo(InvariantArray o) {
+        if (this.invariants == null || o.invariants == null) return 0;
         for (int i = 0; i < this.invariants.length; i++) {
             if (this.invariants[i] < o.invariants[i]) {
                 return -1;
