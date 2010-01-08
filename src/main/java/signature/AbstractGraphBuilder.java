@@ -48,7 +48,7 @@ public abstract class AbstractGraphBuilder {
             vertexIndex = this.vertexCount - 1;
         }
         
-        this.makeEdge(parentIndex, vertexIndex);
+        this.makeEdge(parentIndex, vertexIndex, parent.label, node.label);
         for (ColoredTree.Node child : node.children) {
             this.makeFromColoredTreeNode(node, child, vertexIndex);
         }
@@ -74,5 +74,6 @@ public abstract class AbstractGraphBuilder {
      * @param vertexIndex1 the index of the first vertex in the graph
      * @param vertexIndex2 the index of the second vertex in the graph
      */
-    public abstract void makeEdge(int vertexIndex1, int vertexIndex2);
+    public abstract void makeEdge(int vertexIndex1, int vertexIndex2,
+            String vertexSymbol1, String vertexSymbol2);
 }

@@ -29,8 +29,13 @@ public class Molecule {
             this.symbol = other.symbol;
         }
         
+        public boolean equals(Atom other) {
+            return this.index == other.index 
+                && this.symbol.equals(other.symbol);
+        }
+        
         public String toString() {
-            return this.symbol + ":" + this.index;
+            return this.index + this.symbol;
         }
     }
     
@@ -62,6 +67,13 @@ public class Molecule {
             } else {
                 return -1;
             }
+        }
+        
+        public boolean equals(Object o) {
+            Bond other = (Bond) o;
+            return (this.a.equals(other.a) && this.b.equals(other.b)) 
+                || (this.a.equals(other.b) && this.b.equals(other.a)); 
+                    
         }
         
         public boolean hasBoth(int atomIndexA, int atomIndexB) {
@@ -212,17 +224,9 @@ public class Molecule {
     public boolean identical(Molecule other) {
         if (this.getBondCount() != other.getBondCount()) return false;
         for (Bond bond : this.bonds) {
-            boolean hasPartner = false;
-            for (Bond otherBond : other.bonds) {
-                if ((bond.a.index == otherBond.a.index 
-                        && bond.b.index == otherBond.b.index) ||
-                    (bond.b.index == otherBond.a.index 
-                        && bond.a.index == otherBond.b.index)) {
-                    hasPartner = true;
-                    continue;
-                }
-            }
-            if (!hasPartner) {
+            if (other.bonds.contains(bond)) {
+                continue;
+            } else {
                 return false;
             }
         }
@@ -255,9 +259,9 @@ public class Molecule {
         Collections.sort(listCopy);
         for (Bond bond : listCopy) {
             if (bond.a.index < bond.b.index) {
-                edgeString.append(bond.a.index).append(":").append(bond.b.index);
+                edgeString.append(bond.a).append(":").append(bond.b);
             } else {
-                edgeString.append(bond.b.index).append(":").append(bond.a.index);
+                edgeString.append(bond.b).append(":").append(bond.a);
             }
             edgeString.append(",");
         }

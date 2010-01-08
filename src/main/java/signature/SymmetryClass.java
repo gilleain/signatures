@@ -1,5 +1,6 @@
 package signature;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -30,6 +31,14 @@ public class SymmetryClass implements Comparable<SymmetryClass> {
     public SymmetryClass(String signatureString) {
        this.signatureString = signatureString;
        this.vertexIndices = new TreeSet<Integer>();
+    }
+    
+    public Iterator<Integer> getVertexIndices() {
+        return this.vertexIndices.iterator();
+    }
+    
+    public String getSignatureString() {
+        return this.signatureString;
     }
     
     /**

@@ -14,17 +14,26 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
     
     private class VirtualEdge implements Comparable<VirtualEdge> {
         
-        public int lowerVertexIndex;
+        public final int lowerVertexIndex;
         
-        public int upperVertexIndex;
+        public final int upperVertexIndex;
         
-        public VirtualEdge(int vertexIndex1, int vertexIndex2) {
+        public final String lowerVertexSymbol;
+        
+        public final String upperVertexSymbol;
+        
+        public VirtualEdge(int vertexIndex1, int vertexIndex2, 
+                String vertexSymbol1, String vertexSymbol2) {
             if (vertexIndex1 < vertexIndex2) {
                 this.lowerVertexIndex = vertexIndex1;
                 this.upperVertexIndex = vertexIndex2;
+                this.lowerVertexSymbol = vertexSymbol1;
+                this.upperVertexSymbol = vertexSymbol2;
             } else {
                 this.lowerVertexIndex = vertexIndex2;
                 this.upperVertexIndex = vertexIndex1;
+                this.lowerVertexSymbol = vertexSymbol2;
+                this.upperVertexSymbol = vertexSymbol1;
             }
         }
 
@@ -45,7 +54,8 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
         }
         
         public String toString() {
-            return this.lowerVertexIndex + ":" + this.upperVertexIndex;
+            return this.lowerVertexIndex + this.lowerVertexSymbol + 
+                    ":" + this.upperVertexIndex + this.upperVertexSymbol;
         }
     }
     
@@ -66,8 +76,9 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
     }
     
     @Override
-    public void makeEdge(int vertexIndex1, int vertexIndex2) {
-        this.edges.add(new VirtualEdge(vertexIndex1, vertexIndex2));
+    public void makeEdge(int vertexIndex1, int vertexIndex2, 
+            String vertexSymbol1, String vertexSymbol2) {
+        this.edges.add(new VirtualEdge(vertexIndex1, vertexIndex2, vertexSymbol1, vertexSymbol2));
     }
 
     @Override

@@ -360,6 +360,17 @@ public class TestMoleculeSignature {
     }
     
     @Test
+    public void testMetheneFragmentIsCanonicallyUnique() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("H");
+        molecule.addAtom("H");
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(0, 2);
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
     public void testCanonicalIsUnique() {
         Molecule molecule = new Molecule();
         molecule.addAtom("C");
