@@ -325,7 +325,7 @@ public class TestMoleculeSignature {
     }
     
     @Test
-    public void testChainUnique() {
+    public void testCarbonChainUnique() {
         // single atom
         Molecule a = new Molecule("C", 1);
         this.testCanonicalIsUnique(a);
@@ -360,6 +360,28 @@ public class TestMoleculeSignature {
     }
     
     @Test
+    public void testCarbonHydrogenCanonicalChain() {
+        Molecule a = new Molecule("C", 1);
+        this.testCanonicalIsUnique(a);
+        
+        a.addAtom("H");
+        a.addSingleBond(0, 1);
+        this.testCanonicalIsUnique(a);
+        
+        a.addAtom("H");
+        a.addSingleBond(0, 2);
+        this.testCanonicalIsUnique(a);
+        
+        a.addAtom("H");
+        a.addSingleBond(0, 3);
+        this.testCanonicalIsUnique(a);
+        
+        a.addAtom("H");
+        a.addSingleBond(0, 4);
+        this.testCanonicalIsUnique(a);
+    }
+    
+    @Test
     public void testMetheneFragmentIsCanonicallyUnique() {
         Molecule molecule = new Molecule();
         molecule.addAtom("C");
@@ -369,6 +391,45 @@ public class TestMoleculeSignature {
         molecule.addSingleBond(0, 2);
         this.testCanonicalIsUnique(molecule);
     }
+    
+    @Test
+    public void testMethaneIsCanonicallyUnique() {
+        Molecule molecule = MoleculeFactory.methane();
+        this.testCanonicalIsUnique(molecule);
+    }
+    
+    @Test
+    public void testMethaneSignatures() {
+        Molecule molecule = MoleculeFactory.methane();
+        MoleculeSignature signature = new MoleculeSignature(molecule);
+        System.out.println(signature.getSymmetryClasses());
+        System.out.println(signature.toCanonicalString());
+    }
+    
+    @Test
+    public void testMetheneFragmentSignatures() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("H");
+        molecule.addAtom("H");
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(0, 2);
+        MoleculeSignature signature = new MoleculeSignature(molecule);
+        System.out.println(signature.getSymmetryClasses());
+        System.out.println(signature.toCanonicalString());
+    }
+    
+    @Test
+    public void testMethyneFragmentSignatures() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("H");
+        molecule.addSingleBond(0, 1);
+        MoleculeSignature signature = new MoleculeSignature(molecule);
+        System.out.println(signature.getSymmetryClasses());
+        System.out.println(signature.toCanonicalString());
+    }
+
     
     @Test
     public void testCanonicalIsUnique() {
