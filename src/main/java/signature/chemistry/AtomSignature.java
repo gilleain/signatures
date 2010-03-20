@@ -29,11 +29,6 @@ public class AtomSignature extends AbstractVertexSignature {
     }
 
     @Override
-    public int getVertexCount() {
-        return this.molecule.getAtomCount();
-    }
-
-    @Override
     public String getVertexSymbol(int vertexIndex) {
         return this.molecule.getSymbolFor(vertexIndex);
     }

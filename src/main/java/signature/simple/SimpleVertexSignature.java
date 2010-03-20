@@ -32,11 +32,6 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
     }
 
     @Override
-    public int getVertexCount() {
-        return this.graph.getVertexCount();
-    }
-
-    @Override
     public String getVertexSymbol(int vertexIndex) {
         return ".";
     }

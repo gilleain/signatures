@@ -27,6 +27,12 @@ public abstract class AbstractVertexSignature {
     
     private int height;
     
+    /**
+     * Either the number of vertices in the graph - if the height is equal to 
+     * the graph diameter - or the number of vertices seen up to that height
+     */
+    private int vertexCount;
+    
     private List<Integer> currentCanonicalLabelMapping;
     
     private List<Integer> canonicalLabelMapping;
@@ -35,8 +41,7 @@ public abstract class AbstractVertexSignature {
      * Create an abstract vertex signature with no start or end node symbols.
      */
     public AbstractVertexSignature() {
-        this.startNodeSymbol = "";
-        this.endNodeSymbol = "";
+        this("", "");
     }
     
     /**
@@ -49,6 +54,7 @@ public abstract class AbstractVertexSignature {
             String startNodeSymbol, String endNodeSymbol) {
         this.startNodeSymbol = startNodeSymbol;
         this.endNodeSymbol = endNodeSymbol;
+        this.vertexCount = 0;
     }
     
     /**
@@ -75,6 +81,7 @@ public abstract class AbstractVertexSignature {
         this.dag = new DAG(rootVertexIndex, 
                            this.getVertexCount(), 
                            this.getVertexSymbol(rootVertexIndex));
+        this.vertexCount = 1;
         build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), this.height);
         this.dag.initialize();
     }
@@ -127,6 +134,7 @@ public abstract class AbstractVertexSignature {
         if (existingNode == null) {
             existingNode = dag.makeNode(
                     vertexIndex, layer, getVertexSymbol(vertexIndex));
+            this.vertexCount++;
             nextLayer.add(existingNode);
         }
         dag.addRelation(existingNode, parentNode);
@@ -210,13 +218,17 @@ public abstract class AbstractVertexSignature {
     public List<Integer> getCanonicalLabelMapping() {
         return this.canonicalLabelMapping;
     }
-    
+
     /**
      * Get the number of vertices.
      * 
-     * @return the number of vertices in the  input graph
+     * @return the number of vertices seen when making the signature, which may
+     *         be less than the number in the full graph, depending on the 
+     *         height
      */
-    public abstract int getVertexCount();
+    public int getVertexCount() {
+        return this.vertexCount;
+    }
     
     /**
      * Get the symbol to use in the output signature string for this vertex of 
