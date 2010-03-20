@@ -2,6 +2,20 @@ package signature.chemistry;
 
 public class MoleculeFactory {
     
+    public static Molecule methane() {
+        Molecule molecule = new Molecule();
+        molecule.addAtom("C");
+        molecule.addAtom("H");
+        molecule.addAtom("H");
+        molecule.addAtom("H");
+        molecule.addAtom("H");
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(0, 2);
+        molecule.addSingleBond(0, 3);
+        molecule.addSingleBond(0, 4);
+        return molecule;
+    }
+    
     public static Molecule threeCycle() {
         Molecule molecule = new Molecule("C", 3);
         molecule.addSingleBond(0, 1);
