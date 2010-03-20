@@ -37,5 +37,10 @@ public class UnlabelledGraphTest {
         SimpleGraph graph = builder.fromTree(tree);
         System.out.println(graph + "\n" + tree);
     }
+    
+    @Test
+    public void testVertexCount() {
+        
+    }
 	
 }

@@ -2,8 +2,10 @@ package signature;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A directed acyclic graph that is the core data structure of a signature. It
@@ -140,9 +142,9 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	/**
 	 * The counts of parents for nodes  
 	 */
-	private int[] parentCounts;
+	private Map<Integer, Integer> parentCounts;
 	
-	private String[] labels;
+	private Map<Integer, String> labels;
 	
 	private Invariants invariants;
 	
@@ -163,7 +165,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
      * @param vertexCount the number of vertices covered by this DAG
      * @param rootLabel the string label for the root vertex  
      */
-	public DAG(int rootVertexIndex, int vertexCount, String rootLabel) {
+	public DAG(int rootVertexIndex, String rootLabel) {
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
@@ -172,11 +174,10 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
 		
-		this.labels = new String [vertexCount];
-		this.labels[rootVertexIndex] = rootLabel;
-		this.vertexCount = vertexCount;
-		this.parentCounts = new int[vertexCount];
-		
+		this.labels = new HashMap<Integer, String>();
+		this.labels.put(rootVertexIndex, rootLabel);
+		this.vertexCount = 0;
+		this.parentCounts = new HashMap<Integer, Integer>();
 	}
 	
 	
@@ -195,7 +196,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
 		
-		this.parentCounts = new int[vertexCount];
+		this.parentCounts.clear();
 		
 	}
 	
@@ -221,7 +222,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	}
 	
 	public void setLabel(int vertexIndex, String label) {
-	    this.labels[vertexIndex] = label;
+	    this.labels.put(vertexIndex, label);
 	}
 	
 	public void setColor(int vertexIndex, int color) {
@@ -243,7 +244,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	public DAG.Node makeNode(int vertexIndex, int layer, String label) {
 	    DAG.Node node = new DAG.Node(vertexIndex, layer, label);
-	    this.labels[vertexIndex] = label;
+	    this.labels.put(vertexIndex, label);
 	    this.nodes.add(node);
 	    return node;
 	}
@@ -269,14 +270,16 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	
 	public void addRelation(DAG.Node childNode, DAG.Node parentNode) {
 	    childNode.parents.add(parentNode);
-	    this.parentCounts[childNode.vertexIndex]++;
+	    int oldCount = this.parentCounts.get(childNode.vertexIndex);
+	    this.parentCounts.put(childNode.vertexIndex, oldCount + 1);
 	    parentNode.children.add(childNode);
 	}
 	
 	public List<InvariantIntIntPair> getInvariantPairs() {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
-	        if (this.invariants.colors[i] == 0 && this.parentCounts[i] >= 2) {
+	        if (this.invariants.colors[i] == 0 
+	                && this.parentCounts.get(i) >= 2) {
 	            pairs.add(
 	                    new InvariantIntIntPair(
 	                            this.invariants.vertexInvariants[i], i));
@@ -302,8 +305,8 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	    List<InvariantIntStringPair> pairs = 
 	        new ArrayList<InvariantIntStringPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
-	        String l = this.labels[i];
-	        int p = this.parentCounts[i];
+	        String l = this.labels.get(i);
+	        int p = this.parentCounts.get(i);
 	        pairs.add(new InvariantIntStringPair(l, p, i));
 	    }
 	    Collections.sort(pairs);
@@ -332,7 +335,7 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	        int orbitSize = 0;
 	        for (int j = 0; j < this.vertexCount; j++) {
 	            if (this.invariants.vertexInvariants[j] == invariant 
-	                    && this.parentCounts[j] >= 2) {
+	                    && this.parentCounts.get(j) >= 2) {
 	                orbitSize++;
 	            }
 	        }

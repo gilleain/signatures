@@ -78,11 +78,9 @@ public abstract class AbstractVertexSignature {
     public void create(int rootVertexIndex, int height) {
         this.height = height;
         if (height == 0 || this.getVertexCount() == 0) return;
-        this.dag = new DAG(rootVertexIndex, 
-                           this.getVertexCount(), 
-                           this.getVertexSymbol(rootVertexIndex));
+        this.dag = new DAG(rootVertexIndex, getVertexSymbol(rootVertexIndex));
         this.vertexCount = 1;
-        build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), this.height);
+        build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
         this.dag.initialize();
     }
 
