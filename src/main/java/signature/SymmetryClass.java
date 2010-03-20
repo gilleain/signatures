@@ -97,4 +97,8 @@ public class SymmetryClass implements Comparable<SymmetryClass> {
         return this.signatureString.compareTo(o.signatureString);
     }
     
+    public String toString() {
+        return this.signatureString + " " + this.vertexIndices;
+    }
+    
 }
