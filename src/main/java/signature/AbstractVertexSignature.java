@@ -55,6 +55,7 @@ public abstract class AbstractVertexSignature {
         this.startNodeSymbol = startNodeSymbol;
         this.endNodeSymbol = endNodeSymbol;
         this.vertexCount = 0;
+        this.currentCanonicalLabelMapping = new ArrayList<Integer>();
     }
     
     /**
@@ -77,7 +78,7 @@ public abstract class AbstractVertexSignature {
      */
     public void create(int rootVertexIndex, int height) {
         this.height = height;
-        if (height == 0 || this.getVertexCount() == 0) return;
+        if (height == 0) return;
         this.dag = new DAG(rootVertexIndex, getVertexSymbol(rootVertexIndex));
         this.vertexCount = 1;
         build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);

@@ -256,6 +256,7 @@ public class TestMoleculeSignature {
         Molecule molecule = MoleculeFactory.fiveCycle();
         AtomSignature atomSignature = new AtomSignature(molecule, 0);
         System.out.println(atomSignature.toCanonicalString());
+//        System.out.println(atomSignature);
     }
     
     @Test
