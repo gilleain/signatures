@@ -140,10 +140,11 @@ public abstract class AbstractGraphSignature {
      * @return the lexicographically minimal vertex string
      */
     public String toCanonicalString() {
-        String canonicalString = "";
+        String canonicalString = null;
         for (int i = 0; i < this.getVertexCount(); i++) {
             String signatureString = this.signatureStringForVertex(i);
-            if (canonicalString.compareTo(signatureString) < 0) {
+            if (canonicalString == null ||
+                    canonicalString.compareTo(signatureString) > 0) {
                 canonicalString = signatureString; 
             }
         }
