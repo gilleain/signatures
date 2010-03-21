@@ -369,19 +369,23 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	}
 	
 	public void computeVertexInvariants() {
-	    int[][] layerInvariants = new int[this.vertexCount][];
+	    Map<Integer, int[]> layerInvariants = new HashMap<Integer, int[]>();
 	    for (int i = 0; i < this.nodes.size(); i++) {
 	        DAG.Node node = this.nodes.get(i);
 	        int j = node.vertexIndex;
-	        if (layerInvariants[j] == null) {
-	            layerInvariants[j] = new int[this.layers.size()];
+	        int[] layerInvariantsJ;
+	        if (layerInvariants.containsKey(j)) {
+	            layerInvariantsJ = layerInvariants.get(j);
+	        } else {
+	            layerInvariantsJ = new int[this.layers.size()];
+	            layerInvariants.put(j, layerInvariantsJ);
 	        }
-	        layerInvariants[j][node.layer] = invariants.getNodeInvariant(i); 
+	        layerInvariantsJ[node.layer] = invariants.getNodeInvariant(i); 
 	    }
 	    
 	    List<InvariantArray> invariantLists = new ArrayList<InvariantArray>();
-	    for (int i = 0; i < this.vertexCount; i++) {
-	        InvariantArray invArr = new InvariantArray(layerInvariants[i], i); 
+	    for (int i : layerInvariants.keySet()) {
+	        InvariantArray invArr = new InvariantArray(layerInvariants.get(i), i); 
 	        invariantLists.add(invArr);
 	    }
 	    Collections.sort(invariantLists);
