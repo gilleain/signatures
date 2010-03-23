@@ -15,9 +15,9 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
         super("[", "]");
         this.graph = graph;
         if (height == -1) {
-            super.create(rootVertexIndex);
+            super.createMaximumHeight(rootVertexIndex, graph.getVertexCount());
         } else {
-            super.create(rootVertexIndex, height);
+            super.create(rootVertexIndex, graph.getVertexCount(), height);
         }
     }
 

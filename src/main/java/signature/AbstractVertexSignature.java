@@ -3,7 +3,9 @@ package signature;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base class for signatures that are created from a vertex of a graph. A
@@ -25,13 +27,28 @@ public abstract class AbstractVertexSignature {
     
     private DAG dag;
     
-    private int height;
-    
     /**
-     * Either the number of vertices in the graph - if the height is equal to 
-     * the graph diameter - or the number of vertices seen up to that height
+     * If the signature is considered as a tree, the height is the maximum 
+     * distance from the root to the leaves. A height of -1 is taken to mean
+     * the same as the maximum possible height, which is the graph diameter
+     */
+    private int height;
+
+    /**
+     * The number of vertices from the graph that were visited to make the
+     * signature. This is either the number of vertices in the graph - if the
+     * height is equal to the graph diameter - or the number of vertices seen up
+     * to that height
      */
     private int vertexCount;
+    
+    /**
+     * Mapping between the vertex indices stored in the Nodes and the vertex 
+     * indices in the original graph. This is necessary for signatures with a
+     * height less than the graph diameter. It is also the order in which the
+     * vertices were visited to make the DAG.
+     */
+    private Map<Integer, Integer> vertexMapping;
     
     private List<Integer> currentCanonicalLabelMapping;
     
@@ -73,9 +90,11 @@ public abstract class AbstractVertexSignature {
      * 
      * @param rootVertexIndex
      *            the index in the graph of the root for this signature
+     * @param graphVertexCount
+     *            the number of vertices in the graph           
      */
-    public void create(int rootVertexIndex) {
-        this.create(rootVertexIndex, -1);
+    public void createMaximumHeight(int rootVertexIndex, int graphVertexCount) {
+        create(rootVertexIndex, graphVertexCount, -1);
     }
 
     /**
@@ -85,16 +104,20 @@ public abstract class AbstractVertexSignature {
      * 
      * @param rootVertexIndex
      *            the index in the graph of the root for this signature
+     * @param graphVertexCount
+     *            the number of vertices in the graph           
      * @param height
      *            the maximum height of the signature
      */
-    public void create(int rootVertexIndex, int height) {
+    public void create(int rootVertexIndex, int graphVertexCount, int height) {
         this.height = height;
         if (height == 0) return;
-        this.dag = new DAG(rootVertexIndex, getVertexSymbol(rootVertexIndex));
-        this.vertexCount = 1;
-        build(1, this.dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
-        this.dag.initialize();
+        vertexMapping = new HashMap<Integer, Integer>();
+        vertexMapping.put(0, rootVertexIndex);
+        dag = new DAG(0, graphVertexCount, getVertexSymbol(rootVertexIndex));
+        vertexCount = 1;
+        build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
+        dag.initialize(vertexCount);
     }
 
     private void build(int layer, 
@@ -122,19 +145,36 @@ public abstract class AbstractVertexSignature {
     private void addNode(int layer, DAG.Node parentNode, int vertexIndex,
             List<DAG.Arc> layerArcs, List<DAG.Arc> usedArcs, 
             List<DAG.Node> nextLayer) {
+        
+        // look up the mapping or create a new mapping for the vertex index
+        int mappedVertexIndex;
+        if (vertexMapping.containsKey(vertexIndex)) {
+            mappedVertexIndex = vertexMapping.get(vertexIndex);
+        } else {
+            vertexMapping.put(vertexIndex, vertexCount);
+            mappedVertexIndex = vertexCount;
+            vertexCount++;
+        }
+//        System.out.println("layer " + layer + " parentNode " + parentNode +
+//                " vertexIndex " + vertexIndex + " mappedVertexIndex "
+//                + mappedVertexIndex + " " + vertexMapping);
+        
+        // find an existing node if there is one
         DAG.Arc arc = dag.new Arc(parentNode.vertexIndex, vertexIndex);
         if (usedArcs.contains(arc)) return;
         DAG.Node existingNode = null;
         for (DAG.Node otherNode : nextLayer) {
-            if (otherNode.vertexIndex == vertexIndex) {
+            if (otherNode.vertexIndex == mappedVertexIndex) {
                 existingNode = otherNode;
                 break;
             }
         }
+        
+        // if there isn't, make a new node and add it to the layer
         if (existingNode == null) {
-            existingNode = dag.makeNode(
-                    vertexIndex, layer, getVertexSymbol(vertexIndex));
-            this.vertexCount++;
+            existingNode = 
+                dag.makeNode(
+                    mappedVertexIndex, layer, getVertexSymbol(vertexIndex));
             nextLayer.add(existingNode);
         }
         dag.addRelation(existingNode, parentNode);

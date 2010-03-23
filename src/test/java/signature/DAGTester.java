@@ -21,7 +21,7 @@ public class DAGTester {
     @Test
     public void testColoring() {
         // C12CC1C1
-        DAG ring = new DAG(0, "C");
+        DAG ring = new DAG(0, 4, "C");
         DAG.Node root = ring.getRoot();
         
         DAG.Node child1 = ring.makeNodeInLayer(1, 1, "C");
@@ -83,7 +83,7 @@ public class DAGTester {
     
     @Test
     public void testColoringForUnlabelledThreeCycle() {
-        DAG dag = new DAG(0, "C");
+        DAG dag = new DAG(0, 3, "C");
         DAG.Node root = dag.getRoot();
         
         DAG.Node childA = dag.makeNodeInLayer(1, 1, "C");
@@ -116,7 +116,7 @@ public class DAGTester {
         //            / \
         //    1 - Node  2 - Node
 
-        DAG simpleDAG = new DAG(0, "Node");
+        DAG simpleDAG = new DAG(0, 3, "Node");
 
 
         // First do all the initializations related to the nodes of the graph.
@@ -175,7 +175,7 @@ public class DAGTester {
         //            / \
         //    1 - Node2  2 - Node1
 
-        DAG simpleDAG = new DAG(0, "Node0");
+        DAG simpleDAG = new DAG(0, 3, "Node0");
 
 
         // First do all the initializations related to the nodes of the graph.

@@ -9,13 +9,13 @@ public class AtomSignature extends AbstractVertexSignature {
     public AtomSignature(Molecule molecule, int atomNumber) {
         super("[", "]");
         this.molecule = molecule;
-        this.create(atomNumber);
+        this.createMaximumHeight(atomNumber, molecule.getAtomCount());
     }
     
     public AtomSignature(Molecule molecule, int atomNumber, int height) {
         super("[", "]");
         this.molecule = molecule;
-        this.create(atomNumber, height);
+        this.create(atomNumber, molecule.getAtomCount(), height);
     }
 
     @Override
