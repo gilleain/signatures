@@ -73,6 +73,18 @@ public abstract class AbstractVertexSignature {
      * 
      * @param rootVertexIndex
      *            the index in the graph of the root for this signature
+     */
+    public void create(int rootVertexIndex) {
+        this.create(rootVertexIndex, -1);
+    }
+
+    /**
+     * This is a kind of constructor that builds the internal representation of
+     * the signature given the index of the vertex to use as a root. It also
+     * takes a maximum height, which limits how many vertices will be visited.
+     * 
+     * @param rootVertexIndex
+     *            the index in the graph of the root for this signature
      * @param height
      *            the maximum height of the signature
      */
@@ -85,17 +97,6 @@ public abstract class AbstractVertexSignature {
         this.dag.initialize();
     }
 
-    /**
-     * This is a kind of constructor that builds the internal representation of
-     * the signature given the index of the vertex to use as a root.
-     * 
-     * @param rootVertexIndex
-     *            the index in the graph of the root for this signature
-     */
-    public void create(int rootVertexIndex) {
-        this.create(rootVertexIndex, -1);
-    }
-    
     private void build(int layer, 
             List<DAG.Node> previousLayer, List<DAG.Arc> usedArcs, int height) {
         if (height == 0) return;

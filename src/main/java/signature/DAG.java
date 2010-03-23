@@ -87,6 +87,9 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		    visitor.visit(this);
 		}
 		
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
 		public String toString() {
 		    StringBuffer parentString = new StringBuffer();
 		    parentString.append('[');
