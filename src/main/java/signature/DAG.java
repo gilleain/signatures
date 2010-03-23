@@ -14,7 +14,7 @@ import java.util.Map;
  * @author maclean
  *
  */
-public class DAG implements Iterable<List<DAG.Node>>{
+public class DAG implements Iterable<List<DAG.Node>> {
     
     /**
      * The direction up and down the DAG. UP is from leaves to root.
@@ -28,12 +28,26 @@ public class DAG implements Iterable<List<DAG.Node>>{
 	 */
 	public class Node implements Comparable<Node>, VisitableDAG {
 		
+		/**
+		 * The index of the vertex in the graph. Note that for signatures that
+		 * cover only part of the graph (with a height less than the diameter)
+		 * this index may have to be mapped to the original index 
+		 */
 		public int vertexIndex;
 		
+		/**
+		 * The parent nodes in the DAG
+		 */
 		public List<Node> parents;
 		
+		/**
+		 * The child nodes in the DAG
+		 */
 		public List<Node> children;
 		
+		/**
+		 * What layer this node is in
+		 */
 		public int layer;
 		
 		/**
@@ -46,6 +60,13 @@ public class DAG implements Iterable<List<DAG.Node>>{
 		 */
 		public int invariant;
 		
+		/**
+		 * Make a Node that refers to a vertex, in a layer, and with a label.
+		 * 
+		 * @param vertexIndex the graph vertex index
+		 * @param layer the layer of this Node
+		 * @param label the label of the vertex
+		 */
 		public Node(int vertexIndex, int layer, String label) {
 			this.vertexIndex = vertexIndex;
 			this.layer = layer;
