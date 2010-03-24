@@ -39,13 +39,13 @@ public class SimpleGraph {
             String[] vertexStrings = edgeString.split(":");
             int a = Integer.parseInt(vertexStrings[0]);
             int b = Integer.parseInt(vertexStrings[1]);
-            this.edges.add(new Edge(a, b));
-            if (a > maxVertexIndex) maxVertexIndex = a;
-            if (b > maxVertexIndex) maxVertexIndex = b;
+            makeEdge(a, b);
         }
     }
     
     public void makeEdge(int a, int b) {
+        if (a > maxVertexIndex) maxVertexIndex = a;
+        if (b > maxVertexIndex) maxVertexIndex = b;
         this.edges.add(new Edge(a, b));
     }
     
