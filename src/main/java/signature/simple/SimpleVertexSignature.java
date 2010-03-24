@@ -1,6 +1,7 @@
 package signature.simple;
 
 import signature.AbstractVertexSignature;
+import signature.ColoredTree;
 
 public class SimpleVertexSignature extends AbstractVertexSignature {
     
@@ -12,7 +13,7 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
     
     public SimpleVertexSignature(
             int rootVertexIndex, int height, SimpleGraph graph) {
-        super("[", "]");
+        super('[', ']');
         this.graph = graph;
         if (height == -1) {
             super.createMaximumHeight(rootVertexIndex, graph.getVertexCount());
@@ -34,6 +35,10 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
     @Override
     public String getVertexSymbol(int vertexIndex) {
         return ".";
+    }
+    
+    public static ColoredTree parse(String s) {
+        return AbstractVertexSignature.parseWithoutNodeSymbols(s);
     }
 
 }

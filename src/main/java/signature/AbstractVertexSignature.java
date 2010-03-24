@@ -21,9 +21,16 @@ public abstract class AbstractVertexSignature {
     
     public static final char END_BRANCH_SYMBOL = ')';
     
-    private final String startNodeSymbol;
+    public static final char BLANK_SYMBOL = '\u0000';
     
-    private final String endNodeSymbol;
+    private final char startNodeSymbol;
+    
+    private final char endNodeSymbol;
+    
+    /**
+     * If true, the signature uses start/end symbols to surround the node 
+     */
+    private final boolean hasNodeBracketSymbols; 
     
     private DAG dag;
     
@@ -58,7 +65,11 @@ public abstract class AbstractVertexSignature {
      * Create an abstract vertex signature with no start or end node symbols.
      */
     public AbstractVertexSignature() {
-        this("", "");
+        startNodeSymbol = AbstractVertexSignature.BLANK_SYMBOL;
+        endNodeSymbol = AbstractVertexSignature.BLANK_SYMBOL;
+        hasNodeBracketSymbols = false;
+        this.vertexCount = 0;
+        this.currentCanonicalLabelMapping = new ArrayList<Integer>();
     }
     
     /**
@@ -67,10 +78,10 @@ public abstract class AbstractVertexSignature {
      * @param startNodeSymbol
      * @param endNodeSymbol
      */
-    public AbstractVertexSignature(
-            String startNodeSymbol, String endNodeSymbol) {
+    public AbstractVertexSignature(char startNodeSymbol, char endNodeSymbol) {
         this.startNodeSymbol = startNodeSymbol;
         this.endNodeSymbol = endNodeSymbol;
+        hasNodeBracketSymbols = true;
         this.vertexCount = 0;
         this.currentCanonicalLabelMapping = new ArrayList<Integer>();
     }
@@ -430,7 +441,8 @@ public abstract class AbstractVertexSignature {
         }
     }
     
-    public ColoredTree parse(String s) {
+    public static ColoredTree parseWithoutNodeSymbols(String s) {
+        // TODO FIXME for unlabelled graph signatures 
         ColoredTree tree = null;
         ColoredTree.Node parent = null;
         ColoredTree.Node current = null;
@@ -447,9 +459,50 @@ public abstract class AbstractVertexSignature {
             } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
                 parent = parent.parent;
                 currentHeight--;
-            } else if (c == '[') {  // TODO : use start node symbol
+            } else if (c == ',') {
+                k = i + 1;
+            } else {
+                String ss;
+                if (k < j) {    // no color
+                    ss = s.substring(j, i);
+                    color = 0;
+                } else {        // color
+                    ss = s.substring(j, k - 1);
+                    color = Integer.parseInt(s.substring(k, i));    
+                }
+                if (tree == null) {
+                    tree = new ColoredTree(ss);
+                    parent = tree.getRoot();
+                    current = tree.getRoot();
+                } else {
+                    current = tree.makeNode(ss, parent, currentHeight, color);
+                }
+            } 
+        }
+        return tree;
+    }
+    
+    public static ColoredTree parseWithNodeSymbols(
+            String s, char startNodeSymbol, char endNodeSymbol) {
+        ColoredTree tree = null;
+        ColoredTree.Node parent = null;
+        ColoredTree.Node current = null;
+        int currentHeight = 1;
+        int color = 0;
+        int j = 0;
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == AbstractVertexSignature.START_BRANCH_SYMBOL) {
+                parent = current;
+                currentHeight++;
+                tree.updateHeight(currentHeight);
+            } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
+                parent = parent.parent;
+                currentHeight--;
+            } else if (c == startNodeSymbol) {  
                 j = i + 1;
-            } else if (c == ']') {  // TODO : use end node symbol
+            } else if (c == endNodeSymbol) {
                 String ss;
                 if (k < j) {    // no color
                     ss = s.substring(j, i);

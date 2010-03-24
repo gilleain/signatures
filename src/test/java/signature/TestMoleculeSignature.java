@@ -50,16 +50,14 @@ public class TestMoleculeSignature {
    @Test
    public void testColoredTreeCreation() {
        String signatureString = "[C]([C]([C,1])[C]([C,1]))";
-       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
-       ColoredTree tree = atomSignature.parse(signatureString);
+       ColoredTree tree = AtomSignature.parse(signatureString);
        Assert.assertEquals(signatureString, tree.toString());
    }
    
    @Test
    public void testOddCycleReadin() {
        String signatureString = "[C]([C]([C,2]([C,1]))[C]([C,1]))";
-       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
-       ColoredTree tree = atomSignature.parse(signatureString);
+       ColoredTree tree = AtomSignature.parse(signatureString);
        Assert.assertEquals(signatureString, tree.toString());
        Molecule molecule = new MoleculeBuilder().fromTree(tree);
        Assert.assertEquals(5, molecule.getAtomCount());
@@ -72,8 +70,7 @@ public class TestMoleculeSignature {
                                 "[C,3]([C,6]([C,1]))))[C]([C]([C,7][C]" +
                                 "([C,1][C,8]))[C,5]([C,8]([C,6])))[C]([C,2]" +
                                 "[C,7]([C,4]([C,1]))))";
-       AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
-       ColoredTree tree = atomSignature.parse(signatureString);
+       ColoredTree tree = AtomSignature.parse(signatureString);
        Assert.assertEquals(signatureString, tree.toString());
        Molecule molecule = new MoleculeBuilder().fromTree(tree);
        Assert.assertEquals(16, molecule.getAtomCount());
@@ -93,10 +90,10 @@ public class TestMoleculeSignature {
        molecule.addBond(2, 3, 1);
        AtomSignature atomSignature = new AtomSignature(molecule, 0);
        String signatureString = atomSignature.toCanonicalString();
-       ColoredTree tree = atomSignature.parse(signatureString);
+       ColoredTree tree = AtomSignature.parse(signatureString);
        MoleculeBuilder builder = new MoleculeBuilder();
        Molecule builtMolecule = builder.fromTree(tree);
-//       Assert.assertEquals(molecule.toString(), builtMolecule.toString());
+       Assert.assertEquals(molecule.toString(), builtMolecule.toString());
    }
     
     @Test
@@ -137,7 +134,7 @@ public class TestMoleculeSignature {
         }
         
         Molecule molecule = MoleculeReader.readSDFFile(filename).get(0);
-//        this.testCanonicalIsUnique(molecule);
+        this.testCanonicalIsUnique(molecule);
     }
     
     public void testCanonicalIsUnique(Molecule molecule) {

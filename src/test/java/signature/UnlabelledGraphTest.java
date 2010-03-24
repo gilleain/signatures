@@ -29,8 +29,7 @@ public class UnlabelledGraphTest {
     @Test
     public void testColoredTreeRoundtrip() {
         String signatureString = "[.]([.]([.,1])[.]([.,1]))";
-        SimpleVertexSignature sig = new SimpleVertexSignature(0, new SimpleGraph());
-        ColoredTree tree = sig.parse(signatureString);
+        ColoredTree tree = SimpleVertexSignature.parse(signatureString);
         Assert.assertEquals(signatureString, tree.toString());
         
         SimpleGraphBuilder builder = new SimpleGraphBuilder();

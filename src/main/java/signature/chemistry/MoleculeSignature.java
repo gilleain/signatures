@@ -8,7 +8,7 @@ public class MoleculeSignature extends AbstractGraphSignature {
     private Molecule molecule;
     
     public MoleculeSignature(Molecule molecule) {
-        super(" + ", "[", "]");
+        super(" + ", '[', ']');
         this.molecule = molecule;
     }
     
