@@ -23,6 +23,13 @@ public class HeightTest {
                 }
             }
         }
+        // finish off the last column
+        for (int i = 0; i < height - 1; i++) {
+            int x = ((i + 1) * width) - 1;
+            int y = ((i + 2) * width) - 1;
+            graph.makeEdge(x, y);
+        }
+        
         int size = width * height;
         
         // connect the top edge to the bottom
@@ -33,7 +40,7 @@ public class HeightTest {
         // connect the left edge to the right
         for (int j = 0; j < height; j++) {
             int x = width * j;
-            int y = x + width;
+            int y = (x + width) - 1;
             graph.makeEdge(x, y);
         }
         
@@ -42,15 +49,17 @@ public class HeightTest {
     
     @Test
     public void torusTest() {
-        int width = 4;
-        int height = 3;
+        int width = 6;
+        int height = 5;
         
         SimpleGraph torus = makeTorus(width, height);
+        System.out.println(torus);
         int diameter = Math.min(width, height);
-        for (int h = 1; h <= diameter + 1; h++) {
+        for (int h = 1; h <= diameter; h++) {
             SimpleVertexSignature sig0 = 
                 new SimpleVertexSignature(0, h, torus);
             String zeroCanonical = sig0.toCanonicalString();
+            System.out.println(h + "\t" + zeroCanonical);
             for (int i = 1; i < torus.getVertexCount(); i++) {
                 SimpleVertexSignature sig = 
                     new SimpleVertexSignature(i, h, torus);

@@ -138,7 +138,6 @@ public abstract class AbstractVertexSignature {
      */
     public void create(int rootVertexIndex, int graphVertexCount, int height) {
         this.height = height;
-        if (height == 0) return;
         vertexMapping = new HashMap<Integer, Integer>();
         vertexMapping.put(rootVertexIndex, 0);
         dag = new DAG(0, graphVertexCount, getVertexSymbol(rootVertexIndex));
