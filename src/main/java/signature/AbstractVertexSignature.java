@@ -94,6 +94,22 @@ public abstract class AbstractVertexSignature {
     public int getHeight() {
         return this.height;
     }
+    
+    /**
+     * Look up the original graph vertex that <code>vertexIndex</code> maps to.  
+     * 
+     * @param vertexIndex the internal vertex index that 
+     * @return the vertex index in the original graph
+     */
+    public int getOriginalVertexIndex(int vertexIndex) {
+        for (int originalVertexIndex : vertexMapping.keySet()) {
+            int internalVertexIndex = vertexMapping.get(originalVertexIndex);
+            if (internalVertexIndex == vertexIndex) {
+                return originalVertexIndex;
+            }
+        }
+        return -1;
+    }
 
     /**
      * This is a kind of constructor that builds the internal representation of
@@ -124,7 +140,7 @@ public abstract class AbstractVertexSignature {
         this.height = height;
         if (height == 0) return;
         vertexMapping = new HashMap<Integer, Integer>();
-        vertexMapping.put(0, rootVertexIndex);
+        vertexMapping.put(rootVertexIndex, 0);
         dag = new DAG(0, graphVertexCount, getVertexSymbol(rootVertexIndex));
         vertexCount = 1;
         build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
@@ -137,7 +153,8 @@ public abstract class AbstractVertexSignature {
         List<DAG.Node> nextLayer = new ArrayList<DAG.Node>();
         List<DAG.Arc> layerArcs = new ArrayList<DAG.Arc>();
         for (DAG.Node node : previousLayer) {
-            int[] connected = getConnected(node.vertexIndex);
+            int mappedIndex = getOriginalVertexIndex(node.vertexIndex);
+            int[] connected = getConnected(mappedIndex);
             Arrays.sort(connected);
             for (int connectedVertex : connected) {
                 addNode(
@@ -171,7 +188,7 @@ public abstract class AbstractVertexSignature {
 //                + mappedVertexIndex + " " + vertexMapping);
         
         // find an existing node if there is one
-        DAG.Arc arc = dag.new Arc(parentNode.vertexIndex, vertexIndex);
+        DAG.Arc arc = dag.new Arc(parentNode.vertexIndex, mappedVertexIndex);
         if (usedArcs.contains(arc)) return;
         DAG.Node existingNode = null;
         for (DAG.Node otherNode : nextLayer) {
