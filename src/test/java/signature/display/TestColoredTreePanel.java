@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import signature.ColoredTree;
 import signature.chemistry.AtomSignature;
-import signature.chemistry.Molecule;
 
 public class TestColoredTreePanel {
     
@@ -22,8 +21,7 @@ public class TestColoredTreePanel {
     }
     
     public static ColoredTree makeColoredTree(String signatureString) {
-        AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
-        return atomSignature.parse(signatureString);
+        return AtomSignature.parse(signatureString);
     }
     
     /**

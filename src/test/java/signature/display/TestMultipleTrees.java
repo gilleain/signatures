@@ -22,8 +22,7 @@ public class TestMultipleTrees {
     }
     
     public static void makePanel(JFrame f, String signature, int w, int h) {
-        AtomSignature atomSignature = new AtomSignature(new Molecule(), 0);
-        ColoredTree tree = atomSignature.parse(signature);;
+        ColoredTree tree = AtomSignature.parse(signature);;
         f.add(new ColoredTreePanel(tree, w, h));
     }
     
