@@ -11,7 +11,7 @@ import java.util.TreeSet;
  * @author maclean
  *
  */
-public class SymmetryClass implements Comparable<SymmetryClass> {
+public class SymmetryClass implements Comparable<SymmetryClass>, Iterable<Integer> {
     
     /**
      * The signature string that the vertices all share
@@ -33,10 +33,14 @@ public class SymmetryClass implements Comparable<SymmetryClass> {
        this.vertexIndices = new TreeSet<Integer>();
     }
     
-    public Iterator<Integer> getVertexIndices() {
+    public Iterator<Integer> iterator() {
         return this.vertexIndices.iterator();
     }
-    
+
+    public int size() {
+        return vertexIndices.size();
+    }
+
     public String getSignatureString() {
         return this.signatureString;
     }
