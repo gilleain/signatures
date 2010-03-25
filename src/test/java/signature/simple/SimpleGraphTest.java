@@ -1,9 +1,10 @@
-package signature;
+package signature.simple;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.ColoredTree;
 import signature.simple.SimpleGraph;
 import signature.simple.SimpleGraphBuilder;
 import signature.simple.SimpleGraphSignature;
@@ -13,7 +14,7 @@ public class SimpleGraphTest {
     
     public SimpleGraphSignature signatureFromString(String string) {
         SimpleGraph graph = new SimpleGraph(string);
-        return new SimpleGraphSignature(graph, 0); 
+        return new SimpleGraphSignature(graph); 
     }
 	
     @Test 

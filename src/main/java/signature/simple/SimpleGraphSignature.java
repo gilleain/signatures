@@ -13,7 +13,7 @@ public class SimpleGraphSignature extends AbstractGraphSignature {
     
     public SimpleGraph graph;
     
-    public SimpleGraphSignature(SimpleGraph graph, int root) {
+    public SimpleGraphSignature(SimpleGraph graph) {
         super();
         this.graph = graph;
     }

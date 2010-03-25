@@ -13,8 +13,7 @@ public class CanonicalLabellingTest {
     public void testSimpleGraphLabelling() {
         String graphString = "0:1,1:2";
         SimpleGraph graph = new SimpleGraph(graphString);
-        SimpleGraphSignature signature = 
-            new SimpleGraphSignature(graph, 1);
+        SimpleGraphSignature signature = new SimpleGraphSignature(graph);
         List<Integer> labelling = signature.canonicalLabel();
         System.out.println(labelling);
     }

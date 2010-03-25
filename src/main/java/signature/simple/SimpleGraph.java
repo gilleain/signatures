@@ -53,6 +53,15 @@ public class SimpleGraph {
         return this.maxVertexIndex + 1;
     }
     
+    public boolean isConnected(int i, int j) {
+        for (Edge e : edges) {
+            if ((e.a == i && e.b == j) || (e.b == i && e.a == j)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public int[] getConnected(int vertexIndex) {
         List<Integer> connected = new ArrayList<Integer>();
         for (Edge edge : this.edges) {

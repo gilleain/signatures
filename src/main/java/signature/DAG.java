@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -451,7 +452,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        invariantSame = 
 	            checkInvariantChange(
 	                    oldInvariants, invariants.getVertexInvariants());
-	        
+//	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
 	    }
 	    
 	    // finally, copy the node invariants into the nodes, for easy sorting

@@ -64,6 +64,24 @@ public abstract class AbstractQuotientGraph {
         edges = new ArrayList<Edge>();
     }
     
+    public int getVertexCount() {
+        return vertices.size();
+    }
+    
+    public int getEdgeCount() {
+        return edges.size();
+    }
+    
+    public int numberOfLoopEdges() {
+        int loopEdgeCount = 0;
+        for (Edge e : edges) {
+            if (e.isLoop()) {
+                loopEdgeCount++;
+            }
+        }
+        return loopEdgeCount;
+    }
+    
     public abstract boolean isConnected(int i, int j);
     
     public void construct(List<SymmetryClass> symmetryClasses) {
@@ -76,6 +94,7 @@ public abstract class AbstractQuotientGraph {
         }
         
         // compare all vertices (classwise) for connectivity
+        List<Edge> visitedEdges = new ArrayList<Edge>();
         for (int i = 0; i < symmetryClasses.size(); i++) {
             SymmetryClass symmetryClass = symmetryClasses.get(i);
             for (int j = i; j < symmetryClasses.size(); j++) {
@@ -85,8 +104,10 @@ public abstract class AbstractQuotientGraph {
                     int countForX = 0;
                     for (int y : otherSymmetryClass) {
                         if (x == y) continue;
-                        if (isConnected(x, y)) {
+                        if (isConnected(x, y) 
+                                && !inVisitedEdges(x, y, visitedEdges)) {
                             countForX++;
+                            visitedEdges.add(new Edge(x, y, 0));
                         }
                     }
                     totalCount += countForX;
@@ -96,6 +117,16 @@ public abstract class AbstractQuotientGraph {
                 }
             }
         }
+    }
+    
+    private boolean inVisitedEdges(int x, int y, List<Edge> visitedEdges) {
+        for (Edge edge : visitedEdges) {
+            if ((edge.vertexIndexA == x && edge.vertexIndexB == y) 
+                    || (edge.vertexIndexA == y && edge.vertexIndexB == x )) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public String toString() {
