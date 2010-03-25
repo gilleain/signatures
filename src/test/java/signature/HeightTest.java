@@ -47,6 +47,20 @@ public class HeightTest {
         return graph;
     }
     
+    public void regularGraphTest(SimpleGraph graph, int diameter) {
+        for (int h = 1; h <= diameter; h++) {
+            SimpleVertexSignature sig0 = 
+                new SimpleVertexSignature(0, h, graph);
+            String zeroCanonical = sig0.toCanonicalString();
+            System.out.println(h + "\t" + zeroCanonical);
+            for (int i = 1; i < graph.getVertexCount(); i++) {
+                SimpleVertexSignature sig = 
+                    new SimpleVertexSignature(i, h, graph);
+                Assert.assertEquals(zeroCanonical, sig.toCanonicalString());
+            }
+        }
+    }
+    
     @Test
     public void torusTest() {
         int width = 6;
@@ -55,17 +69,26 @@ public class HeightTest {
         SimpleGraph torus = makeTorus(width, height);
         System.out.println(torus);
         int diameter = Math.min(width, height);
-        for (int h = 1; h <= diameter; h++) {
-            SimpleVertexSignature sig0 = 
-                new SimpleVertexSignature(0, h, torus);
-            String zeroCanonical = sig0.toCanonicalString();
-            System.out.println(h + "\t" + zeroCanonical);
-            for (int i = 1; i < torus.getVertexCount(); i++) {
-                SimpleVertexSignature sig = 
-                    new SimpleVertexSignature(i, h, torus);
-                Assert.assertEquals(zeroCanonical, sig.toCanonicalString());
+        regularGraphTest(torus, diameter);
+    }
+    
+    public SimpleGraph makeCompleteGraph(int n) {
+        SimpleGraph g = new SimpleGraph();
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                g.makeEdge(i, j);
             }
         }
+        return g;
+    }
+    
+    @Test
+    public void completeGraphTest() {
+        int n = 6;
+        SimpleGraph kN = makeCompleteGraph(n);
+        int expectedEdgeCount = (n * (n - 1)) / 2;
+        Assert.assertEquals(expectedEdgeCount, kN.edges.size());
+        regularGraphTest(kN, 2);
     }
 
 }
