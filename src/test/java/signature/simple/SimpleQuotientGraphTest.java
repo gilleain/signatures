@@ -6,20 +6,22 @@ import org.junit.Test;
 
 public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     
+    public void checkParameters(SimpleQuotientGraph qGraph,
+                                int expectedVertexCount, 
+                                int expectedEdgeCount, 
+                                int expectedLoopEdgeCount) {
+        System.out.println(qGraph);
+        Assert.assertEquals(expectedVertexCount, qGraph.getVertexCount());
+        Assert.assertEquals(expectedEdgeCount, qGraph.getEdgeCount());
+        Assert.assertEquals(expectedLoopEdgeCount, qGraph.numberOfLoopEdges());
+        
+    }
+    
     @Test
     public void cubeTest() {
         SimpleGraph cube = AbstractSimpleGraphTest.makeCube();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cube);
-        System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 1;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 1;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 1;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 1, 1, 1);
     }
     
     @Test
@@ -28,16 +30,7 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
             AbstractSimpleGraphTest.makeTruncatedTetrahedron();
         SimpleQuotientGraph quotientGraph = 
             new SimpleQuotientGraph(truncatedTetrahedron);
-        System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 1;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 1;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 1;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 1, 1, 1);
     }
 
     @Test
@@ -45,63 +38,37 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
         SimpleGraph adamantane = AbstractSimpleGraphTest.makeAdamantane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(adamantane);
         System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 2;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 1;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 0;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 2, 1, 0);
     }
     
     @Test
     public void cuneaneTest() {
         SimpleGraph cuneane = AbstractSimpleGraphTest.makeCuneane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cuneane);
-        System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 3;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 5;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 3;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 3, 5, 3);
     }
     
     @Test
     public void twistaneTest() {
         SimpleGraph twistane = AbstractSimpleGraphTest.makeTwistane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(twistane);
-        System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 3;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 4;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 2;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 3, 4, 2);
     }
     
     @Test
     public void napthaleneTest() {
         SimpleGraph napthalene = AbstractSimpleGraphTest.makeNapthalene();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(napthalene);
-        System.out.println(quotientGraph);
-        
-        int expectedVertexCount = 3;
-        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
-        
-        int expectedEdgeCount = 4;
-        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
-        
-        int expectedLoopEdgeCount = 2;
-        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+        checkParameters(quotientGraph, 3, 4, 2);
+    }
+    
+    @Test
+    public void squareQuotientGraphTest() {
+        SimpleGraph squareQuotientGraph = 
+            AbstractSimpleGraphTest.makeSquareQuotientGraph();
+        SimpleQuotientGraph quotientGraph = 
+            new SimpleQuotientGraph(squareQuotientGraph);
+        checkParameters(quotientGraph, 4, 4, 0);
     }
 
 }

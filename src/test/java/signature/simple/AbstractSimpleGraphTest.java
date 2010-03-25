@@ -38,5 +38,13 @@ public class AbstractSimpleGraphTest {
                     + "6:7,6:8,7:11,8:9,9:10,10:11");
         return truncatedTetrahedron;
     }
+    
+    public static SimpleGraph makeSquareQuotientGraph() {
+        // a very odd graph designed to have a square quotient graph
+        SimpleGraph squareQuotientGraph =
+            new SimpleGraph(
+                    "0:1,0:2,0:9,1:3,1:4,1:5,2:6,2:7,2:8,3:9,4:9,5:9,6:9,7:9,8:9");
+        return squareQuotientGraph;
+    }
 
 }
