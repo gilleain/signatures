@@ -23,6 +23,24 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
+    public void truncatedTetrahedronTest() {
+        SimpleGraph truncatedTetrahedron = 
+            AbstractSimpleGraphTest.makeTruncatedTetrahedron();
+        SimpleQuotientGraph quotientGraph = 
+            new SimpleQuotientGraph(truncatedTetrahedron);
+        System.out.println(quotientGraph);
+        
+        int expectedVertexCount = 1;
+        Assert.assertEquals(expectedVertexCount, quotientGraph.getVertexCount());
+        
+        int expectedEdgeCount = 1;
+        Assert.assertEquals(expectedEdgeCount, quotientGraph.getEdgeCount());
+        
+        int expectedLoopEdgeCount = 1;
+        Assert.assertEquals(expectedLoopEdgeCount, quotientGraph.numberOfLoopEdges());
+    }
+
+    @Test
     public void adamantaneTest() {
         SimpleGraph adamantane = AbstractSimpleGraphTest.makeAdamantane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(adamantane);

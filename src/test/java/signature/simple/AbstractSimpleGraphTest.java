@@ -31,5 +31,12 @@ public class AbstractSimpleGraphTest {
             new SimpleGraph("0:1,0:5,1:2,1:6,2:3,2:9,3:4,4:5,6:7,7:8,8:9");
         return napthalene;
     }
+    
+    public static SimpleGraph makeTruncatedTetrahedron() {
+        SimpleGraph truncatedTetrahedron =
+            new SimpleGraph("0:1,0:2,0:3,1:2,1:4,2:5,3:6,3:7,4:8,4:9,5:10,5:11," 
+                    + "6:7,6:8,7:11,8:9,9:10,10:11");
+        return truncatedTetrahedron;
+    }
 
 }
