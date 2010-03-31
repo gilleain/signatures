@@ -37,7 +37,6 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     public void adamantaneTest() {
         SimpleGraph adamantane = AbstractSimpleGraphTest.makeAdamantane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(adamantane);
-        System.out.println(quotientGraph);
         checkParameters(quotientGraph, 2, 1, 0);
     }
     
