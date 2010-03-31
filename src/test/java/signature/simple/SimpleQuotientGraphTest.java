@@ -70,5 +70,27 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
             new SimpleQuotientGraph(squareQuotientGraph);
         checkParameters(quotientGraph, 4, 4, 0);
     }
+    
+    @Test
+    public void doubleBridgedPentagonTest() {
+        SimpleGraph g = AbstractSimpleGraphTest.makeDoubleBridgedPentagon();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(g);
+        checkParameters(quotientGraph, 4, 5, 1);
+    }
+
+    @Test
+    public void bowtieaneQuotientGraphTest() {
+        SimpleGraph bowtieane = AbstractSimpleGraphTest.makeBowtieane();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(bowtieane);
+        checkParameters(quotientGraph, 4, 5, 2);
+    }
+    
+    @Test
+    public void diSpiroOctaneQuotientGraphTest() {
+        SimpleGraph diSpiroOctane = AbstractSimpleGraphTest.makeDiSpiroOctane();
+        SimpleQuotientGraph quotientGraph = 
+            new SimpleQuotientGraph(diSpiroOctane);
+        checkParameters(quotientGraph, 5, 6, 1);
+    }
 
 }
