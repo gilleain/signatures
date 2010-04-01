@@ -38,7 +38,9 @@ public class SimpleGraphSignature extends AbstractGraphSignature {
 
     @Override
     public String signatureStringForVertex(int vertexIndex, int height) {
-        return null;    // TODO
+        SimpleVertexSignature vertexSignature  = 
+            new SimpleVertexSignature(vertexIndex, height, this.graph);
+        return vertexSignature.toCanonicalString();
     }
 
     public String toCanonicalString() {
