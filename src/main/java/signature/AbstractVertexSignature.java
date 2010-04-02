@@ -335,20 +335,22 @@ public abstract class AbstractVertexSignature {
      */
     private void print(StringBuffer buffer, DAG.Node node,
             DAG.Node parent, List<DAG.Arc> arcs) {
+        int vertexIndex = getOriginalVertexIndex(node.vertexIndex);
         
         // Add the vertexIndex to the labels if it hasn't already been added.
-        if (!(this.currentCanonicalLabelMapping.contains(node.vertexIndex))) {
-            this.currentCanonicalLabelMapping.add(node.vertexIndex);
+        if (!(this.currentCanonicalLabelMapping.contains(vertexIndex))) {
+            this.currentCanonicalLabelMapping.add(vertexIndex);
         }
         
         // print out any symbol for the edge in the input graph
         if (parent != null) {
-            buffer.append(getEdgeSymbol(node.vertexIndex, parent.vertexIndex));
+            int parentVertexIndex = getOriginalVertexIndex(parent.vertexIndex);
+            buffer.append(getEdgeSymbol(vertexIndex, parentVertexIndex));
         }
         
         // print out the text that represents the node itself
         buffer.append(this.startNodeSymbol);
-        buffer.append(getVertexSymbol(node.vertexIndex));
+        buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
         if (color != 0) {
             buffer.append(',').append(color);
