@@ -130,7 +130,14 @@ public abstract class AbstractQuotientGraph {
     }
     
     public String toString() {
-        return vertices + "\n" + edges;
+        StringBuffer buffer = new StringBuffer();
+        int i = 0;
+        for (Vertex vertex : vertices) {
+            buffer.append(i).append(' ').append(vertex).append('\n');
+            i++;
+        }
+        buffer.append(edges);
+        return buffer.toString();
     }
 
 }
