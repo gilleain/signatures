@@ -160,9 +160,13 @@ public abstract class AbstractGraphSignature {
      * @return a list of symmetry classes
      */
     public List<SymmetryClass> getSymmetryClasses() {
+        return getSymmetryClasses(-1);
+    }
+        
+    public List<SymmetryClass> getSymmetryClasses(int height) {
         List<SymmetryClass> symmetryClasses = new ArrayList<SymmetryClass>();
         for (int i = 0; i < this.getVertexCount(); i++) {
-            String signatureString = this.signatureStringForVertex(i);
+            String signatureString = this.signatureStringForVertex(i, height);
             SymmetryClass foundClass = null;
             for (SymmetryClass symmetryClass : symmetryClasses) {
                 if (symmetryClass.hasSignature(signatureString)) {
