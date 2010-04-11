@@ -368,33 +368,40 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	}
 	
 	public List<Integer> createOrbit() {
-	    int maxOrbitSize = 0;
-	    int invariantChoice = 0;
-	    List<Integer> orbit = new ArrayList<Integer>();
 	    
-	    // Vertex invariants range from 1 to the number of vertices.
-	    for (int invariant = 1; invariant <= this.vertexCount; invariant++) {
-	        int orbitSize = 0;
-	        for (int j = 0; j < this.vertexCount; j++) {
-	            if (invariants.getVertexInvariant(j) == invariant 
-	                    && parentCounts[j] >= 2) {
-	                orbitSize++;
+	    // get the orbits
+	    Map<Integer, List<Integer>> orbits = 
+	        new HashMap<Integer, List<Integer>>();
+	    for (int j = 0; j < vertexCount; j++) {
+	        if (parentCounts[j] >= 2) {
+	            int invariant = invariants.getVertexInvariant(j);
+	            List<Integer> orbit;
+	            if (orbits.containsKey(invariant)) {
+	                orbit = orbits.get(invariant);
+	            } else {
+	                orbit = new ArrayList<Integer>();
+	                orbits.put(invariant, orbit);
+	            }
+	            orbit.add(j);
+	        }
+	    }
+	    
+	    // find the largest orbit
+	    if (orbits.isEmpty()) {
+	        return new ArrayList<Integer>();
+	    } else {
+	        List<Integer> maxOrbit = null;
+	        List<Integer> invariants = new ArrayList<Integer>(orbits.keySet());
+	        Collections.sort(invariants);
+	        
+	        for (int invariant : invariants) {
+	            List<Integer> orbit = orbits.get(invariant);
+	            if (maxOrbit == null || orbit.size() > maxOrbit.size()) { 
+	                maxOrbit = orbit;
 	            }
 	        }
-	    // Pick the orbit with the lowest invariant 
-	    // if there is a tie between orbits.
-	        if (maxOrbitSize < orbitSize) { 
-	            maxOrbitSize = orbitSize;
-	            invariantChoice = invariant;
-	        }
+	        return maxOrbit;
 	    }
-	    
-	    for (int k = 0; k < vertexCount; k++) {
-	        if (invariants.getVertexInvariant(k) == invariantChoice) {
-	            orbit.add(k);
-	        }
-	    }
-	    return orbit;
 	}
 	
 	public void computeVertexInvariants() {
@@ -452,7 +459,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        invariantSame = 
 	            checkInvariantChange(
 	                    oldInvariants, invariants.getVertexInvariants());
-//	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
+	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
 	    }
 	    
 	    // finally, copy the node invariants into the nodes, for easy sorting
