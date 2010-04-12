@@ -274,7 +274,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	}
 	
 	public void setInvariants(Invariants invariants) {
-	    this.invariants = invariants;
+//	    this.invariants = invariants;
+//	    this.invariants.colors = invariants.colors.clone();
+	    this.invariants.nodeInvariants = invariants.nodeInvariants.clone();
+	    this.invariants.vertexInvariants = invariants.vertexInvariants.clone();
 	}
 	
 	/**
@@ -385,6 +388,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	            orbit.add(j);
 	        }
 	    }
+	    
+	    System.out.println(orbits);
 	    
 	    // find the largest orbit
 	    if (orbits.isEmpty()) {
