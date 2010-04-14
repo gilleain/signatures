@@ -1,7 +1,10 @@
 package signature;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
+import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
 
@@ -61,6 +64,16 @@ public class LargeMoleculeTest {
         System.out.println("result " + sigString);
     }
     
+    @Test
+    public void occurencesTestForMultiRingMolecule() {
+        Molecule mol = makeMinimalMultiRing(5, 3);
+        AtomSignature signature = new AtomSignature(mol, 0);
+        String canon = signature.toCanonicalString();
+        int[] occ = signature.getOccurrences();
+        System.out.println(canon);
+        System.out.println(Arrays.toString(occ));
+    }
+    
     public Molecule makeChain(int length) {
         Molecule chain = new Molecule();
         int previous = -1;
@@ -84,8 +97,8 @@ public class LargeMoleculeTest {
     }
     
     public static void main(String[] args) {
-//        new LargeMoleculeTest().testMinimalMol();
-        new LargeMoleculeTest().ttprTest();
+        new LargeMoleculeTest().testMinimalMol();
+//        new LargeMoleculeTest().ttprTest();
     }
 
 }

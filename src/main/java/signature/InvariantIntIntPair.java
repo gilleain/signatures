@@ -20,5 +20,9 @@ public class InvariantIntIntPair implements Comparable<InvariantIntIntPair> {
             return 0;
         }
     }
+    
+    public String toString() {
+        return invariant + "/" + index;
+    }
 
 }

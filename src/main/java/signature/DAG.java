@@ -273,6 +273,20 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    this.invariants.setColor(vertexIndex, color);
 	}
 	
+	public void setColors(int[] colors) {
+	    invariants.colors = colors;
+	}
+	
+	public int occurences(int vertexIndex) {
+	    int count = 0;
+	    for (Node node : nodes) {
+	        if (node.vertexIndex == vertexIndex) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
+	
 	public void setInvariants(Invariants invariants) {
 //	    this.invariants = invariants;
 //	    this.invariants.colors = invariants.colors.clone();
@@ -485,12 +499,16 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	public void updateNodeInvariants(DAG.Direction direction) {
 	    int start, end, increment;
 	    if (direction == Direction.UP) {
-	        start = this.layers.size() - 1; 
-	        end = 0; // The root node is not included but it doesn't matter since it always is alone.
+	        start = this.layers.size() - 1;
+            // The root node is not included but it doesn't matter since it
+            // is always alone.
+	        end = 0; 
 	        increment = -1;
 	    } else {
 	        start = 0;
-	        end = this.layers.size()-1; // We do not include the leaf layer, perhaps we should. Does it matter?
+            // We do not include the leaf layer, perhaps we should. Does it
+            // matter?
+	        end = this.layers.size()-1; 
 	        increment = 1;
 	    }
 	    
@@ -506,7 +524,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
         for (int i = 0; i < layer.size(); i++) {
             DAG.Node layerNode = layer.get(i);
             int x = layerNode.vertexIndex;
-            InvariantList nodeInvariant = new InvariantList(nodes.indexOf(layerNode));
+            InvariantList nodeInvariant = 
+                new InvariantList(nodes.indexOf(layerNode));
             nodeInvariant.add(this.invariants.getColor(x));
             nodeInvariant.add(this.invariants.getVertexInvariant(x));
             
