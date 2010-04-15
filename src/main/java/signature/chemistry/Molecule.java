@@ -82,7 +82,11 @@ public class Molecule {
         }
         
         public String toString() {
-            return this.a + "-" + this.b + "(" + this.order + ")";
+            if (a.index < b.index) { 
+                return this.a + "-" + this.b + "(" + this.order + ")";
+            } else {
+                return this.b + "-" + this.a + "(" + this.order + ")";
+            }
         }
 
         public int compareTo(Bond o) {
@@ -196,6 +200,7 @@ public class Molecule {
         for (Atom a : this.atoms) {
             buffer.append(a).append("|");
         }
+        Collections.sort(bonds);
         for (Bond b : this.bonds) {
             buffer.append(b).append("|");
         }
