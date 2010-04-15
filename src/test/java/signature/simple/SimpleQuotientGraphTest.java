@@ -26,8 +26,15 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     
     @Test
     public void cubeTest() {
-        SimpleGraph cube = AbstractSimpleGraphTest.makeCube();
+        SimpleGraph cube = AbstractSimpleGraphTest.makePrism(4);
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cube);
+        checkParameters(quotientGraph, 1, 1, 1);
+    }
+    
+    @Test
+    public void pentagonalPrismTest() {
+        SimpleGraph pentaprism = AbstractSimpleGraphTest.makePrism(5);
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(pentaprism);
         checkParameters(quotientGraph, 1, 1, 1);
     }
     
@@ -45,6 +52,26 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
         SimpleGraph adamantane = AbstractSimpleGraphTest.makeAdamantane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(adamantane);
         checkParameters(quotientGraph, 2, 1, 0);
+    }
+    
+    @Test
+    public void sandwichTest() {
+        SimpleQuotientGraph quotientGraph;
+        SimpleGraph triangle = AbstractSimpleGraphTest.makeSandwich(3);
+        quotientGraph = new SimpleQuotientGraph(triangle);
+        checkParameters(quotientGraph, 2, 2, 1);
+        
+        SimpleGraph square = AbstractSimpleGraphTest.makeSandwich(4);
+        quotientGraph = new SimpleQuotientGraph(square);
+        checkParameters(quotientGraph, 2, 2, 1);
+        
+        SimpleGraph pentagon = AbstractSimpleGraphTest.makeSandwich(5);
+        quotientGraph = new SimpleQuotientGraph(pentagon);
+        checkParameters(quotientGraph, 2, 2, 1);
+        
+        SimpleGraph hexagon = AbstractSimpleGraphTest.makeSandwich(6);
+        quotientGraph = new SimpleQuotientGraph(hexagon);
+        checkParameters(quotientGraph, 2, 2, 1);
     }
     
     @Test

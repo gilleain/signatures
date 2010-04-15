@@ -2,6 +2,44 @@ package signature.simple;
 
 public class AbstractSimpleGraphTest {
     
+    public static SimpleGraph makePrism(int size) {
+        SimpleGraph g = new SimpleGraph();
+        for (int i = 0; i < size - 1; i++) {
+            g.makeEdge(i, i + 1);
+        }
+        g.makeEdge(size - 1, 0);
+        for (int i = 0; i < size - 1; i++) {
+            g.makeEdge(i + size, i + size + 1);
+        }
+        g.makeEdge((2 * size) - 1, size);
+        for (int i = 0; i < size; i++) {
+            g.makeEdge(i, i + size);
+        }
+        return g;
+    }
+    
+    public static SimpleGraph makeSandwich(int size) {
+        SimpleGraph g = new SimpleGraph();
+        int center = size * 2;
+        // face A
+        for (int i = 0; i < size - 1; i++) {
+            g.makeEdge(i, i + 1);
+            g.makeEdge(i, center);
+        }
+        g.makeEdge(size - 1, 0);
+        g.makeEdge(size - 1, center);
+        
+        // face B
+        for (int i = 0; i < size - 1; i++) {
+            g.makeEdge(i + size, i + size + 1);
+            g.makeEdge(i + size, center);
+        }
+        g.makeEdge((2 * size) - 1, size);
+        g.makeEdge((2 * size) - 1, center);
+        
+        return g;
+    }
+    
     public static SimpleGraph makePetersensGraph() {
         return new SimpleGraph(
                 "0:1,0:5,0:4,1:2,1:6,2:3,2:7,3:8,3:4,4:9,5:7,5:8,6:8,6:9,7:9");
@@ -22,11 +60,6 @@ public class AbstractSimpleGraphTest {
 
     public static SimpleGraph makeDoubleBridgedPentagon() {
         return new SimpleGraph("0:1,0:2,1:3,1:5,1:6,2:4,2:5,2:6,3:4,3:5,4:6");
-    }
-    
-    public static SimpleGraph makeCube() {
-        return new SimpleGraph(
-                "0:1,0:3,0:7,1:2,1:6,2:3,2:5,3:4,4:5,4:7,5:6,6:7");
     }
     
     public static SimpleGraph makeAdamantane() {
