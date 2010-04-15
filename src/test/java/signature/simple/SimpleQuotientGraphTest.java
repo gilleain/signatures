@@ -18,6 +18,13 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
+    public void petersensGraphTest() {
+        SimpleGraph petersens = AbstractSimpleGraphTest.makePetersensGraph();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(petersens);
+        checkParameters(quotientGraph, 1, 1, 1);
+    }
+    
+    @Test
     public void cubeTest() {
         SimpleGraph cube = AbstractSimpleGraphTest.makeCube();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cube);
@@ -41,13 +48,6 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
-    public void cuneaneTest() {
-        SimpleGraph cuneane = AbstractSimpleGraphTest.makeCuneane();
-        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cuneane);
-        checkParameters(quotientGraph, 3, 5, 3);
-    }
-    
-    @Test
     public void twistaneTest() {
         SimpleGraph twistane = AbstractSimpleGraphTest.makeTwistane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(twistane);
@@ -61,6 +61,20 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
         checkParameters(quotientGraph, 3, 4, 2);
     }
     
+    @Test
+    public void tietzesGraphTest() {
+        SimpleGraph tietzes = AbstractSimpleGraphTest.makeTietzesGraph();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(tietzes);
+        checkParameters(quotientGraph, 3, 4, 2);
+    }
+
+    @Test
+    public void cuneaneTest() {
+        SimpleGraph cuneane = AbstractSimpleGraphTest.makeCuneane();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(cuneane);
+        checkParameters(quotientGraph, 3, 5, 3);
+    }
+
     @Test
     public void squareQuotientGraphTest() {
         SimpleGraph squareQuotientGraph = 
