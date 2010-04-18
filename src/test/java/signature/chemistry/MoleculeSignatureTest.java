@@ -1,4 +1,4 @@
-package signature;
+package signature.chemistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +8,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.AbstractVertexSignature;
+import signature.ColoredTree;
+import signature.SymmetryClass;
 import signature.chemistry.AtomPermutor;
 import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
@@ -16,7 +19,7 @@ import signature.chemistry.MoleculeFactory;
 import signature.chemistry.MoleculeReader;
 import signature.chemistry.MoleculeSignature;
 
-public class TestMoleculeSignature {
+public class MoleculeSignatureTest {
     
    @Test
     public void minimalTest() {

@@ -559,7 +559,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
             // If we go up we should check the children.
             List<DAG.Node> relatives = (direction == Direction.UP) ? 
                     layerNode.children : layerNode.parents;
-            for (Node relative : relatives ){
+            for (Node relative : relatives) {
                 int j = this.nodes.indexOf(relative);
                 int inv = this.invariants.getNodeInvariant(j);
 //                System.out.println(layerNode.edgeColors + " getting " + relative.vertexIndex);
