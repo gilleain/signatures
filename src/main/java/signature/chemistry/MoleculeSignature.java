@@ -16,18 +16,6 @@ public class MoleculeSignature extends AbstractGraphSignature {
         return new MoleculeSignature(molecule).isCanonicallyLabelled();
     }
 
-    public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
-//        int bondOrder = 
-//            this.molecule.getBondOrder(vertexIndex, otherVertexIndex);
-        return "";
-//        switch (bondOrder) {
-//            case 1: return "-";
-//            case 2: return "=";
-//            case 3: return "#";
-//            default: return "";
-//        }
-    }
-    
     public String getMolecularSignature() {
         return super.getGraphSignature();
     }

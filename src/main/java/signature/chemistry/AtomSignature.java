@@ -30,7 +30,14 @@ public class AtomSignature extends AbstractVertexSignature {
 
     @Override
     public String getEdgeLabel(int vertexIndex, int otherVertexIndex) {
-        return "";
+        int bondOrder = molecule.getBondOrder(vertexIndex, otherVertexIndex);
+//        return "";
+        switch (bondOrder) {
+            case 1: return "-";
+            case 2: return "=";
+            case 3: return "#";
+            default: return "";
+        }
     }
 
     @Override
