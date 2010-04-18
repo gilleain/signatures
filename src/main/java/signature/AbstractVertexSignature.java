@@ -182,9 +182,6 @@ public abstract class AbstractVertexSignature {
             mappedVertexIndex = vertexCount;
             vertexCount++;
         }
-//        System.out.println("layer " + layer + " parentNode " + parentNode +
-//                " vertexIndex " + vertexIndex + " mappedVertexIndex "
-//                + mappedVertexIndex + " " + vertexMapping);
         
         // find an existing node if there is one
         DAG.Arc arc = dag.new Arc(parentNode.vertexIndex, mappedVertexIndex);
@@ -199,13 +196,33 @@ public abstract class AbstractVertexSignature {
         
         // if there isn't, make a new node and add it to the layer
         if (existingNode == null) {
-            existingNode = 
-                dag.makeNode(
-                    mappedVertexIndex, layer, getVertexSymbol(vertexIndex));
+            String vertexLabel = getVertexSymbol(vertexIndex);
+            existingNode = dag.makeNode(mappedVertexIndex, layer, vertexLabel);
             nextLayer.add(existingNode);
         }
+        
+        // add the edge label to the node's edge label list
+        int originalParentIndex = 
+            getOriginalVertexIndex(parentNode.vertexIndex);
+        String edgeLabel = getEdgeLabel(originalParentIndex, vertexIndex);
+        int edgeColor = convertLabelToColor(edgeLabel);
+        existingNode.addEdgeColor(parentNode.vertexIndex, edgeColor);
+        parentNode.addEdgeColor(mappedVertexIndex, edgeColor);
+        
         dag.addRelation(existingNode, parentNode);
         layerArcs.add(arc);
+    }
+    
+    // XXX tmp
+    private int convertLabelToColor(String label) {
+        if (label.equals("-")) {
+            return 1;
+        } else if (label.equals("=")) {
+            return 2;
+        } else if (label.equals("#")) {
+            return 3;
+        }
+        return 1;
     }
     
     /**
@@ -335,7 +352,7 @@ public abstract class AbstractVertexSignature {
      * @param otherVertexIndex the index of the other vertex in the edge 
      * @return a string symbol for this edge
      */
-    public abstract String getEdgeSymbol(int vertexIndex, int otherVertexIndex);
+    public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
     
     /**
      * Count the occurrences of each vertex index in the final signature string.
@@ -405,7 +422,7 @@ public abstract class AbstractVertexSignature {
         // print out any symbol for the edge in the input graph
         if (parent != null) {
             int parentVertexIndex = getOriginalVertexIndex(parent.vertexIndex);
-            buffer.append(getEdgeSymbol(vertexIndex, parentVertexIndex));
+            buffer.append(getEdgeLabel(vertexIndex, parentVertexIndex));
         }
         
         // print out the text that represents the node itself

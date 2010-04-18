@@ -52,9 +52,16 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		public int layer;
 		
 		/**
-		 * A label for the nodes to handle bond orders
+		 * The vertex label
 		 */
-		public String label;  
+		public String vertexLabel; 
+		
+		/**
+		 * Labels for the edges between this node and the parent nodes
+		 */
+//		public Map<Integer, String> edgeLabels; TODO
+		
+		public Map<Integer, Integer> edgeColors;
 		
 		/**
 		 * The final computed invariant, used for sorting children when printing
@@ -73,16 +80,26 @@ public class DAG implements Iterable<List<DAG.Node>> {
 			this.layer = layer;
 			this.parents = new ArrayList<Node>();
 			this.children = new ArrayList<Node>();
-			this.label = label;
+			this.vertexLabel = label;
+//			this.edgeLabels = new HashMap<Integer, String>();
+			this.edgeColors = new HashMap<Integer, Integer>();
 		}
 	
-		public void addParent(Node node) {
+        public void addParent(Node node) {
 			this.parents.add(node);
 		}
 		
 		public void addChild(Node node) {
 			this.children.add(node);
 		}
+		
+//		public void addEdgeLabel(int partnerIndex, String edgeLabel) {
+//		    this.edgeLabels.put(partnerIndex, edgeLabel);
+//		}   XXX
+		
+		public void addEdgeColor(int partnerIndex, int edgeColor) {
+            this.edgeColors.put(partnerIndex, edgeColor);
+        }
 		
 		public void accept(DAGVisitor visitor) {
 		    visitor.visit(this);
@@ -114,11 +131,11 @@ public class DAG implements Iterable<List<DAG.Node>> {
             }
             
             return vertexIndex + " " 
-                 + label + " (" + parentString + ", " + childString + ")";
+                 + vertexLabel + " (" + parentString + ", " + childString + ")";
 		}
 
         public int compareTo(Node o) {
-            int c = this.label.compareTo(o.label); 
+            int c = this.vertexLabel.compareTo(o.vertexLabel); 
             if (c == 0) {
                 if (this.invariant < o.invariant) {
                     return - 1;
@@ -169,7 +186,11 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 */
 	private int[] parentCounts;
 	
-	private String[] labels;
+	/**
+	 * Vertex labels (if any) - for a chemical graph, these are likely to be
+	 * element symbols (C, N, O, etc)
+	 */
+	private String[] vertexLabels;
 	
 	private Invariants invariants;
 	
@@ -201,8 +222,9 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
 		
-		this.labels = new String[graphVertexCount];
-		this.labels[rootVertexIndex] = rootLabel;
+		this.vertexLabels = new String[graphVertexCount];
+		this.vertexLabels[rootVertexIndex] = rootLabel;
+		
 		this.vertexCount = 1;
 		this.parentCounts = new int[graphVertexCount];
 		this.graphVertexCount = graphVertexCount;
@@ -265,8 +287,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    this.initializeVertexInvariants();
 	}
 	
-	public void setLabel(int vertexIndex, String label) {
-	    this.labels[vertexIndex] = label;
+	public void setVertexLabel(int vertexIndex, String label) {
+	    this.vertexLabels[vertexIndex] = label;
 	}
 	
 	public void setColor(int vertexIndex, int color) {
@@ -300,15 +322,17 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * 
 	 * @param vertexIndex the index of the vertex in the original graph
 	 * @param layer the index of the layer
-	 * @param label the label of the vertex
+	 * @param vertexLabel the label of the vertex
 	 * @return the new node 
 	 */
-	public DAG.Node makeNode(int vertexIndex, int layer, String label) {
-	    DAG.Node node = new DAG.Node(vertexIndex, layer, label);
-	    this.labels[vertexIndex] = label;
-	    this.nodes.add(node);
-	    return node;
-	}
+	
+	public DAG.Node makeNode(
+            int vertexIndex, int layer, String vertexLabel) {
+        DAG.Node node = new DAG.Node(vertexIndex, layer, vertexLabel);
+        this.vertexLabels[vertexIndex] = vertexLabel;
+        this.nodes.add(node);
+        return node;
+    }
 	
 	/**
 	 * Create and return a DAG.Node, while setting some internal references to
@@ -317,11 +341,12 @@ public class DAG implements Iterable<List<DAG.Node>> {
      * 
 	 * @param vertexIndex the index of the vertex in the original graph
      * @param layer the index of the layer
-     * @param label the label of the vertex
+     * @param vertexLabel the label of the vertex
      * @return the new node
 	 */
-	public DAG.Node makeNodeInLayer(int vertexIndex, int layer, String label) {
-        DAG.Node node = this.makeNode(vertexIndex, layer, label);
+	public DAG.Node makeNodeInLayer(
+	        int vertexIndex, int layer, String vertexLabel) {
+        DAG.Node node = this.makeNode(vertexIndex, layer, vertexLabel);
         if (layers.size() <= layer) {
           this.layers.add(new ArrayList<DAG.Node>());
         }
@@ -364,7 +389,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    List<InvariantIntStringPair> pairs = 
 	        new ArrayList<InvariantIntStringPair>();
 	    for (int i = 0; i < vertexCount; i++) {
-	        String l = labels[i];
+	        String l = vertexLabels[i];
 	        int p = parentCounts[i];
 	        pairs.add(new InvariantIntStringPair(l, p, i));
 	    }
@@ -536,7 +561,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
                     layerNode.children : layerNode.parents;
             for (Node relative : relatives ){
                 int j = this.nodes.indexOf(relative);
-            	relativeInvariants.add(this.invariants.getNodeInvariant(j));
+                int inv = this.invariants.getNodeInvariant(j);
+//                System.out.println(layerNode.edgeColors + " getting " + relative.vertexIndex);
+                int edgeColor = layerNode.edgeColors.get(relative.vertexIndex);
+            	relativeInvariants.add(inv * edgeColor);
             }
             Collections.sort(relativeInvariants);
             nodeInvariant.addAll(relativeInvariants);

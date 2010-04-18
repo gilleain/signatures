@@ -29,7 +29,7 @@ public class AtomSignature extends AbstractVertexSignature {
     }
 
     @Override
-    public String getEdgeSymbol(int vertexIndex, int otherVertexIndex) {
+    public String getEdgeLabel(int vertexIndex, int otherVertexIndex) {
         return "";
     }
 
