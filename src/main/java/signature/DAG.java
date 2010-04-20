@@ -182,9 +182,14 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	private List<List<Node>> layers;
 	
 	/**
-	 * The counts of parents for nodes  
+	 * The counts of parents for vertices  
 	 */
 	private int[] parentCounts;
+	
+	/**
+     * The counts of children for vertices  
+     */
+    private int[] childCounts;
 	
 	/**
 	 * Vertex labels (if any) - for a chemical graph, these are likely to be
@@ -227,6 +232,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		
 		this.vertexCount = 1;
 		this.parentCounts = new int[graphVertexCount];
+		this.childCounts = new int[graphVertexCount];
+		
 		this.graphVertexCount = graphVertexCount;
 	}
 	
@@ -247,6 +254,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		this.nodes.add(rootNode);
 		
 		this.parentCounts = new int[graphVertexCount];
+		this.childCounts = new int[graphVertexCount];
 	}
 	
 	public Iterator<List<Node>> iterator() {
@@ -311,7 +319,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	
 	public void setInvariants(Invariants invariants) {
 //	    this.invariants = invariants;
-//	    this.invariants.colors = invariants.colors.clone();
+	    this.invariants.colors = invariants.colors.clone();
 	    this.invariants.nodeInvariants = invariants.nodeInvariants.clone();
 	    this.invariants.vertexInvariants = invariants.vertexInvariants.clone();
 	}
@@ -357,13 +365,16 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	public void addRelation(DAG.Node childNode, DAG.Node parentNode) {
 	    childNode.parents.add(parentNode);
 	    parentCounts[childNode.vertexIndex]++;
+	    childCounts[parentNode.vertexIndex]++;
 	    parentNode.children.add(childNode);
 	}
 	
-	public List<InvariantIntIntPair> getInvariantPairs() {
+	public List<InvariantIntIntPair> getInvariantPairs(int[] calculatedChildCounts) {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
-	        if (invariants.getColor(i) == 0 && parentCounts[i] >= 2) {
+	        if (invariants.getColor(i) == 0 
+//	                && calculatedChildCounts[i] < 1
+	                && parentCounts[i] >= 2) {
 	            pairs.add(
 	                    new InvariantIntIntPair(
 	                            invariants.getVertexInvariant(i), i));
@@ -407,15 +418,18 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        }
 	        this.invariants.setVertexInvariant(b.originalIndex, order);
 	    }
+//	    System.out.println(this);
+//	    System.out.println(Arrays.toString(childCounts));
 	}
 	
-	public List<Integer> createOrbit() {
+	public List<Integer> createOrbit(int[] calculatedChildCounts) {
 	    
 	    // get the orbits
 	    Map<Integer, List<Integer>> orbits = 
 	        new HashMap<Integer, List<Integer>>();
 	    for (int j = 0; j < vertexCount; j++) {
-	        if (parentCounts[j] >= 2) {
+	        if (parentCounts[j] >= 2 && calculatedChildCounts[j] < 1) {
+//	        if (parentCounts[j] >= 2) {
 	            int invariant = invariants.getVertexInvariant(j);
 	            List<Integer> orbit;
 	            if (orbits.containsKey(invariant)) {
@@ -428,7 +442,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        }
 	    }
 	    
-	    System.out.println(orbits);
+//	    System.out.println(orbits);
 	    
 	    // find the largest orbit
 	    if (orbits.isEmpty()) {
@@ -503,7 +517,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        invariantSame = 
 	            checkInvariantChange(
 	                    oldInvariants, invariants.getVertexInvariants());
-	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
+//	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
 	    }
 	    
 	    // finally, copy the node invariants into the nodes, for easy sorting
@@ -527,13 +541,14 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        start = this.layers.size() - 1;
             // The root node is not included but it doesn't matter since it
             // is always alone.
-	        end = 0; 
+	        end = -1; 
 	        increment = -1;
 	    } else {
 	        start = 0;
             // We do not include the leaf layer, perhaps we should. Does it
             // matter?
-	        end = this.layers.size()-1; 
+//	        end = this.layers.size()-1;
+	        end = this.layers.size();
 	        increment = 1;
 	    }
 	    
@@ -563,7 +578,12 @@ public class DAG implements Iterable<List<DAG.Node>> {
                 int j = this.nodes.indexOf(relative);
                 int inv = this.invariants.getNodeInvariant(j);
 //                System.out.println(layerNode.edgeColors + " getting " + relative.vertexIndex);
-                int edgeColor = layerNode.edgeColors.get(relative.vertexIndex);
+                int edgeColor;
+                if (direction == Direction.UP) {
+                    edgeColor = relative.edgeColors.get(layerNode.vertexIndex);
+                } else {
+                    edgeColor = layerNode.edgeColors.get(relative.vertexIndex);
+                }
             	relativeInvariants.add(inv * edgeColor);
             }
             Collections.sort(relativeInvariants);

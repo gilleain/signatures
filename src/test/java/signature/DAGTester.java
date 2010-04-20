@@ -61,24 +61,24 @@ public class DAGTester {
         ring.updateVertexInvariants();
         System.out.println(ring.copyInvariants());
         
-        List<Integer> orbit = ring.createOrbit();
-        System.out.println(orbit);
-        
-        ring.setColor(orbit.get(0), 1);
-        ring.updateVertexInvariants();
-        System.out.println(ring.copyInvariants());
-
-        orbit = ring.createOrbit();
-        System.out.println(orbit);
-        
-        ring.setColor(orbit.get(0), 2);
-        ring.updateVertexInvariants();
-        System.out.println(ring.copyInvariants());
-
-        orbit = ring.createOrbit();
-        System.out.println(orbit);
-        ring.setColor(orbit.get(0), 3);
-        System.out.println(ring.copyInvariants());
+//        List<Integer> orbit = ring.createOrbit();
+//        System.out.println(orbit);
+//        
+//        ring.setColor(orbit.get(0), 1);
+//        ring.updateVertexInvariants();
+//        System.out.println(ring.copyInvariants());
+//
+//        orbit = ring.createOrbit();
+//        System.out.println(orbit);
+//        
+//        ring.setColor(orbit.get(0), 2);
+//        ring.updateVertexInvariants();
+//        System.out.println(ring.copyInvariants());
+//
+//        orbit = ring.createOrbit();
+//        System.out.println(orbit);
+//        ring.setColor(orbit.get(0), 3);
+//        System.out.println(ring.copyInvariants());
     }
     
     @Test

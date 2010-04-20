@@ -51,22 +51,26 @@ public class LargeMoleculeTest {
     public void ttprTest() {
         Molecule ttpr = makeTetrakisTriphenylPhosphoranylRhodium();
         MoleculeSignature molSig = new MoleculeSignature(ttpr);
-        String sigString = molSig.toCanonicalString();
+//        String sigString = molSig.toCanonicalString();
+        String sigString = molSig.signatureStringForVertex(0);
         System.out.println(sigString);
     }
     
     @Test
     public void testMinimalMol() {
-        Molecule mol = makeMinimalMultiRing(6, 3);
+        Molecule mol = makeMinimalMultiRing(5, 4);
         MoleculeSignature molSig = new MoleculeSignature(mol);
-        String sigString = molSig.toCanonicalString();
+//        String sigString = molSig.toCanonicalString();
+        String sigString = molSig.signatureStringForVertex(0);
+        System.out.println(sigString);
+
         System.out.println(mol);
         System.out.println("result " + sigString);
     }
     
     @Test
     public void occurencesTestForMultiRingMolecule() {
-        Molecule mol = makeMinimalMultiRing(5, 3);
+        Molecule mol = makeMinimalMultiRing(7, 3);
         AtomSignature signature = new AtomSignature(mol, 0);
         String canon = signature.toCanonicalString();
         int[] occ = signature.getOccurrences();

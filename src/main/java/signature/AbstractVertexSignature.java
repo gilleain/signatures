@@ -235,11 +235,16 @@ public abstract class AbstractVertexSignature {
         System.out.println("CANONIZING " + 
                 getOriginalVertexIndex(dag.getRoot().vertexIndex)
                 + " " + vertexMapping);
+        TMP_COLORING_COUNT = 0;
         this.canonize(1, stringBuffer);
-        System.out.println("invariants " + dag.copyInvariants());
+//        System.out.println("invariants " + dag.copyInvariants());
 //        System.out.println("occur" + getOccurrences());
+        
+        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
         return stringBuffer.toString();
     }
+    
+    public int TMP_COLORING_COUNT;
     
     /**
      * Find the minimal signature string by trying all colors.
@@ -261,18 +266,21 @@ public abstract class AbstractVertexSignature {
         }
         
         this.dag.updateVertexInvariants();
-        
-        List<Integer> orbit = this.dag.createOrbit();
-        System.out.println(dag.copyInvariants());
+        int[] childCounts = getChildCounts();
+        List<Integer> orbit = this.dag.createOrbit(childCounts);
+//        System.out.println(Arrays.toString(childCounts));
+//        System.out.println(dag.copyInvariants());
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-            List<InvariantIntIntPair> pairs = dag.getInvariantPairs();
+            List<InvariantIntIntPair> pairs = dag.getInvariantPairs(childCounts);
             System.out.println("coloring " + pairs);
             for (InvariantIntIntPair pair : pairs) {
                 this.dag.setColor(pair.index, color);
                 color++;
             }
+            
+            TMP_COLORING_COUNT++;
         
             // Creating the root signature string.
             String signature = this.toString();
@@ -283,7 +291,7 @@ public abstract class AbstractVertexSignature {
                 canonicalVertexSignature.replace(0, l, signature);
                 this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
-                System.out.println("rejecting " + signature + " " + cmp);
+                System.out.println("rejecting " + cmp + " " + signature);
             }
             return;
         } else {
@@ -354,10 +362,32 @@ public abstract class AbstractVertexSignature {
      */
     public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
     
+    public int[] getChildCounts() {
+        int[] childCounts = new int[vertexCount];
+        getChildCounts(childCounts, dag.getRoot(), null, new ArrayList<DAG.Arc>());
+        return childCounts;
+    }
+    
+    private void getChildCounts(int[] childCounts, DAG.Node node,
+            DAG.Node parent, List<DAG.Arc> arcs) {
+        Collections.sort(node.children);
+        for (DAG.Node child : node.children) {
+            DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
+            if (arcs.contains(arc)) {
+                continue;
+            } else {
+                childCounts[node.vertexIndex]++;
+                arcs.add(arc);
+                getChildCounts(childCounts, child, node, arcs);
+            }
+        }
+        
+    }
+    
     /**
      * Count the occurrences of each vertex index in the final signature string.
      * Since duplicate DAG edges are removed, this count will not be the same as
-     * the simple count of occurences in the DAG before printing.
+     * the simple count of occurrences in the DAG before printing.
      *  
      * @return
      */
@@ -464,7 +494,7 @@ public abstract class AbstractVertexSignature {
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         Map<Integer, Integer> colorMap = getColorMap(getOccurrences());
-        System.out.println("color map " + colorMap);
+//        System.out.println("color map " + colorMap);
         print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>(), colorMap);
         return buffer.toString();
     }
