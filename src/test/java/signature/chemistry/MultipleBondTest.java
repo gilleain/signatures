@@ -5,6 +5,37 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 public class MultipleBondTest {
+    
+    @Test
+    public void multipleBondedFragmentTest() {
+        Molecule molA = new Molecule();
+        molA.addAtom("C");
+        molA.addAtom("C");
+        molA.addAtom("C");
+        molA.addAtom("H");
+        molA.addBond(0, 1, 2);
+        molA.addBond(0, 2, 1);
+        molA.addBond(0, 3, 1);
+        
+        MoleculeSignature molSig = new MoleculeSignature(molA);
+        String signatureFor0A = molSig.signatureStringForVertex(0);
+        System.out.println(signatureFor0A);
+        
+        Molecule molB = new Molecule();
+        molB.addAtom("C");
+        molB.addAtom("C");
+        molB.addAtom("C");
+        molB.addAtom("H");
+        molB.addBond(0, 1, 1);
+        molB.addBond(0, 2, 2);  // NOTE change of bond order here
+        molB.addBond(0, 3, 1);
+        
+        molSig = new MoleculeSignature(molB);
+        String signatureFor0B = molSig.signatureStringForVertex(0);
+        System.out.println(signatureFor0B);
+        
+        Assert.assertEquals(signatureFor0A, signatureFor0B);
+    }
 
     @Test
     public void cyclobut_1_ene() {

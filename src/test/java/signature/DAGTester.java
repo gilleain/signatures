@@ -220,6 +220,31 @@ public class DAGTester {
                        vertexInvariantsAfterUp,
                        simpleDAG.copyInvariants());
     }
+    
+    @Test
+    public void dagWithEdgeLabels() {
+        DAG dag = new DAG(0, 4, "C");
+        DAG.Node root = dag.getRoot();
+        
+        DAG.Node child = dag.makeNodeInLayer(1, 1, "C");
+        dag.addRelation(root, child);
+        child.addEdgeColor(0, 2);
+        root.addEdgeColor(1, 2);
+        
+        child = dag.makeNodeInLayer(2, 1, "C");
+        dag.addRelation(root, child);
+        child.addEdgeColor(0, 1);
+        root.addEdgeColor(2, 1);
+        
+        child = dag.makeNodeInLayer(3, 1, "H");
+        dag.addRelation(root, child);
+        child.addEdgeColor(0, 1);
+        root.addEdgeColor(3, 1);
+        
+        dag.initialize(4);
+        dag.updateVertexInvariants();
+        System.out.println(dag.copyInvariants());
+    }
 
 
 }
