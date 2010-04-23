@@ -368,11 +368,62 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    parentNode.children.add(childNode);
 	}
 	
-	public List<InvariantIntIntPair> getInvariantPairs() {
+	public int[] getParentsInFinalString() {
+	    int[] counts = new int[vertexCount];
+	    getParentsInFinalString(
+	            counts, getRoot(), null,  new ArrayList<DAG.Arc>());
+	    return counts;
+	}
+	
+	private void getParentsInFinalString(int[] counts, DAG.Node node,
+            DAG.Node parent, List<DAG.Arc> arcs) {
+	    counts[node.vertexIndex]++;
+	    for (DAG.Node child : node.children) {
+            DAG.Arc arc = new Arc(node.vertexIndex, child.vertexIndex);
+            if (arcs.contains(arc)) {
+                continue;
+            } else {
+                arcs.add(arc);
+                getParentsInFinalString(counts, child, node, arcs);
+            }
+        }
+	          
+	}
+	
+	 /**
+     * Count the occurrences of each vertex index in the final signature string.
+     * Since duplicate DAG edges are removed, this count will not be the same as
+     * the simple count of occurrences in the DAG before printing.
+     *  
+     * @return
+     */
+    public int[] getOccurrences() {
+        int[] occurences = new int[vertexCount];
+        getOccurences(occurences, getRoot(), null, new ArrayList<DAG.Arc>());
+        return occurences;
+    }
+    
+    private void getOccurences(int[] occurences, DAG.Node node,
+            DAG.Node parent, List<DAG.Arc> arcs) {
+        occurences[node.vertexIndex]++;
+        Collections.sort(node.children);
+        for (DAG.Node child : node.children) {
+            DAG.Arc arc = new Arc(node.vertexIndex, child.vertexIndex);
+            if (arcs.contains(arc)) {
+                continue;
+            } else {
+                arcs.add(arc);
+                getOccurences(occurences, child, node, arcs);
+            }
+        }
+    }
+	
+	public List<InvariantIntIntPair> getInvariantPairs(int[] parents) {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
 	        if (invariants.getColor(i) == 0 
-	                && parentCounts[i] >= 2) {
+//	                && parentCounts[i] >= 2) {
+	                && parents[i] >= 2) {
 	            pairs.add(
 	                    new InvariantIntIntPair(
 	                            invariants.getVertexInvariant(i), i));
@@ -420,13 +471,14 @@ public class DAG implements Iterable<List<DAG.Node>> {
 //	    System.out.println(Arrays.toString(childCounts));
 	}
 	
-	public List<Integer> createOrbit() {
+	public List<Integer> createOrbit(int[] parents) {
 	    
 	    // get the orbits
 	    Map<Integer, List<Integer>> orbits = 
 	        new HashMap<Integer, List<Integer>>();
 	    for (int j = 0; j < vertexCount; j++) {
-	        if (parentCounts[j] >= 2) {
+//	        if (parentCounts[j] >= 2) {
+	        if (parents[j] >= 2) {
 	            int invariant = invariants.getVertexInvariant(j);
 	            List<Integer> orbit;
 	            if (orbits.containsKey(invariant)) {

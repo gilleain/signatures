@@ -232,15 +232,15 @@ public abstract class AbstractVertexSignature {
      */
     public String toCanonicalString() {
         StringBuffer stringBuffer = new StringBuffer();
-//        System.out.println("CANONIZING " + 
-//                getOriginalVertexIndex(dag.getRoot().vertexIndex)
-//                + " " + vertexMapping);
+        System.out.println("CANONIZING " + 
+                getOriginalVertexIndex(dag.getRoot().vertexIndex)
+                + " " + vertexMapping);
         TMP_COLORING_COUNT = 0;
         this.canonize(1, stringBuffer);
 //        System.out.println("invariants " + dag.copyInvariants());
 //        System.out.println("occur" + getOccurrences());
         
-//        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
+        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
         return stringBuffer.toString();
     }
     
@@ -266,12 +266,13 @@ public abstract class AbstractVertexSignature {
         }
         
         this.dag.updateVertexInvariants();
-        List<Integer> orbit = this.dag.createOrbit();
+        int[] parents = dag.getParentsInFinalString();
+        List<Integer> orbit = this.dag.createOrbit(parents);
 //        System.out.println(dag.copyInvariants());
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-            List<InvariantIntIntPair> pairs = dag.getInvariantPairs();
+            List<InvariantIntIntPair> pairs = dag.getInvariantPairs(parents);
 //            System.out.println("coloring " + pairs);
             for (InvariantIntIntPair pair : pairs) {
                 this.dag.setColor(pair.index, color);
@@ -285,11 +286,11 @@ public abstract class AbstractVertexSignature {
             int cmp = signature.compareTo(canonicalVertexSignature.toString()); 
             int l = canonicalVertexSignature.length();
             if (cmp > 0) {
-//                System.out.println("replacing " + signature + " old= " + canonicalVertexSignature);
+                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
                 canonicalVertexSignature.replace(0, l, signature);
                 this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
-//                System.out.println("rejecting " + cmp + " " + signature);
+                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
             }
             return;
         } else {
@@ -361,34 +362,6 @@ public abstract class AbstractVertexSignature {
      */
     public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
     
-    /**
-     * Count the occurrences of each vertex index in the final signature string.
-     * Since duplicate DAG edges are removed, this count will not be the same as
-     * the simple count of occurrences in the DAG before printing.
-     *  
-     * @return
-     */
-    public int[] getOccurrences() {
-        int[] occurences = new int[vertexCount];
-        getOccurences(occurences, dag.getRoot(), null, new ArrayList<DAG.Arc>());
-        return occurences;
-    }
-    
-    private void getOccurences(int[] occurences, DAG.Node node,
-            DAG.Node parent, List<DAG.Arc> arcs) {
-        occurences[node.vertexIndex]++;
-        Collections.sort(node.children);
-        for (DAG.Node child : node.children) {
-            DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
-            if (arcs.contains(arc)) {
-                continue;
-            } else {
-                arcs.add(arc);
-                getOccurences(occurences, child, node, arcs);
-            }
-        }
-    }
-    
     private Map<Integer, Integer> getColorMap(int[] occurences) {
         Map<Integer, Integer> colorMap = new HashMap<Integer, Integer>();
         for (int i = 0; i < occurences.length; i++) {
@@ -418,7 +391,8 @@ public abstract class AbstractVertexSignature {
      * @param colorMap a map between pre-printed colors and printed colors
      */
     private void print(StringBuffer buffer, DAG.Node node,
-            DAG.Node parent, List<DAG.Arc> arcs, Map<Integer, Integer> colorMap) {
+//            DAG.Node parent, List<DAG.Arc> arcs, Map<Integer, Integer> colorMap) {
+            DAG.Node parent, List<DAG.Arc> arcs) {
         int vertexIndex = getOriginalVertexIndex(node.vertexIndex);
         
         // Add the vertexIndex to the labels if it hasn't already been added.
@@ -436,8 +410,10 @@ public abstract class AbstractVertexSignature {
         buffer.append(this.startNodeSymbol);
         buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
-        if (color != 0 && colorMap.containsKey(color)) {
-            buffer.append(',').append(colorMap.get(color));
+//        if (color != 0 && colorMap.containsKey(color)) {
+        if (color != 0) {
+//            buffer.append(',').append(colorMap.get(color));
+            buffer.append(',').append(color);
         }
         buffer.append(this.endNodeSymbol);
         
@@ -457,7 +433,8 @@ public abstract class AbstractVertexSignature {
                     addedBranchSymbol = true;
                 }
                 arcs.add(arc);
-                print(buffer, child, node, arcs, colorMap);
+//                print(buffer, child, node, arcs, colorMap);
+                print(buffer, child, node, arcs);
             }
         }
         if (addedBranchSymbol) {
@@ -470,9 +447,10 @@ public abstract class AbstractVertexSignature {
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        Map<Integer, Integer> colorMap = getColorMap(getOccurrences());
+//        Map<Integer, Integer> colorMap = getColorMap(dag.getOccurrences());
 //        System.out.println("color map " + colorMap);
-        print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>(), colorMap);
+//        print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>(), colorMap);
+        print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
         return buffer.toString();
     }
     
