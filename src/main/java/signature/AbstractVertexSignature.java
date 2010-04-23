@@ -232,15 +232,15 @@ public abstract class AbstractVertexSignature {
      */
     public String toCanonicalString() {
         StringBuffer stringBuffer = new StringBuffer();
-        System.out.println("CANONIZING " + 
-                getOriginalVertexIndex(dag.getRoot().vertexIndex)
-                + " " + vertexMapping);
+//        System.out.println("CANONIZING " + 
+//                getOriginalVertexIndex(dag.getRoot().vertexIndex)
+//                + " " + vertexMapping);
         TMP_COLORING_COUNT = 0;
         this.canonize(1, stringBuffer);
 //        System.out.println("invariants " + dag.copyInvariants());
 //        System.out.println("occur" + getOccurrences());
         
-        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
+//        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
         return stringBuffer.toString();
     }
     
@@ -266,15 +266,13 @@ public abstract class AbstractVertexSignature {
         }
         
         this.dag.updateVertexInvariants();
-        int[] childCounts = getChildCounts();
-        List<Integer> orbit = this.dag.createOrbit(childCounts);
-//        System.out.println(Arrays.toString(childCounts));
+        List<Integer> orbit = this.dag.createOrbit();
 //        System.out.println(dag.copyInvariants());
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-            List<InvariantIntIntPair> pairs = dag.getInvariantPairs(childCounts);
-            System.out.println("coloring " + pairs);
+            List<InvariantIntIntPair> pairs = dag.getInvariantPairs();
+//            System.out.println("coloring " + pairs);
             for (InvariantIntIntPair pair : pairs) {
                 this.dag.setColor(pair.index, color);
                 color++;
@@ -285,18 +283,19 @@ public abstract class AbstractVertexSignature {
             // Creating the root signature string.
             String signature = this.toString();
             int cmp = signature.compareTo(canonicalVertexSignature.toString()); 
+            int l = canonicalVertexSignature.length();
             if (cmp > 0) {
-                int l = canonicalVertexSignature.length();
-                System.out.println("replacing " + signature + " old= " + canonicalVertexSignature);
+//                System.out.println("replacing " + signature + " old= " + canonicalVertexSignature);
                 canonicalVertexSignature.replace(0, l, signature);
                 this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
-                System.out.println("rejecting " + cmp + " " + signature);
+//                System.out.println("rejecting " + cmp + " " + signature);
             }
             return;
         } else {
-            System.out.println("setting color " + color + " for orbit " + orbit);
+//            System.out.println("setting color " + color + " for orbit " + orbit);
             for (int o : orbit) {
+//                System.out.println("setting color " + color + " for element " + o);
                 this.dag.setColor(o, color);
                 Invariants invariantsCopy = this.dag.copyInvariants();
                 this.canonize(color + 1, canonicalVertexSignature);
@@ -361,28 +360,6 @@ public abstract class AbstractVertexSignature {
      * @return a string symbol for this edge
      */
     public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
-    
-    public int[] getChildCounts() {
-        int[] childCounts = new int[vertexCount];
-        getChildCounts(childCounts, dag.getRoot(), null, new ArrayList<DAG.Arc>());
-        return childCounts;
-    }
-    
-    private void getChildCounts(int[] childCounts, DAG.Node node,
-            DAG.Node parent, List<DAG.Arc> arcs) {
-        Collections.sort(node.children);
-        for (DAG.Node child : node.children) {
-            DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
-            if (arcs.contains(arc)) {
-                continue;
-            } else {
-                childCounts[node.vertexIndex]++;
-                arcs.add(arc);
-                getChildCounts(childCounts, child, node, arcs);
-            }
-        }
-        
-    }
     
     /**
      * Count the occurrences of each vertex index in the final signature string.

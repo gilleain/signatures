@@ -66,9 +66,9 @@ public class Invariants implements Cloneable {
     }
     
     public String toString() {
-        return "colors: " + Arrays.toString(colors) + ", ";
-//        	 + "node inv" + Arrays.toString(nodeInvariants)
-//        	 + ", vertex inv : " + Arrays.toString(vertexInvariants);
+        return "colors: " + Arrays.toString(colors) + ", "
+        	 + "node inv" + Arrays.toString(nodeInvariants)
+        	 + ", vertex inv : " + Arrays.toString(vertexInvariants);
     }
     
 }

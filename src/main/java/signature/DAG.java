@@ -1,7 +1,6 @@
 package signature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -369,11 +368,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    parentNode.children.add(childNode);
 	}
 	
-	public List<InvariantIntIntPair> getInvariantPairs(int[] calculatedChildCounts) {
+	public List<InvariantIntIntPair> getInvariantPairs() {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
 	        if (invariants.getColor(i) == 0 
-//	                && calculatedChildCounts[i] < 1
 	                && parentCounts[i] >= 2) {
 	            pairs.add(
 	                    new InvariantIntIntPair(
@@ -422,14 +420,13 @@ public class DAG implements Iterable<List<DAG.Node>> {
 //	    System.out.println(Arrays.toString(childCounts));
 	}
 	
-	public List<Integer> createOrbit(int[] calculatedChildCounts) {
+	public List<Integer> createOrbit() {
 	    
 	    // get the orbits
 	    Map<Integer, List<Integer>> orbits = 
 	        new HashMap<Integer, List<Integer>>();
 	    for (int j = 0; j < vertexCount; j++) {
-	        if (parentCounts[j] >= 2 && calculatedChildCounts[j] < 1) {
-//	        if (parentCounts[j] >= 2) {
+	        if (parentCounts[j] >= 2) {
 	            int invariant = invariants.getVertexInvariant(j);
 	            List<Integer> orbit;
 	            if (orbits.containsKey(invariant)) {
@@ -442,7 +439,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        }
 	    }
 	    
-//	    System.out.println(orbits);
+//	    System.out.println("Orbits " + orbits);
 	    
 	    // find the largest orbit
 	    if (orbits.isEmpty()) {
