@@ -377,7 +377,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	
 	private void getParentsInFinalString(int[] counts, DAG.Node node,
             DAG.Node parent, List<DAG.Arc> arcs) {
-	    counts[node.vertexIndex]++;
+	    if (parent != null) {
+	        counts[node.vertexIndex]++;
+	    }
+	    Collections.sort(node.children);
 	    for (DAG.Node child : node.children) {
             DAG.Arc arc = new Arc(node.vertexIndex, child.vertexIndex);
             if (arcs.contains(arc)) {
