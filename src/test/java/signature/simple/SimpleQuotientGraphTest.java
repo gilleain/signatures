@@ -55,22 +55,30 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
-    public void sandwichTest() {
-        SimpleQuotientGraph quotientGraph;
+    public void triangleSandwichTest() {
         SimpleGraph triangle = AbstractSimpleGraphTest.makeSandwich(3);
-        quotientGraph = new SimpleQuotientGraph(triangle);
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(triangle);
         checkParameters(quotientGraph, 2, 2, 1);
-        
+    }
+    
+    @Test
+    public void squareSandwichTest() {
         SimpleGraph square = AbstractSimpleGraphTest.makeSandwich(4);
-        quotientGraph = new SimpleQuotientGraph(square);
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(square);
         checkParameters(quotientGraph, 2, 2, 1);
-        
+    }
+    
+    @Test
+    public void pentagonalSandwichTest() {
         SimpleGraph pentagon = AbstractSimpleGraphTest.makeSandwich(5);
-        quotientGraph = new SimpleQuotientGraph(pentagon);
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(pentagon);
         checkParameters(quotientGraph, 2, 2, 1);
-        
+    }
+    
+    @Test
+    public void hexagonalSandwichTest() {
         SimpleGraph hexagon = AbstractSimpleGraphTest.makeSandwich(6);
-        quotientGraph = new SimpleQuotientGraph(hexagon);
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(hexagon);
         checkParameters(quotientGraph, 2, 2, 1);
     }
     
