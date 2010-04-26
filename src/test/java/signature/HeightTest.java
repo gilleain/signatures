@@ -59,20 +59,21 @@ public class HeightTest {
 //                Assert.assertEquals(zeroCanonical, sig.toCanonicalString());
                 String canString = sig.toCanonicalString();
                 if (zeroCanonical.equals(canString)) {
-                    System.out.println("EQU");
+//                    System.out.println("EQU");
                 } else {
                     System.out.println("NEQ "
                             + h + "\t" + i + "\t"
                             + zeroCanonical + " " + canString);
                 }
+                Assert.assertEquals(zeroCanonical, canString);
             }
         }
     }
     
     @Test
     public void torusTest() {
-        int width = 4;
-        int height = 4;
+        int width = 6;
+        int height = 6;
         
         SimpleGraph torus = makeTorus(width, height);
         System.out.println(torus);
@@ -92,11 +93,11 @@ public class HeightTest {
     
     @Test
     public void completeGraphTest() {
-        int n = 10;
+        int n = 7;
         SimpleGraph kN = makeCompleteGraph(n);
         int expectedEdgeCount = (n * (n - 1)) / 2;
         Assert.assertEquals(expectedEdgeCount, kN.edges.size());
-        regularGraphTest(kN, 2);
+        regularGraphTest(kN, n - 1);
     }
     
     public static void main(String[] args) {

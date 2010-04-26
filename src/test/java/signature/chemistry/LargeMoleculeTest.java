@@ -1,10 +1,8 @@
-package signature;
+package signature.chemistry;
 
-import java.util.Arrays;
 
 import org.junit.Test;
 
-import signature.chemistry.AtomSignature;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
 
@@ -34,13 +32,15 @@ public class LargeMoleculeTest {
     public Molecule makeTetrakisTriphenylPhosphoranylRhodium() {
         Molecule ttpr = new Molecule();
         ttpr.addAtom("Rh");
-        for (int i = 1; i < 5; i++) {
+        int phosphateCount = 2;
+        for (int i = 1; i <= phosphateCount; i++) {
             ttpr.addAtom("P");
             ttpr.addSingleBond(0, i);
         }
         
-        for (int j = 1; j < 5; j++) {
-            for (int k = 0; k < 3; k++) {
+        int phenylCount = 3;
+        for (int j = 1; j <= phosphateCount; j++) {
+            for (int k = 0; k <= phenylCount; k++) {
                 addRing(j, 6, ttpr);
             }
         }
@@ -58,7 +58,7 @@ public class LargeMoleculeTest {
     
     @Test
     public void testMinimalMol() {
-        Molecule mol = makeMinimalMultiRing(5, 4);
+        Molecule mol = makeMinimalMultiRing(5, 3);
         MoleculeSignature molSig = new MoleculeSignature(mol);
 //        String sigString = molSig.toCanonicalString();
         String sigString = molSig.signatureStringForVertex(0);
@@ -66,16 +66,6 @@ public class LargeMoleculeTest {
 
         System.out.println(mol);
         System.out.println("result " + sigString);
-    }
-    
-    @Test
-    public void occurencesTestForMultiRingMolecule() {
-        Molecule mol = makeMinimalMultiRing(7, 3);
-        AtomSignature signature = new AtomSignature(mol, 0);
-        String canon = signature.toCanonicalString();
-        int[] occ = signature.getOccurrences();
-        System.out.println(canon);
-        System.out.println(Arrays.toString(occ));
     }
     
     public Molecule makeChain(int length) {
