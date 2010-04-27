@@ -232,15 +232,15 @@ public abstract class AbstractVertexSignature {
      */
     public String toCanonicalString() {
         StringBuffer stringBuffer = new StringBuffer();
-        System.out.println("CANONIZING " + 
-                getOriginalVertexIndex(dag.getRoot().vertexIndex)
-                + " " + vertexMapping);
+//        System.out.println("CANONIZING " + 
+//                getOriginalVertexIndex(dag.getRoot().vertexIndex)
+//                + " " + vertexMapping);
         TMP_COLORING_COUNT = 0;
         this.canonize(1, stringBuffer);
 //        System.out.println("invariants " + dag.copyInvariants());
 //        System.out.println("occur" + getOccurrences());
         
-        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
+//        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
         return stringBuffer.toString();
     }
     
@@ -286,11 +286,11 @@ public abstract class AbstractVertexSignature {
             int cmp = signature.compareTo(canonicalVertexSignature.toString()); 
             int l = canonicalVertexSignature.length();
             if (cmp > 0) {
-                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
+//                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
                 canonicalVertexSignature.replace(0, l, signature);
                 this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
-                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
+//                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
             }
             return;
         } else {

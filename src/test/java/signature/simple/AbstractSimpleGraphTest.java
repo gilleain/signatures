@@ -1,6 +1,15 @@
 package signature.simple;
 
+import org.junit.Test;
+
+import junit.framework.Assert;
+
 public class AbstractSimpleGraphTest {
+    
+    @Test
+    public void dummyTest() {
+        Assert.assertTrue(true);
+    }
     
     public static SimpleGraph makePrism(int size) {
         SimpleGraph g = new SimpleGraph();

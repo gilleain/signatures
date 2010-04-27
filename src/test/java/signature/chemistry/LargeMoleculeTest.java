@@ -40,7 +40,7 @@ public class LargeMoleculeTest {
         
         int phenylCount = 3;
         for (int j = 1; j <= phosphateCount; j++) {
-            for (int k = 0; k <= phenylCount; k++) {
+            for (int k = 0; k < phenylCount; k++) {
                 addRing(j, 6, ttpr);
             }
         }

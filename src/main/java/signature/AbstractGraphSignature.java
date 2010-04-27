@@ -223,7 +223,7 @@ public abstract class AbstractGraphSignature {
         // Generates and returns a graph signature
         List<String> vertexSignatures = this.getVertexSignatureStrings();
         Collections.sort(vertexSignatures);
-        this.graphSignature = vertexSignatures.get(0);
+        this.graphSignature = vertexSignatures.get(vertexSignatures.size() - 1);
         return this.graphSignature;
     }
 
