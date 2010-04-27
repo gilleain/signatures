@@ -144,7 +144,7 @@ public abstract class AbstractGraphSignature {
         for (int i = 0; i < this.getVertexCount(); i++) {
             String signatureString = this.signatureStringForVertex(i);
             if (canonicalString == null ||
-                    canonicalString.compareTo(signatureString) > 0) {
+                    canonicalString.compareTo(signatureString) < 0) {
                 canonicalString = signatureString; 
             }
         }
