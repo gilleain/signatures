@@ -39,8 +39,13 @@ public class MoleculeSignature extends AbstractGraphSignature {
 
     @Override
     public String signatureStringForVertex(int vertexIndex, int height) {
-        // TODO Auto-generated method stub
-        return null;
+        AtomSignature atomSignature;
+        if (height == -1) {
+            atomSignature = new AtomSignature(molecule, vertexIndex);
+        } else {
+            atomSignature = new AtomSignature(molecule, vertexIndex, height);
+        }
+        return atomSignature.toCanonicalString();
     }
 
     @Override

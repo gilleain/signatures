@@ -403,8 +403,15 @@ public class MoleculeSignatureTest {
     public void testMethaneSignatures() {
         Molecule molecule = MoleculeFactory.methane();
         MoleculeSignature signature = new MoleculeSignature(molecule);
-//        System.out.println(signature.getSymmetryClasses());
-        System.out.println(signature.toCanonicalString());
+        List<SymmetryClass> symmetryClasses = signature.getSymmetryClasses();
+        Assert.assertEquals(2, symmetryClasses.size());
+        for (SymmetryClass symmetryClass : symmetryClasses) {
+            if (symmetryClass.getSignatureString().startsWith("[H")) {
+                Assert.assertEquals(4, symmetryClass.size());
+            } else {
+                Assert.assertEquals(1, symmetryClass.size());
+            }
+        }
     }
     
     @Test
@@ -416,8 +423,15 @@ public class MoleculeSignatureTest {
         molecule.addSingleBond(0, 1);
         molecule.addSingleBond(0, 2);
         MoleculeSignature signature = new MoleculeSignature(molecule);
-//        System.out.println(signature.getSymmetryClasses());
-        System.out.println(signature.toCanonicalString());
+        List<SymmetryClass> symmetryClasses = signature.getSymmetryClasses();
+        Assert.assertEquals(2, symmetryClasses.size());
+        for (SymmetryClass symmetryClass : symmetryClasses) {
+            if (symmetryClass.getSignatureString().startsWith("[H")) {
+                Assert.assertEquals(2, symmetryClass.size());
+            } else {
+                Assert.assertEquals(1, symmetryClass.size());
+            }
+        }
     }
     
     @Test
@@ -427,10 +441,12 @@ public class MoleculeSignatureTest {
         molecule.addAtom("H");
         molecule.addSingleBond(0, 1);
         MoleculeSignature signature = new MoleculeSignature(molecule);
-//        System.out.println(signature.getSymmetryClasses());
-        System.out.println(signature.toCanonicalString());
+        List<SymmetryClass> symmetryClasses = signature.getSymmetryClasses();
+        Assert.assertEquals(2, symmetryClasses.size());
+        for (SymmetryClass symmetryClass : symmetryClasses) {
+            Assert.assertEquals(1, symmetryClass.size());
+        }
     }
-
     
     @Test
     public void testCanonicalIsUnique() {
