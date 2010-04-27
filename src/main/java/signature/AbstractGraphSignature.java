@@ -148,7 +148,11 @@ public abstract class AbstractGraphSignature {
                 canonicalString = signatureString; 
             }
         }
-        return canonicalString;
+        if (canonicalString == null) {
+            return "";
+        } else {
+            return canonicalString;
+        }
     }
     
     /**
