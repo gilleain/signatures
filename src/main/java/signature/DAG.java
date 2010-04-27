@@ -597,9 +597,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        increment = -1;
 	    } else {
 	        start = 0;
-            // We do not include the leaf layer, perhaps we should. Does it
-            // matter?
-//	        end = this.layers.size()-1;
 	        end = this.layers.size();
 	        increment = 1;
 	    }
