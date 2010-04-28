@@ -23,9 +23,9 @@ public abstract class AbstractVertexSignature {
     
     public static final char BLANK_SYMBOL = '\u0000';
     
-    public static final char startNodeSymbol = '[';
+    public static final char START_NODE_SYMBOL = '[';
     
-    public static final char endNodeSymbol = ']';
+    public static final char END_NODE_SYMBOL = ']';
     
     private DAG dag;
     
@@ -365,13 +365,13 @@ public abstract class AbstractVertexSignature {
         }
         
         // print out the text that represents the node itself
-        buffer.append(AbstractVertexSignature.startNodeSymbol);
+        buffer.append(AbstractVertexSignature.START_NODE_SYMBOL);
         buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
         if (color != -1) {
             buffer.append(',').append(color);
         }
-        buffer.append(AbstractVertexSignature.endNodeSymbol);
+        buffer.append(AbstractVertexSignature.END_NODE_SYMBOL);
         
         // Need to sort the children here, so that they are printed in an order 
         // according to their invariants.
@@ -481,7 +481,7 @@ public abstract class AbstractVertexSignature {
         ColoredTree.Node parent = null;
         ColoredTree.Node current = null;
         int currentHeight = 1;
-        int color = 0;
+        int color = -1;
         int j = 0;
         int k = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -493,13 +493,13 @@ public abstract class AbstractVertexSignature {
             } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
                 parent = parent.parent;
                 currentHeight--;
-            } else if (c == startNodeSymbol) {  
+            } else if (c == START_NODE_SYMBOL) {  
                 j = i + 1;
-            } else if (c == endNodeSymbol) {
+            } else if (c == END_NODE_SYMBOL) {
                 String ss;
                 if (k < j) {    // no color
                     ss = s.substring(j, i);
-                    color = 0;
+                    color = -1;
                 } else {        // color
                     ss = s.substring(j, k - 1);
                     color = Integer.parseInt(s.substring(k, i));    

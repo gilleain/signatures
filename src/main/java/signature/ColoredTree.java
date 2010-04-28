@@ -54,7 +54,7 @@ public class ColoredTree {
         }
         
         public boolean isColored() {
-            return this.color != 0;
+            return this.color != -1;
         }
         
         public void buildString(StringBuilder builder) {
