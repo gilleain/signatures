@@ -286,11 +286,11 @@ public abstract class AbstractVertexSignature {
             int cmp = signature.compareTo(canonicalVertexSignature.toString()); 
             int l = canonicalVertexSignature.length();
             if (cmp > 0) {
-//                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
+                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
                 canonicalVertexSignature.replace(0, l, signature);
                 this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
-//                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
+                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
             }
             return;
         } else {
@@ -362,25 +362,6 @@ public abstract class AbstractVertexSignature {
      */
     public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
     
-    private Map<Integer, Integer> getColorMap(int[] occurences) {
-        Map<Integer, Integer> colorMap = new HashMap<Integer, Integer>();
-        for (int i = 0; i < occurences.length; i++) {
-            int color = dag.colorFor(i);
-            if (color != 0 && occurences[i] > 1) {
-                colorMap.put(color, -1);
-            }
-        }
-        List<Integer> colors = new ArrayList<Integer>(colorMap.keySet());
-        Collections.sort(colors);
-        int mappedColor = 1;
-        for (int color : colors) {
-            colorMap.put(color, mappedColor);
-            mappedColor++;
-        }
-        
-        return colorMap;
-    }
-    
     /**
      * Recursively print the signature into the buffer.
      * 
@@ -391,7 +372,6 @@ public abstract class AbstractVertexSignature {
      * @param colorMap a map between pre-printed colors and printed colors
      */
     private void print(StringBuffer buffer, DAG.Node node,
-//            DAG.Node parent, List<DAG.Arc> arcs, Map<Integer, Integer> colorMap) {
             DAG.Node parent, List<DAG.Arc> arcs) {
         int vertexIndex = getOriginalVertexIndex(node.vertexIndex);
         
@@ -410,9 +390,7 @@ public abstract class AbstractVertexSignature {
         buffer.append(this.startNodeSymbol);
         buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
-//        if (color != 0 && colorMap.containsKey(color)) {
         if (color != 0) {
-//            buffer.append(',').append(colorMap.get(color));
             buffer.append(',').append(color);
         }
         buffer.append(this.endNodeSymbol);
