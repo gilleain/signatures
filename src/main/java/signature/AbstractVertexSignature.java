@@ -23,14 +23,9 @@ public abstract class AbstractVertexSignature {
     
     public static final char BLANK_SYMBOL = '\u0000';
     
-    private final char startNodeSymbol;
+    public static final char startNodeSymbol = '[';
     
-    private final char endNodeSymbol;
-    
-    /**
-     * If true, the signature uses start/end symbols to surround the node 
-     */
-    private final boolean hasNodeBracketSymbols; 
+    public static final char endNodeSymbol = ']';
     
     private DAG dag;
     
@@ -62,26 +57,9 @@ public abstract class AbstractVertexSignature {
     private List<Integer> canonicalLabelMapping;
     
     /**
-     * Create an abstract vertex signature with no start or end node symbols.
+     * Create an abstract vertex signature.
      */
     public AbstractVertexSignature() {
-        startNodeSymbol = AbstractVertexSignature.BLANK_SYMBOL;
-        endNodeSymbol = AbstractVertexSignature.BLANK_SYMBOL;
-        hasNodeBracketSymbols = false;
-        this.vertexCount = 0;
-        this.currentCanonicalLabelMapping = new ArrayList<Integer>();
-    }
-    
-    /**
-     * Create an abstract vertex signature with supplied start and end symbols.
-     *  
-     * @param startNodeSymbol
-     * @param endNodeSymbol
-     */
-    public AbstractVertexSignature(char startNodeSymbol, char endNodeSymbol) {
-        this.startNodeSymbol = startNodeSymbol;
-        this.endNodeSymbol = endNodeSymbol;
-        hasNodeBracketSymbols = true;
         this.vertexCount = 0;
         this.currentCanonicalLabelMapping = new ArrayList<Integer>();
     }
@@ -387,13 +365,13 @@ public abstract class AbstractVertexSignature {
         }
         
         // print out the text that represents the node itself
-        buffer.append(this.startNodeSymbol);
+        buffer.append(AbstractVertexSignature.startNodeSymbol);
         buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
         if (color != -1) {
             buffer.append(',').append(color);
         }
-        buffer.append(this.endNodeSymbol);
+        buffer.append(AbstractVertexSignature.endNodeSymbol);
         
         // Need to sort the children here, so that they are printed in an order 
         // according to their invariants.
@@ -498,49 +476,7 @@ public abstract class AbstractVertexSignature {
         }
     }
     
-    public static ColoredTree parseWithoutNodeSymbols(String s) {
-        // TODO FIXME for unlabelled graph signatures 
-        ColoredTree tree = null;
-        ColoredTree.Node parent = null;
-        ColoredTree.Node current = null;
-        int currentHeight = 1;
-        int color = 0;
-        int j = 0;
-        int k = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == AbstractVertexSignature.START_BRANCH_SYMBOL) {
-                parent = current;
-                currentHeight++;
-                tree.updateHeight(currentHeight);
-            } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
-                parent = parent.parent;
-                currentHeight--;
-            } else if (c == ',') {
-                k = i + 1;
-            } else {
-                String ss;
-                if (k < j) {    // no color
-                    ss = s.substring(j, i);
-                    color = 0;
-                } else {        // color
-                    ss = s.substring(j, k - 1);
-                    color = Integer.parseInt(s.substring(k, i));    
-                }
-                if (tree == null) {
-                    tree = new ColoredTree(ss);
-                    parent = tree.getRoot();
-                    current = tree.getRoot();
-                } else {
-                    current = tree.makeNode(ss, parent, currentHeight, color);
-                }
-            } 
-        }
-        return tree;
-    }
-    
-    public static ColoredTree parseWithNodeSymbols(
-            String s, char startNodeSymbol, char endNodeSymbol) {
+    public static ColoredTree parse(String s) {
         ColoredTree tree = null;
         ColoredTree.Node parent = null;
         ColoredTree.Node current = null;

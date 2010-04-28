@@ -25,10 +25,6 @@ public abstract class AbstractGraphSignature {
      */
     private int height;
     
-    private final char startNodeSymbol;
-    
-    private final char endNodeSymbol;
-    
     private String graphSignature; // XXX
     
     private List<List<Integer>> canonicalLabelMapping;  // XXX
@@ -37,7 +33,7 @@ public abstract class AbstractGraphSignature {
      * Create a graph signature with a default separator.
      */
     public AbstractGraphSignature() {
-        this(" + ", -1, '[', ']');
+        this(" + ", -1);
     }
     
     /**
@@ -46,12 +42,7 @@ public abstract class AbstractGraphSignature {
      * @param separator the separator to use
      */
     public AbstractGraphSignature(String separator) {
-        this(separator, -1, '[', ']');
-    }
-    
-    public AbstractGraphSignature(
-            String separator, char startNodeSymbol, char endNodeSymbol) {
-        this(separator, -1, startNodeSymbol, endNodeSymbol);
+        this(separator, -1);
     }
     
     /**
@@ -60,7 +51,7 @@ public abstract class AbstractGraphSignature {
      * @param height the height of the vertex signatures made from this graph.
      */
     public AbstractGraphSignature(int height) {
-        this(" + ", height, '[', ']');
+        this(" + ", height);
     }
     
     /**
@@ -69,22 +60,11 @@ public abstract class AbstractGraphSignature {
      * @param separator the separator to use
      * @param height the height of the vertex signatures made from this graph.
      */
-    public AbstractGraphSignature(String separator, int height, 
-            char startNodeSymbol, char endNodeSymbol) {
+    public AbstractGraphSignature(String separator, int height) {
         this.separator = separator;
         this.height = height;
-        this.startNodeSymbol = startNodeSymbol;
-        this.endNodeSymbol = endNodeSymbol;
         
         this.canonicalLabelMapping = new ArrayList<List<Integer>>();
-    }
-    
-    public char getStartNodeSymbol() {
-        return this.startNodeSymbol;
-    }
-    
-    public char getEndNodeSymbol() {
-        return this.endNodeSymbol;
     }
     
     /**
@@ -295,9 +275,7 @@ public abstract class AbstractGraphSignature {
     public void reconstructCanonicalGraph(
             AbstractVertexSignature signature, AbstractGraphBuilder builder) {
         String canonicalString = this.toCanonicalString();
-        ColoredTree tree = 
-            AbstractVertexSignature.parseWithNodeSymbols(
-                    canonicalString, startNodeSymbol, endNodeSymbol);
+        ColoredTree tree = AbstractVertexSignature.parse(canonicalString);
         builder.makeFromColoredTree(tree);
     }
     
@@ -344,8 +322,7 @@ public abstract class AbstractGraphSignature {
         VirtualGraphBuilder builder = new VirtualGraphBuilder();
         
         builder.makeFromColoredTree(
-                AbstractVertexSignature.parseWithNodeSymbols(
-                        canonicalString, startNodeSymbol, endNodeSymbol));
+                AbstractVertexSignature.parse(canonicalString));
         return builder.toEdgeString();
     }
  
