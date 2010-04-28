@@ -21,6 +21,7 @@ public class Invariants implements Cloneable {
     
     public Invariants(int vertexCount, int nodeCount) {
         this.colors = new int[vertexCount];
+        Arrays.fill(colors, -1);
         this.nodeInvariants = new int[nodeCount];
         this.vertexInvariants = new int[vertexCount];
     }

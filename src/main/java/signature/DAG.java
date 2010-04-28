@@ -302,10 +302,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    this.invariants.setColor(vertexIndex, color);
 	}
 	
-	public void setColors(int[] colors) {
-	    invariants.colors = colors;
-	}
-	
 	public int occurences(int vertexIndex) {
 	    int count = 0;
 	    for (Node node : nodes) {
@@ -424,8 +420,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	public List<InvariantIntIntPair> getInvariantPairs(int[] parents) {
 	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
 	    for (int i = 0; i < this.vertexCount; i++) {
-	        if (invariants.getColor(i) == 0 
-//	                && parentCounts[i] >= 2) {
+	        if (invariants.getColor(i) == -1
 	                && parents[i] >= 2) {
 	            pairs.add(
 	                    new InvariantIntIntPair(
@@ -480,7 +475,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    Map<Integer, List<Integer>> orbits = 
 	        new HashMap<Integer, List<Integer>>();
 	    for (int j = 0; j < vertexCount; j++) {
-//	        if (parentCounts[j] >= 2) {
 	        if (parents[j] >= 2) {
 	            int invariant = invariants.getVertexInvariant(j);
 	            List<Integer> orbit;

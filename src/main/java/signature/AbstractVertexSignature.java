@@ -236,7 +236,7 @@ public abstract class AbstractVertexSignature {
 //                getOriginalVertexIndex(dag.getRoot().vertexIndex)
 //                + " " + vertexMapping);
         TMP_COLORING_COUNT = 0;
-        this.canonize(1, stringBuffer);
+        this.canonize(0, stringBuffer);
 //        System.out.println("invariants " + dag.copyInvariants());
 //        System.out.println("occur" + getOccurrences());
         
@@ -261,7 +261,7 @@ public abstract class AbstractVertexSignature {
         // The labelling that corresponds to the mapping for the vertex
         // signature should be the only one stored.
 
-        if ( color == 1 ) {
+        if ( color == 0 ) {
             this.currentCanonicalLabelMapping = new ArrayList<Integer>();
         }
         
@@ -301,7 +301,7 @@ public abstract class AbstractVertexSignature {
                 Invariants invariantsCopy = this.dag.copyInvariants();
                 this.canonize(color + 1, canonicalVertexSignature);
                 this.dag.setInvariants(invariantsCopy);
-                this.dag.setColor(o, 0);
+                this.dag.setColor(o, -1);
             }
         }
     }
@@ -390,7 +390,7 @@ public abstract class AbstractVertexSignature {
         buffer.append(this.startNodeSymbol);
         buffer.append(getVertexSymbol(vertexIndex));
         int color = dag.colorFor(node.vertexIndex);
-        if (color != 0) {
+        if (color != -1) {
             buffer.append(',').append(color);
         }
         buffer.append(this.endNodeSymbol);
@@ -425,9 +425,6 @@ public abstract class AbstractVertexSignature {
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-//        Map<Integer, Integer> colorMap = getColorMap(dag.getOccurrences());
-//        System.out.println("color map " + colorMap);
-//        print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>(), colorMap);
         print(buffer, this.dag.getRoot(), null, new ArrayList<DAG.Arc>());
         return buffer.toString();
     }
