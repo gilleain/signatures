@@ -121,22 +121,36 @@ public class ColoredTreePanel extends JPanel {
     
     private Map<Integer, Color> colorMap;
     
+    public ColoredTreePanel(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.setPreferredSize(new Dimension(width, height));
+        this.root = null;
+        this.colorMap = makeColorMap();
+    }
+    
     public ColoredTreePanel(ColoredTree tree, int width, int height) {
-        this.root = treeToTree(tree);
-        this.maxDepth = tree.getHeight();
+        setTree(tree);
         this.width = width;
         this.height = height;
         this.setPreferredSize(new Dimension(width, height));
         this.colorMap = makeColorMap();
     }
     
+    public void setTree(ColoredTree tree) {
+        System.out.println("setting tree " + tree);
+        this.root = treeToTree(tree);
+        this.maxDepth = tree.getHeight();
+    }
+    
     private Map<Integer, Color> makeColorMap() {
         Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
-        colorMap.put(1, Color.RED);
-        colorMap.put(2, Color.PINK);
-        colorMap.put(3, Color.ORANGE);
-        colorMap.put(4, Color.YELLOW);
-        colorMap.put(5, Color.GREEN);
+        colorMap.put(0, Color.RED);
+        colorMap.put(1, Color.PINK);
+        colorMap.put(2, Color.ORANGE);
+        colorMap.put(3, Color.YELLOW);
+        colorMap.put(4, Color.GREEN);
+        colorMap.put(5, Color.CYAN);
         colorMap.put(6, Color.BLUE);
         colorMap.put(7, Color.MAGENTA);
         return colorMap;
