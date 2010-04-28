@@ -21,8 +21,6 @@ public abstract class AbstractVertexSignature {
     
     public static final char END_BRANCH_SYMBOL = ')';
     
-    public static final char BLANK_SYMBOL = '\u0000';
-    
     public static final char START_NODE_SYMBOL = '[';
     
     public static final char END_NODE_SYMBOL = ']';
