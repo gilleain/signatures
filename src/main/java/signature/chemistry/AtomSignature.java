@@ -1,7 +1,6 @@
 package signature.chemistry;
 
 import signature.AbstractVertexSignature;
-import signature.ColoredTree;
 
 public class AtomSignature extends AbstractVertexSignature {
     
@@ -40,10 +39,6 @@ public class AtomSignature extends AbstractVertexSignature {
     @Override
     public String getVertexSymbol(int vertexIndex) {
         return this.molecule.getSymbolFor(vertexIndex);
-    }
-    
-    public static ColoredTree parse(String stringForm) {
-        return AbstractVertexSignature.parse(stringForm);
     }
 
 }

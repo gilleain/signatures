@@ -1,7 +1,6 @@
 package signature.simple;
 
 import signature.AbstractVertexSignature;
-import signature.ColoredTree;
 
 public class SimpleVertexSignature extends AbstractVertexSignature {
     
@@ -37,8 +36,4 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
         return ".";
     }
     
-    public static ColoredTree parse(String s) {
-        return AbstractVertexSignature.parse(s);
-    }
-
 }
