@@ -26,6 +26,16 @@ public class ColoredTree {
         
         public final int height;
         
+        public Node(String label, Node parent, int height) {
+            this.label = label;
+            this.parent = parent;
+            this.color = -1;
+            this.height = height;
+            if (parent != null) {
+                parent.children.add(this);
+            }
+        }
+        
         public Node(String label, Node parent, int height, int color) {
             this.label = label;
             this.parent = parent;
@@ -73,7 +83,7 @@ public class ColoredTree {
     private Node root;
     
     public ColoredTree(String rootLabel) {
-        this.root = new Node(rootLabel, null, 1, 0);
+        this.root = new Node(rootLabel, null, 1);
         this.height = 1;
     }
     
