@@ -64,5 +64,9 @@ public class InvariantList implements Comparable<InvariantList>{
             return 0;
         }
     }
+    
+    public String toString() {
+        return originalIndex + " " + invariants;
+    }
 
 }
