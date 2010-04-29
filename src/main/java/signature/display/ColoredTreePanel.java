@@ -153,6 +153,9 @@ public class ColoredTreePanel extends JPanel {
         colorMap.put(5, Color.CYAN);
         colorMap.put(6, Color.BLUE);
         colorMap.put(7, Color.MAGENTA);
+        colorMap.put(8, Color.DARK_GRAY);
+        colorMap.put(9, Color.GRAY);
+        colorMap.put(10, Color.LIGHT_GRAY);
         return colorMap;
     }
 
