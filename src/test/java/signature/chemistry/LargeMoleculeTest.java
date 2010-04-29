@@ -1,8 +1,11 @@
 package signature.chemistry;
 
 
+import java.util.List;
+
 import org.junit.Test;
 
+import signature.SymmetryClass;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
 
@@ -88,6 +91,18 @@ public class LargeMoleculeTest {
         MoleculeSignature molSig = new MoleculeSignature(chain);
         String sigString = molSig.toCanonicalString();
         System.out.println(sigString);
+    }
+    
+    @Test
+    public void buckballTest() {
+        Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
+        MoleculeSignature molSig = new MoleculeSignature(molecule);
+//        String signature = molSig.getMolecularSignature();
+//        System.out.println(signature);
+        List<SymmetryClass> symmetryClasses = molSig.getSymmetryClasses();
+        for (SymmetryClass symmetryClass : symmetryClasses) {
+//            System.out.println(symmetryClass);
+        }
     }
     
     public static void main(String[] args) {
