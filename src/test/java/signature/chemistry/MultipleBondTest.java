@@ -7,6 +7,46 @@ import org.junit.Test;
 public class MultipleBondTest {
     
     @Test
+    public void cocoTest() {
+        Molecule moleculeA = new Molecule();
+        int chainLength = 6;
+        moleculeA.addAtom("O");
+        moleculeA.addAtom("C");
+        moleculeA.addAtom("C");
+        moleculeA.addAtom("O");
+        moleculeA.addAtom("C");
+        moleculeA.addAtom("O");
+        for (int i = 0; i < chainLength - 2; i++) {
+            moleculeA.addSingleBond(i, i+1);
+        }
+        moleculeA.addBond(chainLength - 2, chainLength - 1, 2);
+//        moleculeA.addBond(chainLength - 2, chainLength - 1, 1);
+        
+        Molecule moleculeB = new Molecule();
+        moleculeB.addAtom("O");
+        moleculeB.addAtom("C");
+        moleculeB.addAtom("C");
+        moleculeB.addAtom("C");
+        moleculeB.addAtom("O");
+        moleculeB.addAtom("O");
+        moleculeB.addBond(0, 1, 1);
+        moleculeB.addBond(1, 3, 1);
+        moleculeB.addBond(2, 4, 1);
+        moleculeB.addBond(2, 5, 2);
+//        moleculeB.addBond(2, 5, 1);
+        moleculeB.addBond(3, 4, 1);
+        
+        MoleculeSignature molSigA = new MoleculeSignature(moleculeA);
+        String sigA = molSigA.signatureStringForVertex(3);
+        System.out.println(sigA);
+        System.out.println("--------------------------------------");
+        MoleculeSignature molSigB = new MoleculeSignature(moleculeB);
+        String sigB = molSigB.signatureStringForVertex(4);
+        System.out.println(sigB);
+        Assert.assertEquals(sigA, sigB);
+    }
+    
+    @Test
     public void multipleBondedFragmentTest() {
         Molecule molA = new Molecule();
         molA.addAtom("C");
