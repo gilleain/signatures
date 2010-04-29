@@ -1,6 +1,7 @@
 package signature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -627,7 +628,11 @@ public class DAG implements Iterable<List<DAG.Node>> {
                 } else {
                     edgeColor = layerNode.edgeColors.get(relative.vertexIndex);
                 }
-            	relativeInvariants.add(inv * edgeColor);
+//            	relativeInvariants.add(inv * edgeColor);
+                relativeInvariants.add(inv * (edgeColor + 1));
+                
+//                relativeInvariants.add(inv);
+//                relativeInvariants.add(vertexCount + 1 + edgeColor);
             }
             Collections.sort(relativeInvariants);
             nodeInvariant.addAll(relativeInvariants);
@@ -635,6 +640,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
         }
         
         Collections.sort(nodeInvariantList);
+//        System.out.println(nodeInvariantList + " for layer " + layer + " " + direction);
         
         int order = 1;
         int first = nodeInvariantList.get(0).originalIndex;
