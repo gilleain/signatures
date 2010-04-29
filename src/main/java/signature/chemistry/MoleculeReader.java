@@ -9,6 +9,25 @@ import java.util.List;
 
 public class MoleculeReader {
     
+    public static Molecule readMolfile(String filename) {
+        Molecule molecule = null;
+        try {
+            File file = new File(filename);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            List<String> block = new ArrayList<String>();
+            while ((line = reader.readLine()) != null) {
+                block.add(line);
+            }
+            molecule = makeMolecule(block);
+        } catch (IOException ioe) {
+            System.err.println(ioe.toString());
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+        return molecule;
+    }
+    
     public static List<Molecule> readSDFFile(String filename) {
         List<Molecule> molecules = new ArrayList<Molecule>();
         try {
