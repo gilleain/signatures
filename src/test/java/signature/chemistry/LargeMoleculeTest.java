@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
-import signature.SymmetryClass;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
 
@@ -103,6 +104,9 @@ public class LargeMoleculeTest {
         Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
         System.out.println(mqg);
+        Assert.assertEquals(32, mqg.getVertexCount());
+        Assert.assertEquals(49, mqg.getEdgeCount());
+        Assert.assertEquals(6, mqg.numberOfLoopEdges());
     }
     
     @Test
@@ -113,6 +117,9 @@ public class LargeMoleculeTest {
         }
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
         System.out.println(mqg);
+        Assert.assertEquals(1, mqg.getVertexCount());
+        Assert.assertEquals(1, mqg.getEdgeCount());
+        Assert.assertEquals(1, mqg.numberOfLoopEdges());
     }
     
     @Test
@@ -124,6 +131,9 @@ public class LargeMoleculeTest {
             List<String> sigs = readSigs2(filename);
             MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol, sigs);
             System.out.println(mqg);
+            Assert.assertEquals(32, mqg.getVertexCount());
+            Assert.assertEquals(49, mqg.getEdgeCount());
+            Assert.assertEquals(6, mqg.numberOfLoopEdges());
         } catch (Exception e) {
             System.out.println(e);
             return;
