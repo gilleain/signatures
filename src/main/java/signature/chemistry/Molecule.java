@@ -166,6 +166,10 @@ public class Molecule {
         return this.bonds.size();
     }
     
+    public List<Bond> bonds() {
+        return bonds; 
+    }
+    
     public int[] getConnected(int atomIndex) {
         List<Integer> connectedList = new ArrayList<Integer>();
         
@@ -180,6 +184,15 @@ public class Molecule {
             connected[i] = connectedList.get(i);
         }
         return connected;
+    }
+    
+    public boolean isConnected(int i, int j) {
+        for (Bond bond : bonds) {
+            if (bond.hasBoth(i, j)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public int getBondOrder(int atomIndex, int otherAtomIndex) {

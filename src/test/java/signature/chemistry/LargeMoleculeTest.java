@@ -1,6 +1,11 @@
 package signature.chemistry;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -94,15 +99,64 @@ public class LargeMoleculeTest {
     }
     
     @Test
-    public void buckballTest() {
+    public void buckyballTest() {
         Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
-        MoleculeSignature molSig = new MoleculeSignature(molecule);
-//        String signature = molSig.getMolecularSignature();
-//        System.out.println(signature);
-        List<SymmetryClass> symmetryClasses = molSig.getSymmetryClasses();
-        for (SymmetryClass symmetryClass : symmetryClasses) {
-//            System.out.println(symmetryClass);
+        MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
+        System.out.println(mqg);
+    }
+    
+    @Test
+    public void buckyballWithoutMultipleBonds() {
+        Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
+        for (Molecule.Bond bond : molecule.bonds()) {
+            bond.order = 1;
         }
+        MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
+        System.out.println(mqg);
+    }
+    
+    @Test
+    public void faulonsBuckySignatures() {
+        Molecule mol = MoleculeReader.readMolfile("data/buckyball.mol");
+        try {
+//            String filename = "data/buckysigs.txt";
+            String filename = "data/buckysigs3.txt";
+            List<String> sigs = readSigs2(filename);
+            MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol, sigs);
+            System.out.println(mqg);
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
+    }
+    
+    public List<String> readSigs(String filename) throws Exception {
+        File file = new File(filename);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        List<String> sigs = new ArrayList<String>();
+        while ((line = reader.readLine()) != null) {
+            int index = line.indexOf(" ") + 1;
+            int count = Integer.parseInt(line.substring(0, index - 1));
+            String sig = line.substring(index);
+            System.out.println(count);
+            sigs.add(sig);
+        }
+        return sigs;
+    }
+    
+    public List<String> readSigs2(String filename) throws Exception {
+        File file = new File(filename);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        List<String> sigs = new ArrayList<String>();
+        while ((line = reader.readLine()) != null) { 
+            String[] bits = line.split("\\s+");
+            String sig = bits[3];
+            sigs.add(sig);
+        }
+        Collections.reverse(sigs);
+        return sigs;
     }
     
     public static void main(String[] args) {
