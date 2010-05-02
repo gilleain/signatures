@@ -629,10 +629,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
                     edgeColor = layerNode.edgeColors.get(relative.vertexIndex);
                 }
 //            	relativeInvariants.add(inv * edgeColor);
-                relativeInvariants.add(inv * (edgeColor + 1));
+//                relativeInvariants.add(inv * (edgeColor + 1));
                 
-//                relativeInvariants.add(inv);
-//                relativeInvariants.add(vertexCount + 1 + edgeColor);
+                relativeInvariants.add(inv);
+                relativeInvariants.add(vertexCount + 1 + edgeColor);
             }
             Collections.sort(relativeInvariants);
             nodeInvariant.addAll(relativeInvariants);
