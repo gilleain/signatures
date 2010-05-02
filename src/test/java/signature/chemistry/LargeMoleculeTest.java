@@ -100,18 +100,21 @@ public class LargeMoleculeTest {
         System.out.println(sigString);
     }
     
+    public void drawTrees(MoleculeQuotientGraph mqg, String directoryPath) {
+        List<String> signatureStrings = mqg.getVertexSignatureStrings();
+        int w = 1200;
+        int h = 400;
+        TreeDrawer.makeTreeImages(signatureStrings, directoryPath, w, h);
+    }
+    
     @Test
     public void buckyballTest() {
         Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
         System.out.println(mqg);
         
-        List<String> signatureStrings = mqg.getVertexSignatureStrings();
-        String directoryPath = "tmp";
-        int w = 1200;
-        int h = 400;
-        TreeDrawer.makeTreeImages(signatureStrings, directoryPath, w, h);
-       
+        drawTrees(mqg, "tmp");
+        
         Assert.assertEquals(32, mqg.getVertexCount());
         Assert.assertEquals(49, mqg.getEdgeCount());
         Assert.assertEquals(6, mqg.numberOfLoopEdges());
@@ -124,7 +127,7 @@ public class LargeMoleculeTest {
             bond.order = 1;
         }
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
-       
+        drawTrees(mqg, "tmp3");
         System.out.println(mqg);
         Assert.assertEquals(1, mqg.getVertexCount());
         Assert.assertEquals(1, mqg.getEdgeCount());
@@ -140,6 +143,9 @@ public class LargeMoleculeTest {
             List<String> sigs = readSigs2(filename);
             MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol, sigs);
             System.out.println(mqg);
+            
+            drawTrees(mqg, "tmp2");
+            
             Assert.assertEquals(32, mqg.getVertexCount());
             Assert.assertEquals(49, mqg.getEdgeCount());
             Assert.assertEquals(6, mqg.numberOfLoopEdges());

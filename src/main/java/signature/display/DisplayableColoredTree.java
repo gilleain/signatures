@@ -22,6 +22,8 @@ public class DisplayableColoredTree {
     
     private int height;
     
+    private boolean drawKey;
+    
     public class TreeLayout {
         
         public int totalLeafCount = 0;
@@ -122,6 +124,7 @@ public class DisplayableColoredTree {
         this.root = null;
         this.width = width;
         this.height = height;
+        this.drawKey = false;
     }
     
     public DisplayableColoredTree(ColoredTree tree, int width, int height) {
@@ -129,21 +132,15 @@ public class DisplayableColoredTree {
         this.height = height;
         makeFromColoredTree(tree);
         colorMap = makeColorMap(tree.numberOfColors());
+        this.drawKey = false;
+    }
+    
+    public void setDrawKey(boolean drawKey) {
+        this.drawKey = drawKey;
     }
     
     private Map<Integer, Color> makeColorMap(int max) {
         Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
-//        colorMap.put(0, Color.RED);
-//        colorMap.put(1, Color.PINK);
-//        colorMap.put(2, Color.ORANGE);
-//        colorMap.put(3, Color.YELLOW);
-//        colorMap.put(4, Color.GREEN);
-//        colorMap.put(5, Color.CYAN);
-//        colorMap.put(6, Color.BLUE);
-//        colorMap.put(7, Color.MAGENTA);
-//        colorMap.put(8, Color.DARK_GRAY);
-//        colorMap.put(9, Color.GRAY);
-//        colorMap.put(10, Color.LIGHT_GRAY);
         for (int i = 0; i <= max; i++) {
             colorMap.put(i, colourRamp(i, 0, max));
         }
@@ -175,9 +172,29 @@ public class DisplayableColoredTree {
         if (root == null) return;
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
+        if (drawKey) {
+            paintKey(g);
+        }
         new TreeLayout().layoutTree(root, this.width, this.height);
         g.setColor(Color.BLACK);
         paint(g, root);
+    }
+    
+    public void paintKey(Graphics g) {
+        int xoffset = 10;
+        int boxsize = 25;
+        int y = 5;
+        
+        int colors = colorMap.size();
+        int x = xoffset;
+        for (int i = 0; i < colors; i++) {
+            Color color = colorMap.get(i);
+            g.setColor(color);
+            g.fillRect(x, y, boxsize, boxsize);
+            g.setColor(Color.BLACK);
+            g.drawString(i + "", x + (boxsize / 3), y + (boxsize / 2));
+            x += boxsize;
+        }
     }
     
     public void paint(Graphics g, DrawNode node) {
@@ -206,19 +223,6 @@ public class DisplayableColoredTree {
         g.drawString(node.label, textX, textY);
     }
     
-    private String tohex(int n) {
-        if (n == -1) { return "00"; }
-        n = Math.min(Math.max(0,n), 255);
-        int i = (n - (n % 16)) / 16;
-        int j = n % 16;
-        String hexString = "0123456789ABCDEF"; 
-        return hexString.charAt(i) + "" + hexString.charAt(j);
-    }
-
-    private int rgbToHex(int r, int g, int b) {
-        return Integer.parseInt(tohex(r) + tohex(g) + tohex(b), 16);
-    }
-
     private Color colourRamp(int v, int vmin, int vmax) {
         double r = 1.0;
         double g = 1.0;
@@ -243,14 +247,9 @@ public class DisplayableColoredTree {
             }
             float[] hsb = Color.RGBtoHSB(
                     (int)(r * 255), (int)(g * 255), (int)(b * 255), null);
-//            return rgbToHex((int)(r * 255), (int)(g * 255), (int)(b * 255));
             return Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
         } catch (ArithmeticException zde) {
-//            System.out.println(
-//                    String.format(
-//                         "%s %s %s %s %s %s", zde, n, v, vmin, vmax, dv));
             float[] hsb = Color.RGBtoHSB(0, 0, 0, null);
-//            return rgbToHex(0, 0, 0);
             return Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
         }
 

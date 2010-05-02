@@ -37,6 +37,7 @@ public class SignatureViewer extends JPanel implements ActionListener {
         if (e.getSource() == signatureStringField) {
             String signatureString = signatureStringField.getText();
             ColoredTree tree = AbstractVertexSignature.parse(signatureString);
+            treePanel.setDrawKey(true);
             treePanel.setTree(tree);
             this.repaint();
         }
