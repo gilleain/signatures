@@ -82,6 +82,8 @@ public class ColoredTree {
     
     private Node root;
     
+    private int maxColor;
+    
     public ColoredTree(String rootLabel) {
         this.root = new Node(rootLabel, null, 1);
         this.height = 1;
@@ -96,6 +98,9 @@ public class ColoredTree {
     }
     
     public Node makeNode(String label, Node parent, int height, int color) {
+        if (color > maxColor) {
+            maxColor = color;
+        }
         return new Node(label, parent, height, color);
     }
     
@@ -113,5 +118,9 @@ public class ColoredTree {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public int numberOfColors() {
+        return maxColor;
     }
 }

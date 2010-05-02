@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
+import signature.display.TreeDrawer;
 
 public class LargeMoleculeTest {
     
@@ -67,7 +68,7 @@ public class LargeMoleculeTest {
     
     @Test
     public void testMinimalMol() {
-        Molecule mol = makeMinimalMultiRing(5, 3);
+        Molecule mol = makeMinimalMultiRing(6, 3);
         MoleculeSignature molSig = new MoleculeSignature(mol);
 //        String sigString = molSig.toCanonicalString();
         String sigString = molSig.signatureStringForVertex(0);
@@ -104,6 +105,13 @@ public class LargeMoleculeTest {
         Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
         System.out.println(mqg);
+        
+        List<String> signatureStrings = mqg.getVertexSignatureStrings();
+        String directoryPath = "tmp";
+        int w = 1200;
+        int h = 400;
+        TreeDrawer.makeTreeImages(signatureStrings, directoryPath, w, h);
+       
         Assert.assertEquals(32, mqg.getVertexCount());
         Assert.assertEquals(49, mqg.getEdgeCount());
         Assert.assertEquals(6, mqg.numberOfLoopEdges());
@@ -116,6 +124,7 @@ public class LargeMoleculeTest {
             bond.order = 1;
         }
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
+       
         System.out.println(mqg);
         Assert.assertEquals(1, mqg.getVertexCount());
         Assert.assertEquals(1, mqg.getEdgeCount());

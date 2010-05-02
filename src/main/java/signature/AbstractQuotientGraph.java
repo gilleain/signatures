@@ -84,6 +84,14 @@ public abstract class AbstractQuotientGraph {
     
     public abstract boolean isConnected(int i, int j);
     
+    public List<String> getVertexSignatureStrings() {
+        List<String> signatureStrings = new ArrayList<String>();
+        for (Vertex vertex : vertices) {
+            signatureStrings.add(vertex.signature);
+        }
+        return signatureStrings;
+    }
+    
     public void construct(List<SymmetryClass> symmetryClasses) {
         // make the vertices from the symmetry classes
         for (int i = 0; i < symmetryClasses.size(); i++) {

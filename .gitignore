@@ -6,3 +6,4 @@ bin
 target
 *.out
 *.swp
+tmp

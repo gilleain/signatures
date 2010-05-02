@@ -17,7 +17,7 @@ public class SignatureViewer extends JPanel implements ActionListener {
     
     private JTextField signatureStringField;
     
-    private final int TREE_PANEL_WIDTH = 600;
+    private final int TREE_PANEL_WIDTH = 1200;
     
     private final int TREE_PANEL_HEIGHT = 500;
     

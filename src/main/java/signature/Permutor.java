@@ -82,7 +82,8 @@ public class Permutor {
      * @param permutation the permutation to use, as an int array
      */
     public void setPermutation(int[] permutation) {
-        this.currentRank = this.rankPermutationLexicographically(permutation);
+//        this.currentRank = this.rankPermutationLexicographically(permutation);
+        currentRank = rankPermutationLexicographically(permutation) - 1;    // TMP
     }
     
     /**
