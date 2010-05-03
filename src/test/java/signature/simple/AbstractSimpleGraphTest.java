@@ -114,5 +114,14 @@ public class AbstractSimpleGraphTest {
     public static SimpleGraph makeDiSpiroOctane() {
         return new SimpleGraph("0:1,0:2,1:2,1:3,1:4,2:3,2:6,3:5,3:7,4:5,6:7");
     }
+    
+    public static SimpleGraph make26Fullerene() {
+        return new SimpleGraph(
+                "0:1,0:4,0:5,1:2,1:7,2:3,2:9,3:4,3:12,4:14,5:6,5:15,6:7,6:17," +
+                "7:8,8:9,8:19,9:10,10:11,10:20,11:12,11:22,12:13,13:14,13:23," +
+                "14:15,15:16,16:17,16:24,17:18,18:19,18:25,19:20,20:21,21:22," +
+                "21:25,22:23,23:24,24:25"
+                );
+    }
 
 }

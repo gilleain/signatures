@@ -85,5 +85,15 @@ public class SimpleGraph {
     public String toString() {
         return edges.toString();
     }
+
+    public int degree(int vertexIndex) {
+        int degreeCount = 0;
+        for (Edge e : edges) {
+            if (e.a == vertexIndex || e.b == vertexIndex) {
+                degreeCount++;
+            }
+        }
+        return degreeCount;
+    }
     
 }

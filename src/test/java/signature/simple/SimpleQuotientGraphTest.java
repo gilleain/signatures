@@ -6,6 +6,13 @@ import org.junit.Test;
 
 public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     
+    public void check3Regularity(SimpleGraph graph) {
+        System.out.println(graph);
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            Assert.assertEquals("failed for " + i, 3, graph.degree(i));
+        }
+    }
+    
     public void checkParameters(SimpleQuotientGraph qGraph,
                                 int expectedVertexCount, 
                                 int expectedEdgeCount, 
@@ -144,6 +151,15 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     public void bowtieaneQuotientGraphTest() {
         SimpleGraph bowtieane = AbstractSimpleGraphTest.makeBowtieane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(bowtieane);
+        checkParameters(quotientGraph, 4, 5, 2);
+    }
+    
+    @Test
+    public void fullerene26Test() {
+        SimpleGraph fullerene26 = AbstractSimpleGraphTest.make26Fullerene();
+        check3Regularity(fullerene26);
+        SimpleQuotientGraph quotientGraph = 
+            new SimpleQuotientGraph(fullerene26);
         checkParameters(quotientGraph, 4, 5, 2);
     }
     
