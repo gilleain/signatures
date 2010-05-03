@@ -123,5 +123,10 @@ public class AbstractSimpleGraphTest {
                 "21:25,22:23,23:24,24:25"
                 );
     }
+    
+    public static SimpleGraph makeTricycloPropaIndene() {
+        return new SimpleGraph(
+                "0:1,0:2,1:2,1:3,2:4,3:5,3:7,4:6,4:8,5:6,5:7,6:8,7:9,8:9");
+    }
 
 }

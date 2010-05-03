@@ -1,10 +1,23 @@
 package signature.simple;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.display.TreeDrawer;
+
 public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
+    
+    public void draw(SimpleQuotientGraph quotientGraph) {
+        String directoryPath = "tmp4";
+        List<String> signatureStrings = 
+            quotientGraph.getVertexSignatureStrings();
+        int w = 1200;
+        int h = 400;
+        TreeDrawer.makeTreeImages(signatureStrings, directoryPath, w, h);
+    }
     
     public void check3Regularity(SimpleGraph graph) {
         System.out.println(graph);
@@ -170,5 +183,15 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
             new SimpleQuotientGraph(diSpiroOctane);
         checkParameters(quotientGraph, 5, 6, 1);
     }
+    
+    @Test
+    public void tricycloPropaIndeneQuotientGraphTest() {
+        SimpleGraph tricycloPropaIndene = 
+            AbstractSimpleGraphTest.makeTricycloPropaIndene();
+        SimpleQuotientGraph quotientGraph =
+            new SimpleQuotientGraph(tricycloPropaIndene);
+        checkParameters(quotientGraph, 6, 8, 2);
+    }
+    
 
 }

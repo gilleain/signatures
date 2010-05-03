@@ -18,17 +18,17 @@ public abstract class AbstractQuotientGraph {
     
     private class Vertex {
         
-        public int count;
+        public List<Integer> members;
         
         public String signature;
         
-        public Vertex(int count, String signature) {
-            this.count = count;
+        public Vertex(List<Integer> members, String signature) {
+            this.members = members;
             this.signature = signature;
         }
         
         public String toString() {
-            return signature + " " + count;
+            return signature + " " + members;
         }
     }
     
@@ -97,8 +97,9 @@ public abstract class AbstractQuotientGraph {
         for (int i = 0; i < symmetryClasses.size(); i++) {
             SymmetryClass symmetryClass = symmetryClasses.get(i);
             String signatureString = symmetryClass.getSignatureString();
-            int count = symmetryClass.size();
-            vertices.add(new Vertex(count, signatureString));
+            List<Integer> members = new ArrayList<Integer>();
+            for (int e : symmetryClass) { members.add(e); }
+            vertices.add(new Vertex(members, signatureString));
         }
         
         // compare all vertices (classwise) for connectivity
