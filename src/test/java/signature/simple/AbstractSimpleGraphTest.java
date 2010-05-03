@@ -54,6 +54,14 @@ public class AbstractSimpleGraphTest {
                 "0:1,0:5,0:4,1:2,1:6,2:3,2:7,3:8,3:4,4:9,5:7,5:8,6:8,6:9,7:9");
     }
     
+    public static SimpleGraph makePappusGraph() {
+        return new SimpleGraph(
+                "0:1,0:5,0:17,1:2,1:8,2:3,2:13,3:4,3:10,4:5,4:15,5:6,6:7," +
+                "6:11,7:8,7:14,8:9,9:10,9:16,10:11,11:12,12:13,12:17,13:14," +
+                "14:15,15:16,16:17"
+                );
+    }
+    
     public static SimpleGraph makeTietzesGraph() {
         return new SimpleGraph(
                 "0:1,0:4,0:8,1:2,1:6,2:3,2:10,3:4,3:7,4:5," +

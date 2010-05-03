@@ -42,7 +42,7 @@ public class LargeMoleculeTest {
     public Molecule makeTetrakisTriphenylPhosphoranylRhodium() {
         Molecule ttpr = new Molecule();
         ttpr.addAtom("Rh");
-        int phosphateCount = 2;
+        int phosphateCount = 3;
         for (int i = 1; i <= phosphateCount; i++) {
             ttpr.addAtom("P");
             ttpr.addSingleBond(0, i);

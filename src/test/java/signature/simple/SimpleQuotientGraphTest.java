@@ -25,6 +25,13 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
+    public void pappusGraphTest() {
+        SimpleGraph pappus = AbstractSimpleGraphTest.makePappusGraph();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(pappus);
+        checkParameters(quotientGraph, 1, 1, 1);
+    }
+    
+    @Test
     public void triangularPrismTest() {
         SimpleGraph pentaprism = AbstractSimpleGraphTest.makePrism(3);
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(pentaprism);
