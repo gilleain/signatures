@@ -163,7 +163,9 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     @Test
     public void bowtieaneQuotientGraphTest() {
         SimpleGraph bowtieane = AbstractSimpleGraphTest.makeBowtieane();
+        check3Regularity(bowtieane);
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(bowtieane);
+//        draw(quotientGraph);
         checkParameters(quotientGraph, 4, 5, 2);
     }
     
