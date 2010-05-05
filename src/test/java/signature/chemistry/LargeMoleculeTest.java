@@ -58,6 +58,52 @@ public class LargeMoleculeTest {
     }
     
     @Test
+    public void dodecahedraneTest() {
+        Molecule mol = new Molecule();
+        for (int i = 0; i < 20; i++) { mol.addAtom("C"); }
+        mol.addBond(0, 1, 1);
+        mol.addBond(0, 4, 1);
+        mol.addBond(0, 5, 2);
+        mol.addBond(1, 2, 1);
+        mol.addBond(1, 6, 2);
+        mol.addBond(2, 3, 2);
+        mol.addBond(2, 7, 1);
+        mol.addBond(3, 4, 1);
+        mol.addBond(3, 8, 1);
+        mol.addBond(4, 9, 2);
+        mol.addBond(5, 10, 1);
+        mol.addBond(5, 11, 1);
+        mol.addBond(6, 11, 1);
+        mol.addBond(6, 12, 1);
+        mol.addBond(7, 12, 2);
+        mol.addBond(7, 13, 1);
+        mol.addBond(8, 13, 2);
+        mol.addBond(8, 14, 1);
+        mol.addBond(9, 10, 1);
+        mol.addBond(9, 14, 1);
+        mol.addBond(10, 15, 2);
+        mol.addBond(11, 16, 2);
+        mol.addBond(12, 17, 1);
+        mol.addBond(13, 18, 1);
+        mol.addBond(14, 19, 2);
+        mol.addBond(15, 16, 1);
+        mol.addBond(15, 19, 1);
+        mol.addBond(16, 17, 1);
+        mol.addBond(17, 18, 2);
+        mol.addBond(18, 19, 1);
+        
+        for (int i = 0; i < 20; i++) {
+            Assert.assertEquals("Atom " + i + " has wrong order", 
+                    4, mol.getTotalOrder(i));
+        }
+        
+        MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol);
+        System.out.println(mqg);
+        String directoryPath = "tmp5";
+        drawTrees(mqg, directoryPath);
+    }
+    
+    @Test
     public void ttprTest() {
         Molecule ttpr = makeTetrakisTriphenylPhosphoranylRhodium();
         MoleculeSignature molSig = new MoleculeSignature(ttpr);
