@@ -204,6 +204,16 @@ public class Molecule {
         return -1;
     }
     
+    public int getTotalOrder(int atomIndex) {
+        int totalOrder = 0;
+        for (Bond bond : bonds) {
+            if (bond.a.index == atomIndex || bond.b.index == atomIndex) {
+                totalOrder += bond.order;
+            }
+        }
+        return totalOrder;
+    }
+    
     public String getSymbolFor(int atomIndex) {
         return this.atoms.get(atomIndex).symbol;
     }
