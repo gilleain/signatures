@@ -33,7 +33,11 @@ public class ColoredTreePanel extends JPanel {
     
     public void setTree(ColoredTree tree) {
         System.out.println("setting tree " + tree);
-        this.displayTree.makeFromColoredTree(tree);
+        if (displayTree == null) {
+            displayTree = new DisplayableColoredTree(getWidth(), getHeight());
+        } else {
+            displayTree.makeFromColoredTree(tree);
+        }
         this.displayTree.setDrawKey(drawKey);
         this.maxDepth = tree.getHeight();
     }
