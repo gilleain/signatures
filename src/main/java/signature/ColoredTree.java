@@ -115,11 +115,11 @@ public class ColoredTree {
         return this.root;
     }
     
-    public Node makeNode(String label, Node parent, int height, int color) {
+    public Node makeNode(String label, Node parent, int currentHeight, int color) {
         if (color > maxColor) {
             maxColor = color;
         }
-        return new Node(label, parent, height, color);
+        return new Node(label, parent, currentHeight, color);
     }
     
     public Node makeNode(String label, Node parent, int currentHeight, 
@@ -127,7 +127,7 @@ public class ColoredTree {
         if (color > maxColor) {
             maxColor = color;
         }
-        return new Node(label, parent, height, color, edgeSymbol);
+        return new Node(label, parent, currentHeight, color, edgeSymbol);
     }
 
     public void updateHeight(int height) {
