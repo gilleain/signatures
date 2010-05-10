@@ -39,7 +39,13 @@ public class ColoredTreePanel extends JPanel {
     }
     
     public void paint(Graphics g) {
-        this.displayTree.paint(g);
+        if (displayTree != null) {
+            this.displayTree.paint(g);
+        }
+    }
+
+    public void clear() {
+        this.displayTree = null;
     }
 
 }
