@@ -1,7 +1,6 @@
 package signature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,8 +58,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		/**
 		 * Labels for the edges between this node and the parent nodes
 		 */
-//		public Map<Integer, String> edgeLabels; TODO
-		
 		public Map<Integer, Integer> edgeColors;
 		
 		/**
@@ -81,7 +78,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 			this.parents = new ArrayList<Node>();
 			this.children = new ArrayList<Node>();
 			this.vertexLabel = label;
-//			this.edgeLabels = new HashMap<Integer, String>();
 			this.edgeColors = new HashMap<Integer, Integer>();
 		}
 	
@@ -92,10 +88,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		public void addChild(Node node) {
 			this.children.add(node);
 		}
-		
-//		public void addEdgeLabel(int partnerIndex, String edgeLabel) {
-//		    this.edgeLabels.put(partnerIndex, edgeLabel);
-//		}   XXX
 		
 		public void addEdgeColor(int partnerIndex, int edgeColor) {
             this.edgeColors.put(partnerIndex, edgeColor);
@@ -564,7 +556,9 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        invariantSame = 
 	            checkInvariantChange(
 	                    oldInvariants, invariants.getVertexInvariants());
-//	        System.out.println(Arrays.toString(invariants.getVertexInvariants()));
+//	        System.out.println(
+//	               "invs\t" +
+//	               java.util.Arrays.toString(invariants.getVertexInvariants()));
 	    }
 	    
 	    // finally, copy the node invariants into the nodes, for easy sorting

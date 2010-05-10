@@ -218,7 +218,7 @@ public abstract class AbstractVertexSignature {
 //        System.out.println("occur" + getOccurrences());
         
 //        System.out.println("COLORINGS " + TMP_COLORING_COUNT);
-        System.out.println(stringBuffer.toString());
+//        System.out.println(stringBuffer.toString());
         return stringBuffer.toString();
     }
     
@@ -245,6 +245,7 @@ public abstract class AbstractVertexSignature {
         
         this.dag.updateVertexInvariants();
         int[] parents = dag.getParentsInFinalString();
+//        System.out.println("pars\t" + Arrays.toString(parents));
         List<Integer> orbit = this.dag.createOrbit(parents);
 //        System.out.println(dag.copyInvariants());
         if (orbit.size() < 2) {
@@ -484,16 +485,24 @@ public abstract class AbstractVertexSignature {
         int color = -1;
         int j = 0;
         int k = 0;
+        int l = 0;
+        String edgeSymbol = null;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == AbstractVertexSignature.START_BRANCH_SYMBOL) {
                 parent = current;
                 currentHeight++;
                 tree.updateHeight(currentHeight);
+                l = i;
             } else if (c == AbstractVertexSignature.END_BRANCH_SYMBOL) {
                 parent = parent.parent;
                 currentHeight--;
-            } else if (c == START_NODE_SYMBOL) {  
+                l = i;
+            } else if (c == START_NODE_SYMBOL) {
+                if (l < i) {
+                    edgeSymbol = s.substring(l + 1, i);
+                    l = i;
+                }
                 j = i + 1;
             } else if (c == END_NODE_SYMBOL) {
                 String ss;
@@ -509,8 +518,16 @@ public abstract class AbstractVertexSignature {
                     parent = tree.getRoot();
                     current = tree.getRoot();
                 } else {
-                    current = tree.makeNode(ss, parent, currentHeight, color);
+                    if (edgeSymbol == null) {
+                        current = tree.makeNode(
+                                ss, parent, currentHeight, color);
+                    } else {
+                        current = tree.makeNode(
+                                ss, parent, currentHeight, color, edgeSymbol);
+                    }
                 }
+                edgeSymbol = null;
+                l = i;
             } else if (c == ',') {
                 k = i + 1;
             } 

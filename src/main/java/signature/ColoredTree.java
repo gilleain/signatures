@@ -20,6 +20,8 @@ public class ColoredTree {
         
         public final String label;
         
+        public final String edgeLabel;
+        
         public final Node parent;
         
         public final int color;
@@ -31,6 +33,7 @@ public class ColoredTree {
             this.parent = parent;
             this.color = -1;
             this.height = height;
+            this.edgeLabel = "";
             if (parent != null) {
                 parent.children.add(this);
             }
@@ -41,6 +44,19 @@ public class ColoredTree {
             this.parent = parent;
             this.color = color;
             this.height = height;
+            this.edgeLabel = "";
+            if (parent != null) {
+                parent.children.add(this);
+            }
+        }
+        
+        public Node(String label, Node parent, 
+                int height, int color, String edgeLabel) {
+            this.label = label;
+            this.parent = parent;
+            this.color = color;
+            this.height = height;
+            this.edgeLabel = edgeLabel;
             if (parent != null) {
                 parent.children.add(this);
             }
@@ -59,9 +75,11 @@ public class ColoredTree {
         
         public void buildString(StringBuilder builder) {
             if (this.isColored()) {
+                builder.append(this.edgeLabel);
                 builder.append("[").append(this.label);
                 builder.append(",").append(this.color).append("]");
             } else {
+                builder.append(this.edgeLabel);
                 builder.append("[").append(this.label).append("]");
             }
             if (this.children.size() > 0) { builder.append("("); }
@@ -104,6 +122,14 @@ public class ColoredTree {
         return new Node(label, parent, height, color);
     }
     
+    public Node makeNode(String label, Node parent, int currentHeight, 
+            int color, String edgeSymbol) {
+        if (color > maxColor) {
+            maxColor = color;
+        }
+        return new Node(label, parent, height, color, edgeSymbol);
+    }
+
     public void updateHeight(int height) {
         if (height > this.height) {
             this.height = height;
