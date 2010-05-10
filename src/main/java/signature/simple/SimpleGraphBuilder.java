@@ -12,7 +12,8 @@ public class SimpleGraphBuilder extends AbstractGraphBuilder {
     }
 
     @Override
-    public void makeEdge(int vertexIndex1, int vertexIndex2, String a, String b) {
+    public void makeEdge(
+            int vertexIndex1, int vertexIndex2, String a, String b, String edgeLabel) {
         this.graph.makeEdge(vertexIndex1, vertexIndex2);
     }
 

@@ -12,8 +12,17 @@ public class MoleculeBuilder extends AbstractGraphBuilder {
     }
 
     @Override
-    public void makeEdge(int vertexIndex1, int vertexIndex2, String symbolA, String symbolB) {
-        this.molecule.addBond(vertexIndex1, vertexIndex2, 1);   // TODO : order
+    public void makeEdge(
+            int vertexIndex1, int vertexIndex2, 
+            String symbolA, String symbolB, String edgeLabel) {
+        if (edgeLabel.equals("")) {
+            this.molecule.addBond(vertexIndex1, vertexIndex2, 1);
+        } else if (edgeLabel.equals("=")) {
+            this.molecule.addBond(vertexIndex1, vertexIndex2, 2);
+        } else if (edgeLabel.equals("#")) {
+            this.molecule.addBond(vertexIndex1, vertexIndex2, 3);
+        }
+        
     }
 
     @Override

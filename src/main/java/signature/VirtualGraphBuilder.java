@@ -22,8 +22,10 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
         
         public final String upperVertexSymbol;
         
+        public final String edgeLabel;
+        
         public VirtualEdge(int vertexIndex1, int vertexIndex2, 
-                String vertexSymbol1, String vertexSymbol2) {
+                String vertexSymbol1, String vertexSymbol2, String edgeLabel) {
             if (vertexIndex1 < vertexIndex2) {
                 this.lowerVertexIndex = vertexIndex1;
                 this.upperVertexIndex = vertexIndex2;
@@ -35,6 +37,7 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
                 this.lowerVertexSymbol = vertexSymbol2;
                 this.upperVertexSymbol = vertexSymbol1;
             }
+            this.edgeLabel = edgeLabel;
         }
 
         public int compareTo(VirtualEdge o) {
@@ -55,7 +58,8 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
         
         public String toString() {
             return this.lowerVertexIndex + this.lowerVertexSymbol + 
-                    ":" + this.upperVertexIndex + this.upperVertexSymbol;
+                    ":" + this.upperVertexIndex + this.upperVertexSymbol
+                    + "(" + edgeLabel + ")";
         }
     }
     
@@ -77,8 +81,11 @@ public class VirtualGraphBuilder extends AbstractGraphBuilder {
     
     @Override
     public void makeEdge(int vertexIndex1, int vertexIndex2, 
-            String vertexSymbol1, String vertexSymbol2) {
-        this.edges.add(new VirtualEdge(vertexIndex1, vertexIndex2, vertexSymbol1, vertexSymbol2));
+            String vertexSymbol1, String vertexSymbol2, String edgeLabel) {
+        this.edges.add(
+                new VirtualEdge(
+                     vertexIndex1, vertexIndex2, 
+                     vertexSymbol1, vertexSymbol2, edgeLabel));
     }
 
     @Override
