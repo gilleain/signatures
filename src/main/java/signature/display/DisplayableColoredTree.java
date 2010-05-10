@@ -82,11 +82,20 @@ public class DisplayableColoredTree {
         
         public DrawNode parent;
         
+        public String edgeLabel;
+        
         public DrawNode(String label, DrawNode parent, int d, int color) {
             this.label = label;
             this.parent = parent;
             this.depth = d;
             this.color = color;
+            edgeLabel = "";
+        }
+        
+        public DrawNode(
+            String label, DrawNode parent, int d, int color, String edgeLabel) {
+            this(label, parent, d, color);
+            this.edgeLabel = edgeLabel;
         }
         
         public int countLeaves() {
@@ -158,8 +167,15 @@ public class DisplayableColoredTree {
     }
     
     private DrawNode treeToTree(ColoredTree.Node treeNode, DrawNode parent) {
-        DrawNode node = new DrawNode(
-                treeNode.label, parent, treeNode.height, treeNode.color);
+        DrawNode node;
+        if (treeNode.edgeLabel == "") {
+            node = new DrawNode(
+                    treeNode.label, parent, treeNode.height, treeNode.color);
+        } else {
+            node = new DrawNode(
+                    treeNode.label, parent, 
+                    treeNode.height, treeNode.color, treeNode.edgeLabel);
+        }
         if (parent != null) parent.children.add(node);
         node.parent = parent;
         for (ColoredTree.Node child : treeNode.children) {
@@ -202,7 +218,8 @@ public class DisplayableColoredTree {
             g.drawLine(node.x, node.y, child.x, child.y);
             paint(g, child);
         }
-        Rectangle2D r = g.getFontMetrics().getStringBounds(node.label, g);
+        String label = node.edgeLabel + node.label;
+        Rectangle2D r = g.getFontMetrics().getStringBounds(label, g);
         int rw = (int)r.getWidth();
         int rh = (int)r.getHeight();
         int textX = node.x - (rw / 2);
@@ -220,7 +237,7 @@ public class DisplayableColoredTree {
         g.fillRect(boundX, boundY, boundW, boundH);
         g.setColor(Color.BLACK);
         g.drawRect(boundX, boundY, boundW, boundH);
-        g.drawString(node.label, textX, textY);
+        g.drawString(label, textX, textY);
     }
     
     private Color colourRamp(int v, int vmin, int vmax) {
