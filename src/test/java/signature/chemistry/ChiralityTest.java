@@ -61,7 +61,7 @@ public class ChiralityTest {
         mol.addMultipleSingleBonds(2, 7, 8);
         
         // 5 symmetry classes - the non-chiral carbon, its hydrogens, the chiral
-        // carbons, thier hydrogens, and the chlorines.
+        // carbons, their hydrogens, and the chlorines.
         MoleculeSignature molSig = new MoleculeSignature(mol);
         List<SymmetryClass> symmetryClasses = molSig.getSymmetryClasses(); 
 //        System.out.println(symmetryClasses);
