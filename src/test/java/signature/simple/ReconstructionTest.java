@@ -9,7 +9,9 @@ import signature.ColoredTree;
 import signature.SymmetryClass;
 
 public class ReconstructionTest extends AbstractSimpleGraphTest {
-    
+
+    // XXX DOES NOT YET WORK - reconstructed graph may be isomorphic, 
+    // but not automorphic
     public void reconstruct(SimpleGraph graph) {
         SimpleGraphSignature signature = new SimpleGraphSignature(graph);
         for (SymmetryClass symmetryClass : signature.getSymmetryClasses()) {
@@ -24,7 +26,6 @@ public class ReconstructionTest extends AbstractSimpleGraphTest {
     @Test
     public void petersensGraphTest() {
         SimpleGraph petersens = AbstractSimpleGraphTest.makePetersensGraph();
-        // DOES NOT YET WORK
 //        reconstruct(petersens);
     }
     

@@ -174,7 +174,7 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(bowtieane);
 //        draw(quotientGraph);
         // TODO : FIXME
-//        checkParameters(quotientGraph, 4, 5, 2);
+        checkParameters(quotientGraph, 4, 5, 2);
     }
     
     @Test

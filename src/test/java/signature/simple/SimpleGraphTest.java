@@ -21,11 +21,13 @@ public class SimpleGraphTest extends AbstractSimpleGraphTest {
     public void testChain() {
         String chain = "0:1,1:2,2:3,3:4";
         SimpleGraphSignature signature = signatureFromString(chain);
+        
         String uncanonizedString = signature.toCanonicalString(); 
-        String maxSignature = signature.getGraphSignature();
-        System.out.println("max" + maxSignature);
-        // TODO : FIXME
-//        Assert.assertEquals(uncanonizedString, maxSignature);
+        // TODO : FIXME - maximal / minimal problem
+//        String maxSignature = signature.getGraphSignature();
+        String maxSignature = signature.getMaximalSignature();
+        
+        Assert.assertEquals(uncanonizedString, maxSignature);
     }
     
     @Test

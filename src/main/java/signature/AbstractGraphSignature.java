@@ -205,10 +205,24 @@ public abstract class AbstractGraphSignature {
      */
     public String getGraphSignature(){
         // Generates and returns a graph signature
+        this.graphSignature = getMaximalSignature();
+        return this.graphSignature;
+    }
+    
+    public List<String> getSortedSignatures() {
         List<String> vertexSignatures = this.getVertexSignatureStrings();
         Collections.sort(vertexSignatures);
-        this.graphSignature = vertexSignatures.get(vertexSignatures.size() - 1);
-        return this.graphSignature;
+        return vertexSignatures;
+    }
+    
+    public String getMinimalSignature() {
+        List<String> sortedSignatures = getSortedSignatures();
+        return sortedSignatures.get(sortedSignatures.size() - 1);
+    }
+    
+    public String getMaximalSignature() {
+        List<String> sortedSignatures = getSortedSignatures();
+        return sortedSignatures.get(0);
     }
 
     /**

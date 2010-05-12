@@ -99,7 +99,10 @@ public class LargeMoleculeTest {
         
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol);
         System.out.println(mqg);
-        String directoryPath = "tmp5";
+        Assert.assertEquals(5, mqg.getVertexCount());
+        Assert.assertEquals(9, mqg.getEdgeCount());
+        Assert.assertEquals(3, mqg.numberOfLoopEdges());
+//        String directoryPath = "tmp5";
 //        drawTrees(mqg, directoryPath);
     }
     
