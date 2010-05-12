@@ -239,8 +239,20 @@ public class Molecule {
         this.atoms.add(new Atom(i, symbol));
     }
     
+    public void addMultipleAtoms(int count, String symbol) {
+        for (int i = 0; i < count; i++) {
+            addAtom(symbol);
+        }
+    }
+    
     public void addSingleBond(int atomNumberA, int atomNumberB) {
         this.addBond(atomNumberA, atomNumberB, 1);
+    }
+
+    public void addMultipleSingleBonds(int i, int...js) {
+        for (int j : js) {
+            addSingleBond(i, j);
+        }
     }
 
     public void addBond(int atomNumberA, int atomNumberB, int order) {
