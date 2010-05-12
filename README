@@ -2,7 +2,7 @@ This project is a re-write of Jean-Loup Faulon's signature code for molecules, t
 
 Signatures can be used as descriptors for atom or molecule environments, much like HOSE codes. They can also be used for structure enumeration.
 
-The library is released under an MIT licence.
+The library is released under an MIT licence. The project has a maven pom.xml, so normal maven build procedures should work.
 
 References:
 -The signature molecular descriptor. 1. Using extended valence sequences in QSAR and QSPR studies
