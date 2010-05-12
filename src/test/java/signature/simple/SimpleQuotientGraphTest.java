@@ -117,6 +117,13 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     }
     
     @Test
+    public void spiroPentagonTest() {
+        SimpleGraph spiroPentagons = AbstractSimpleGraphTest.makeSpiroPentagons();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(spiroPentagons);
+        checkParameters(quotientGraph, 3, 3, 1);
+    }
+    
+    @Test
     public void twistaneTest() {
         SimpleGraph twistane = AbstractSimpleGraphTest.makeTwistane();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(twistane);

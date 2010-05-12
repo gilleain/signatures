@@ -11,6 +11,21 @@ public class AbstractSimpleGraphTest {
         Assert.assertTrue(true);
     }
     
+    public static SimpleGraph makeSpiroPentagons() {
+        SimpleGraph g = new SimpleGraph();
+        g.makeEdge(0, 1);
+        g.makeEdge(0, 2);
+        g.makeEdge(0, 3);
+        g.makeEdge(0, 4);
+        g.makeEdge(1, 5);
+        g.makeEdge(2, 6);
+        g.makeEdge(3, 7);
+        g.makeEdge(4, 8);
+        g.makeEdge(5, 6);
+        g.makeEdge(7, 8);
+        return g;
+    }
+    
     public static SimpleGraph makePrism(int size) {
         SimpleGraph g = new SimpleGraph();
         for (int i = 0; i < size - 1; i++) {
