@@ -74,5 +74,30 @@ public class ChiralityTest {
         Assert.assertEquals(0, (int)tetraChiralCenters.get(0));
         Assert.assertEquals(1, (int)tetraChiralCenters.get(1));
     }
+    
+    @Test
+    public void dihydroxyCyclohexane() {
+        Molecule mol = new Molecule();
+        mol.addMultipleAtoms(6, "C");
+        mol.addMultipleAtoms(2, "O");
+        mol.addMultipleAtoms(12, "H");
+        mol.addMultipleSingleBonds(0, 1, 5, 6, 11);
+        mol.addMultipleSingleBonds(1, 2, 12, 13);
+        mol.addMultipleSingleBonds(2, 3, 14, 15);
+        mol.addMultipleSingleBonds(3, 4, 7, 10);
+        mol.addMultipleSingleBonds(4, 5, 16, 17);
+        mol.addMultipleSingleBonds(5, 18, 19);
+        mol.addMultipleSingleBonds(6, 8);
+        mol.addMultipleSingleBonds(7, 9);
+        MoleculeSignature molSig = new MoleculeSignature(mol);
+        List<SymmetryClass> symmetryClasses = molSig.getSymmetryClasses(); 
+        System.out.println(symmetryClasses);
+        Assert.assertEquals(6, symmetryClasses.size());
+        
+        // this method cannot find the linked chiral centers 
+        List<Integer> tetraChiralCenters = 
+            ChiralCenterFinder.findTetrahedralChiralCenters(mol);
+        Assert.assertTrue(tetraChiralCenters.isEmpty());
+    }
 
 }
