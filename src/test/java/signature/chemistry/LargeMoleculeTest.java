@@ -100,7 +100,7 @@ public class LargeMoleculeTest {
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol);
         System.out.println(mqg);
         String directoryPath = "tmp5";
-        drawTrees(mqg, directoryPath);
+//        drawTrees(mqg, directoryPath);
     }
     
     @Test
@@ -159,7 +159,7 @@ public class LargeMoleculeTest {
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
         System.out.println(mqg);
         
-        drawTrees(mqg, "tmp");
+//        drawTrees(mqg, "tmp");
         
         Assert.assertEquals(32, mqg.getVertexCount());
         Assert.assertEquals(49, mqg.getEdgeCount());
@@ -173,7 +173,7 @@ public class LargeMoleculeTest {
             bond.order = 1;
         }
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
-        drawTrees(mqg, "tmp3");
+//        drawTrees(mqg, "tmp3");
         System.out.println(mqg);
         Assert.assertEquals(1, mqg.getVertexCount());
         Assert.assertEquals(1, mqg.getEdgeCount());
@@ -190,7 +190,7 @@ public class LargeMoleculeTest {
             MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(mol, sigs);
             System.out.println(mqg);
             
-            drawTrees(mqg, "tmp2");
+//            drawTrees(mqg, "tmp2");
             
             Assert.assertEquals(32, mqg.getVertexCount());
             Assert.assertEquals(49, mqg.getEdgeCount());
