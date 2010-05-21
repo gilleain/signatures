@@ -36,7 +36,7 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
         Assert.assertEquals(expectedLoopEdgeCount, qGraph.numberOfLoopEdges());
         
     }
-    
+   
     @Test
     public void petersensGraphTest() {
         SimpleGraph petersens = AbstractSimpleGraphTest.makePetersensGraph();
@@ -120,6 +120,15 @@ public class SimpleQuotientGraphTest extends AbstractSimpleGraphTest {
     public void spiroPentagonTest() {
         SimpleGraph spiroPentagons = AbstractSimpleGraphTest.makeSpiroPentagons();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(spiroPentagons);
+        checkParameters(quotientGraph, 3, 3, 1);
+    }
+    
+    @Test
+    public void threeFourFiveTwistedGraphTest() {
+        SimpleGraph threeFourFive = 
+            AbstractSimpleGraphTest.makeThreeFourFiveTwisted();
+        SimpleQuotientGraph quotientGraph = 
+            new SimpleQuotientGraph(threeFourFive);
         checkParameters(quotientGraph, 3, 3, 1);
     }
     

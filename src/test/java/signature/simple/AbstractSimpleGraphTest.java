@@ -11,6 +11,23 @@ public class AbstractSimpleGraphTest {
         Assert.assertTrue(true);
     }
     
+    public static SimpleGraph makeThreeFourFiveTwisted() {
+        SimpleGraph g = new SimpleGraph();
+        g.makeEdge(0, 1);
+        g.makeEdge(0, 2);
+        g.makeEdge(0, 7);
+        g.makeEdge(1, 2);
+        g.makeEdge(1, 3);
+        g.makeEdge(2, 5);
+        g.makeEdge(3, 4);
+        g.makeEdge(3, 6);
+        g.makeEdge(4, 5);
+        g.makeEdge(4, 7);
+        g.makeEdge(5, 6);
+        g.makeEdge(6, 7);
+        return g;
+    }
+    
     public static SimpleGraph makeSpiroPentagons() {
         SimpleGraph g = new SimpleGraph();
         g.makeEdge(0, 1);
