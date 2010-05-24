@@ -291,8 +291,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    vertexCount = vertexLabels.length;
 	    this.invariants = new Invariants(vertexCount, nodes.size());
 	    
-        List<InvariantIntStringPair> pairs = 
-            new ArrayList<InvariantIntStringPair>();
+        List<InvariantPair> pairs = new ArrayList<InvariantPair>();
         for (int i = 0; i < vertexCount; i++) {
             String l = vertexLabels[i];
             int p = parentCounts[i];
@@ -307,16 +306,19 @@ public class DAG implements Iterable<List<DAG.Node>> {
         nodeComparator = new NodeStringLabelComparator(vertexLabels);
         
         int order = 1;
-        this.invariants.setVertexInvariant(pairs.get(0).originalIndex, order);
+        InvariantPair first = pairs.get(0);
+        invariants.setVertexInvariant(first.getOriginalIndex(), order);
         for (int i = 1; i < pairs.size(); i++) {
-            InvariantIntStringPair a = pairs.get(i - 1);
-            InvariantIntStringPair b = pairs.get(i);
+            InvariantPair a = pairs.get(i - 1);
+            InvariantPair b = pairs.get(i);
             if (!a.equals(b)) {
                 order++;
             }
-            this.invariants.setVertexInvariant(b.originalIndex, order);
+            invariants.setVertexInvariant(b.getOriginalIndex(), order);
         }
     }
+	
+	
 
     public void setColor(int vertexIndex, int color) {
 	    this.invariants.setColor(vertexIndex, color);

@@ -1,7 +1,6 @@
 package signature;
 
-public class InvariantIntStringPair implements
-        Comparable<InvariantIntStringPair> {
+public class InvariantIntStringPair implements InvariantPair {
 
     public String string;
 
@@ -24,7 +23,8 @@ public class InvariantIntStringPair implements
         return this.value == o.value && this.string.equals(o.string);
     }
 
-    public int compareTo(InvariantIntStringPair o) {
+    public int compareTo(InvariantPair other) {
+        InvariantIntStringPair o = (InvariantIntStringPair) other;
         if (this.string == null || o.string == null) return 0;
         int c = this.string.compareTo(o.string);
         if (c == 0) {
@@ -38,6 +38,10 @@ public class InvariantIntStringPair implements
         } else {
             return c;
         }
+    }
+    
+    public int getOriginalIndex() {
+        return originalIndex;
     }
 
     public String toString() {
