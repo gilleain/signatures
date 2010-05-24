@@ -432,13 +432,13 @@ public class DAG implements Iterable<List<DAG.Node>> {
         }
     }
 	
-	public List<InvariantIntIntPair> getInvariantPairs(int[] parents) {
-	    List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
+	public List<InvariantInt> getInvariantPairs(int[] parents) {
+	    List<InvariantInt> pairs = new ArrayList<InvariantInt>();
 	    for (int i = 0; i < this.vertexCount; i++) {
 	        if (invariants.getColor(i) == -1
 	                && parents[i] >= 2) {
 	            pairs.add(
-	                    new InvariantIntIntPair(
+	                    new InvariantInt(
 	                            invariants.getVertexInvariant(i), i));
 	        }
 	    }

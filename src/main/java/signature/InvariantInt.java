@@ -1,17 +1,17 @@
 package signature;
 
-public class InvariantIntIntPair implements Comparable<InvariantIntIntPair> {
+public class InvariantInt implements Comparable<InvariantInt> {
     
     public int invariant;
     
     public int index;
     
-    public InvariantIntIntPair(int invariant, int index) {
+    public InvariantInt(int invariant, int index) {
         this.invariant = invariant;
         this.index = index;
     }
 
-    public int compareTo(InvariantIntIntPair o) {
+    public int compareTo(InvariantInt o) {
         if (this.invariant < o.invariant) {
             return -1;
         } else if (this.invariant > o.invariant) {

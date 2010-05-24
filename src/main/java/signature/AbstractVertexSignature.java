@@ -255,9 +255,9 @@ public abstract class AbstractVertexSignature {
         if (orbit.size() < 2) {
             // Color all uncolored atoms having two parents 
             // or more according to their invariant.
-            List<InvariantIntIntPair> pairs = dag.getInvariantPairs(parents);
+            List<InvariantInt> pairs = dag.getInvariantPairs(parents);
 //            System.out.println("coloring " + pairs);
-            for (InvariantIntIntPair pair : pairs) {
+            for (InvariantInt pair : pairs) {
                 this.dag.setColor(pair.index, color);
                 color++;
             }
