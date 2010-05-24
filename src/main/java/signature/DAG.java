@@ -150,23 +150,24 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	}
 	
 	/**
-	 * Comparator for nodes.
+	 * Comparator for nodes based on String labels.
 	 *
 	 */
-	public class NodeComparator implements Comparator<Node> {
+	public class NodeStringLabelComparator implements Comparator<Node> {
 	    
 	    /**
 	     * The labels for vertices.
 	     */
 	    public String[] vertexLabels;
 	    
-	    public NodeComparator(String[] vertexLabels) {
+	    public NodeStringLabelComparator(String[] vertexLabels) {
 	        this.vertexLabels = vertexLabels;
 	    }
 
         public int compare(Node o1, Node o2) {
-            int c = this.vertexLabels[o1.vertexIndex].compareTo(
-                    this.vertexLabels[o2.vertexIndex]);
+            String o1s = this.vertexLabels[o1.vertexIndex];
+            String o2s = this.vertexLabels[o2.vertexIndex];
+            int c = o1s.compareTo(o2s);
             if (c == 0) {
                 if (o1.invariant < o2.invariant) {
                     return - 1;
@@ -182,10 +183,43 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	}
 	
 	/**
+     * Comparator for nodes based on Integer labels.
+     *
+     */
+    public class NodeIntegerLabelComparator implements Comparator<Node> {
+        
+        /**
+         * The labels for vertices.
+         */
+        public int[] vertexLabels;
+        
+        public NodeIntegerLabelComparator(int[] vertexLabels) {
+            this.vertexLabels = vertexLabels;
+        }
+
+        public int compare(Node o1, Node o2) {
+            int o1n = this.vertexLabels[o1.vertexIndex];
+            int o2n = this.vertexLabels[o2.vertexIndex];
+            int c = (o1n == o2n)? 0 :(o1n < o2n? -1 : 1);
+            if (c == 0) {
+                if (o1.invariant < o2.invariant) {
+                    return - 1;
+                } else if (o1.invariant > o2.invariant) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return c;
+            }
+        }
+    }
+	
+	/**
 	 * Used to sort nodes, it is public so that the AbstractVertexSignature
 	 * can use it 
 	 */
-	public NodeComparator nodeComparator;
+	public Comparator<Node> nodeComparator;
 	
 	/**
 	 * The layers of the DAG
@@ -282,7 +316,35 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    this.initializeVertexInvariants();
 	}
 	
-	public void setColor(int vertexIndex, int color) {
+	public void initializeVertexInvariants() {
+        List<InvariantIntStringPair> pairs = 
+            new ArrayList<InvariantIntStringPair>();
+        for (int i = 0; i < vertexCount; i++) {
+            String l = vertexLabels[i];
+            int p = parentCounts[i];
+            pairs.add(new InvariantIntStringPair(l, p, i));
+        }
+        Collections.sort(pairs);
+        
+        if (pairs.size() == 0) return;
+        
+        // initialize the node comparator here, as we know that all vertex
+        // labels have been set by this point
+        nodeComparator = new NodeStringLabelComparator(vertexLabels);
+        
+        int order = 1;
+        this.invariants.setVertexInvariant(pairs.get(0).originalIndex, order);
+        for (int i = 1; i < pairs.size(); i++) {
+            InvariantIntStringPair a = pairs.get(i - 1);
+            InvariantIntStringPair b = pairs.get(i);
+            if (!a.equals(b)) {
+                order++;
+            }
+            this.invariants.setVertexInvariant(b.originalIndex, order);
+        }
+    }
+
+    public void setColor(int vertexIndex, int color) {
 	    this.invariants.setColor(vertexIndex, color);
 	}
 	
@@ -424,34 +486,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 
 	public void addLayer(List<Node> layer) {
 		this.layers.add(layer);
-	}
-	
-	public void initializeVertexInvariants() {
-	    List<InvariantIntStringPair> pairs = 
-	        new ArrayList<InvariantIntStringPair>();
-	    for (int i = 0; i < vertexCount; i++) {
-	        String l = vertexLabels[i];
-	        int p = parentCounts[i];
-	        pairs.add(new InvariantIntStringPair(l, p, i));
-	    }
-	    Collections.sort(pairs);
-	    
-	    if (pairs.size() == 0) return;
-	    
-	    // initialize the node comparator here, as we know that all vertex
-	    // labels have been set by this point
-	    nodeComparator = new NodeComparator(vertexLabels);
-	    
-	    int order = 1;
-	    this.invariants.setVertexInvariant(pairs.get(0).originalIndex, order);
-	    for (int i = 1; i < pairs.size(); i++) {
-	        InvariantIntStringPair a = pairs.get(i - 1);
-	        InvariantIntStringPair b = pairs.get(i);
-	        if (!a.equals(b)) {
-	            order++;
-	        }
-	        this.invariants.setVertexInvariant(b.originalIndex, order);
-	    }
 	}
 	
 	public List<Integer> createOrbit(int[] parents) {
