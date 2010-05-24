@@ -43,8 +43,8 @@ public abstract class AbstractVertexSignature {
     private int vertexCount;
     
     /**
-     * Mapping between the vertex indices stored in the Nodes and the vertex 
-     * indices in the original graph. This is necessary for signatures with a
+     * Mapping between the vertex indices in the original graph and the vertex   
+     * indices stored in the Nodes. This is necessary for signatures with a
      * height less than the graph diameter. It is also the order in which the
      * vertices were visited to make the DAG.
      */
@@ -120,8 +120,8 @@ public abstract class AbstractVertexSignature {
         vertexCount = 1;
         build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
         String[] vertexLabels = new String[vertexCount];
-        for (int internalIndex : vertexMapping.keySet()) {
-            int externalIndex = vertexMapping.get(internalIndex);
+        for (int externalIndex : vertexMapping.keySet()) {
+            int internalIndex = vertexMapping.get(externalIndex);
             vertexLabels[internalIndex] = getVertexSymbol(externalIndex);
         }
         dag.initialize(vertexCount, vertexLabels);
