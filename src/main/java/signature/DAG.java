@@ -130,7 +130,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	}
 	
 	/**
-	 * An arc of the directed acyclic graph
+	 * An arc of the directed acyclic graph.
 	 *
 	 */
 	public class Arc {
@@ -155,8 +155,15 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		}
 	}
 	
+	/**
+	 * Comparator for nodes.
+	 *
+	 */
 	public class NodeComparator implements Comparator<Node> {
 	    
+	    /**
+	     * The labels for vertices.
+	     */
 	    public String[] vertexLabels;
 	    
 	    public NodeComparator(String[] vertexLabels) {
@@ -164,7 +171,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    }
 
         public int compare(Node o1, Node o2) {
-            int c = o1.vertexLabel.compareTo(o2.vertexLabel); 
+            int c = this.vertexLabels[o1.vertexIndex].compareTo(
+                    this.vertexLabels[o2.vertexIndex]);
             if (c == 0) {
                 if (o1.invariant < o2.invariant) {
                     return - 1;
