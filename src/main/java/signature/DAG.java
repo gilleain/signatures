@@ -52,11 +52,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		public final int layer;
 		
 		/**
-		 * The vertex label
-		 */
-		public final String vertexLabel; 
-		
-		/**
 		 * Labels for the edges between this node and the parent nodes
 		 */
 		public final Map<Integer, Integer> edgeColors;
@@ -71,14 +66,12 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		 * 
 		 * @param vertexIndex the graph vertex index
 		 * @param layer the layer of this Node
-		 * @param label the label of the vertex
 		 */
-		public Node(int vertexIndex, int layer, String label) {
+		public Node(int vertexIndex, int layer) {
 			this.vertexIndex = vertexIndex;
 			this.layer = layer;
 			this.parents = new ArrayList<Node>();
 			this.children = new ArrayList<Node>();
-			this.vertexLabel = label;
 			this.edgeColors = new HashMap<Integer, Integer>();
 		}
 	
@@ -124,7 +117,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
             }
             
             return vertexIndex + " " 
-                 + vertexLabel + " (" + parentString + ", " + childString + ")";
+                 + vertexLabels[vertexIndex] 
+                 + " (" + parentString + ", " + childString + ")";
 		}
 
 	}
@@ -237,7 +231,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
-		Node rootNode = new Node(rootVertexIndex, 0, rootLabel);
+		Node rootNode = new Node(rootVertexIndex, 0);
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
@@ -319,9 +313,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * @return the new node 
 	 */
 	
-	public DAG.Node makeNode(
-            int vertexIndex, int layer, String vertexLabel) {
-        DAG.Node node = new DAG.Node(vertexIndex, layer, vertexLabel);
+	public DAG.Node makeNode(int vertexIndex, int layer, String vertexLabel) {
+        DAG.Node node = new DAG.Node(vertexIndex, layer);
         this.vertexLabels[vertexIndex] = vertexLabel;
         this.nodes.add(node);
         return node;
