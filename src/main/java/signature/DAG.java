@@ -193,6 +193,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
         }
 	}
 	
+	private NodeComparator nodeComparator;
+	
 	/**
 	 * The layers of the DAG
 	 */
@@ -226,8 +228,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 */
 	private int vertexCount;
 	
-	private int graphVertexCount;
-	
     /**
      * Create a DAG from a graph, starting at the root vertex.
      * 
@@ -248,28 +248,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		this.vertexLabels[rootVertexIndex] = rootLabel;
 		
 		this.vertexCount = 1;
-		this.parentCounts = new int[graphVertexCount];
-		this.childCounts = new int[graphVertexCount];
-		
-		this.graphVertexCount = graphVertexCount;
-	}
-	
-	
-    /**
-     * Reset a DAG starting at another root vertex.
-     * 
-     * @param rootVertexIndex the vertex to start from
-     * @param rootLabel the string label for the root vertex
-     */
-	public void resetDAG(int rootVertexIndex, String rootLabel) {
-		this.layers.clear();
-		this.nodes.clear();
-		List<Node> rootLayer = new ArrayList<Node>();
-		Node rootNode = new Node(rootVertexIndex, 0, rootLabel);
-		rootLayer.add(rootNode);
-		this.layers.add(rootLayer);
-		this.nodes.add(rootNode);
-		
 		this.parentCounts = new int[graphVertexCount];
 		this.childCounts = new int[graphVertexCount];
 	}
