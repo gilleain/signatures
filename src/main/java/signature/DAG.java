@@ -27,7 +27,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * A node of the directed acyclic graph
 	 *
 	 */
-	public class Node implements Comparable<Node>, VisitableDAG {
+	public class Node implements VisitableDAG {
 		
 		/**
 		 * The index of the vertex in the graph. Note that for signatures that
@@ -127,20 +127,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
                  + vertexLabel + " (" + parentString + ", " + childString + ")";
 		}
 
-        public int compareTo(Node o) {
-            int c = this.vertexLabel.compareTo(o.vertexLabel); 
-            if (c == 0) {
-                if (this.invariant < o.invariant) {
-                    return - 1;
-                } else if (this.invariant > o.invariant) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            } else {
-                return c;
-            }
-        }
 	}
 	
 	/**
