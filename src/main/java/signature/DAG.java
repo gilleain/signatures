@@ -457,8 +457,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	        }
 	        this.invariants.setVertexInvariant(b.originalIndex, order);
 	    }
-//	    System.out.println(this);
-//	    System.out.println(Arrays.toString(childCounts));
 	}
 	
 	public List<Integer> createOrbit(int[] parents) {
