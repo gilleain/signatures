@@ -193,7 +193,11 @@ public class DAG implements Iterable<List<DAG.Node>> {
         }
 	}
 	
-	private NodeComparator nodeComparator;
+	/**
+	 * Used to sort nodes, it is public so that the AbstractVertexSignature
+	 * can use it 
+	 */
+	public NodeComparator nodeComparator;
 	
 	/**
 	 * The layers of the DAG
@@ -368,7 +372,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    if (parent != null) {
 	        counts[node.vertexIndex]++;
 	    }
-	    Collections.sort(node.children);
+	    Collections.sort(node.children, nodeComparator);
 	    for (DAG.Node child : node.children) {
             DAG.Arc arc = new Arc(node.vertexIndex, child.vertexIndex);
             if (arcs.contains(arc)) {
@@ -397,7 +401,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
     private void getOccurences(int[] occurences, DAG.Node node,
             DAG.Node parent, List<DAG.Arc> arcs) {
         occurences[node.vertexIndex]++;
-        Collections.sort(node.children);
+        Collections.sort(node.children, nodeComparator);
         for (DAG.Node child : node.children) {
             DAG.Arc arc = new Arc(node.vertexIndex, child.vertexIndex);
             if (arcs.contains(arc)) {
@@ -446,6 +450,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    Collections.sort(pairs);
 	    
 	    if (pairs.size() == 0) return;
+	    
+	    // initialize the node comparator here, as we know that all vertex
+	    // labels have been set by this point
+	    nodeComparator = new NodeComparator(vertexLabels);
 	    
 	    int order = 1;
 	    this.invariants.setVertexInvariant(pairs.get(0).originalIndex, order);

@@ -376,7 +376,7 @@ public abstract class AbstractVertexSignature {
         
         // Need to sort the children here, so that they are printed in an order 
         // according to their invariants.
-        Collections.sort(node.children);
+        Collections.sort(node.children, dag.nodeComparator);
         
         // now print the sorted children, surrounded by branch symbols
         boolean addedBranchSymbol = false;
@@ -423,7 +423,7 @@ public abstract class AbstractVertexSignature {
             labels.add(index);
         }
         
-        Collections.sort(node.children);
+        Collections.sort(node.children, dag.nodeComparator);
         for (int i = 0; i < node.children.size(); i++) {
             DAG.Node child = node.children.get(i);
             DAG.Arc arc = dag.new Arc(node.vertexIndex, child.vertexIndex);
