@@ -285,27 +285,12 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	
 	/**
 	 * Initialize the invariants, assuming that the vertex count for the
-	 * signature is the same as the graph vertex count.
+	 * signature is the same as the length of the label array.
 	 */
 	public void initialize(String[] vertexLabels) {
+	    vertexCount = vertexLabels.length;
 	    this.invariants = new Invariants(vertexCount, nodes.size());
-        this.initializeVertexInvariants(vertexLabels);    
-	}
-
-    /**
-     * Initialize the invariants, given that the signature covers <code>
-	 * signatureVertexCount</code> number of vertices.
-     * 
-     * @param signatureVertexCount
-     *            the number of vertices covered by the signature
-     */
-	public void initialize(int signatureVertexCount, String[] vertexLabels) {
-	    vertexCount = signatureVertexCount;
-	    this.invariants = new Invariants(vertexCount, nodes.size());
-	    this.initializeVertexInvariants(vertexLabels);
-	}
-	
-	public void initializeVertexInvariants(String[] vertexLabels) {
+	    
         List<InvariantIntStringPair> pairs = 
             new ArrayList<InvariantIntStringPair>();
         for (int i = 0; i < vertexCount; i++) {

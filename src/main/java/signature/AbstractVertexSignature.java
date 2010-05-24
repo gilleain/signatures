@@ -124,7 +124,7 @@ public abstract class AbstractVertexSignature {
             int internalIndex = vertexMapping.get(externalIndex);
             vertexLabels[internalIndex] = getVertexSymbol(externalIndex);
         }
-        dag.initialize(vertexCount, vertexLabels);
+        dag.initialize(vertexLabels);
     }
 
     private void build(int layer, 

@@ -42,7 +42,7 @@ public class DAGTester {
         ring.addRelation(child6, child3);
         
         System.out.println(ring);
-        String[] labels = new String[] { "C", "C", "C", "C", "C" };
+        String[] labels = new String[] { "C", "C", "C"};
         ring.initialize(labels);
         
         ring.updateNodeInvariants(DAG.Direction.UP);
@@ -98,7 +98,7 @@ public class DAGTester {
         dag.addRelation(childD, childB);
         
         System.out.println(dag);
-        dag.initialize(new String[] {"C", "C", "C"});
+        dag.initialize(new String[] {"C", "C"});
         
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
@@ -240,7 +240,7 @@ public class DAGTester {
         child.addEdgeColor(0, 1);
         root.addEdgeColor(3, 1);
         
-        dag.initialize(4, new String[] { "C", "C", "C", "H" });
+        dag.initialize(new String[] { "C", "C", "C", "H" });
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
     }
