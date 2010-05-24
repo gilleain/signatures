@@ -2,6 +2,7 @@ package signature;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,32 +34,32 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		 * cover only part of the graph (with a height less than the diameter)
 		 * this index may have to be mapped to the original index 
 		 */
-		public int vertexIndex;
+		public final int vertexIndex;
 		
 		/**
 		 * The parent nodes in the DAG
 		 */
-		public List<Node> parents;
+		public final List<Node> parents;
 		
 		/**
 		 * The child nodes in the DAG
 		 */
-		public List<Node> children;
+		public final List<Node> children;
 		
 		/**
 		 * What layer this node is in
 		 */
-		public int layer;
+		public final int layer;
 		
 		/**
 		 * The vertex label
 		 */
-		public String vertexLabel; 
+		public final String vertexLabel; 
 		
 		/**
 		 * Labels for the edges between this node and the parent nodes
 		 */
-		public Map<Integer, Integer> edgeColors;
+		public final Map<Integer, Integer> edgeColors;
 		
 		/**
 		 * The final computed invariant, used for sorting children when printing
@@ -148,9 +149,9 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 */
 	public class Arc {
 		
-		public int a;
+		public final int a;
 		
-		public int b;
+		public final int b;
 		
 		public Arc(int a, int b) {
 			this.a = a;
@@ -166,6 +167,30 @@ public class DAG implements Iterable<List<DAG.Node>> {
 				return false;
 			}
 		}
+	}
+	
+	public class NodeComparator implements Comparator<Node> {
+	    
+	    public String[] vertexLabels;
+	    
+	    public NodeComparator(String[] vertexLabels) {
+	        this.vertexLabels = vertexLabels;
+	    }
+
+        public int compare(Node o1, Node o2) {
+            int c = o1.vertexLabel.compareTo(o2.vertexLabel); 
+            if (c == 0) {
+                if (o1.invariant < o2.invariant) {
+                    return - 1;
+                } else if (o1.invariant > o2.invariant) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return c;
+            }
+        }
 	}
 	
 	/**
