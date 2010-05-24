@@ -117,8 +117,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
             }
             
             return vertexIndex + " " 
-                 + vertexLabels[vertexIndex] 
-                 + " (" + parentString + ", " + childString + ")";
+                  + " (" + parentString + ", " + childString + ")";
 		}
 
 	}
@@ -236,12 +235,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
      */
     private int[] childCounts;
 	
-	/**
-	 * Vertex labels (if any) - for a chemical graph, these are likely to be
-	 * element symbols (C, N, O, etc)
-	 */
-	private String[] vertexLabels;
-	
 	private Invariants invariants;
 	
 	/**
@@ -259,9 +252,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
      * 
      * @param rootVertexIndex the vertex to start from
      * @param graphVertexCount the number of vertices in the original graph
-     * @param rootLabel the string label for the root vertex  
      */
-	public DAG(int rootVertexIndex, int graphVertexCount, String rootLabel) {
+	public DAG(int rootVertexIndex, int graphVertexCount) {
 		this.layers = new ArrayList<List<Node>>();
 		this.nodes = new ArrayList<Node>();
 		List<Node> rootLayer = new ArrayList<Node>();
@@ -269,9 +261,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 		rootLayer.add(rootNode);
 		this.layers.add(rootLayer);
 		this.nodes.add(rootNode);
-		
-		this.vertexLabels = new String[graphVertexCount];
-		this.vertexLabels[rootVertexIndex] = rootLabel;
 		
 		this.vertexCount = 1;
 		this.parentCounts = new int[graphVertexCount];
@@ -298,9 +287,9 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * Initialize the invariants, assuming that the vertex count for the
 	 * signature is the same as the graph vertex count.
 	 */
-	public void initialize() {
+	public void initialize(String[] vertexLabels) {
 	    this.invariants = new Invariants(vertexCount, nodes.size());
-        this.initializeVertexInvariants();    
+        this.initializeVertexInvariants(vertexLabels);    
 	}
 
     /**
@@ -310,13 +299,13 @@ public class DAG implements Iterable<List<DAG.Node>> {
      * @param signatureVertexCount
      *            the number of vertices covered by the signature
      */
-	public void initialize(int signatureVertexCount) {
+	public void initialize(int signatureVertexCount, String[] vertexLabels) {
 	    vertexCount = signatureVertexCount;
 	    this.invariants = new Invariants(vertexCount, nodes.size());
-	    this.initializeVertexInvariants();
+	    this.initializeVertexInvariants(vertexLabels);
 	}
 	
-	public void initializeVertexInvariants() {
+	public void initializeVertexInvariants(String[] vertexLabels) {
         List<InvariantIntStringPair> pairs = 
             new ArrayList<InvariantIntStringPair>();
         for (int i = 0; i < vertexCount; i++) {
@@ -371,13 +360,11 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * 
 	 * @param vertexIndex the index of the vertex in the original graph
 	 * @param layer the index of the layer
-	 * @param vertexLabel the label of the vertex
 	 * @return the new node 
 	 */
 	
-	public DAG.Node makeNode(int vertexIndex, int layer, String vertexLabel) {
+	public DAG.Node makeNode(int vertexIndex, int layer) {
         DAG.Node node = new DAG.Node(vertexIndex, layer);
-        this.vertexLabels[vertexIndex] = vertexLabel;
         this.nodes.add(node);
         return node;
     }
@@ -389,12 +376,10 @@ public class DAG implements Iterable<List<DAG.Node>> {
      * 
 	 * @param vertexIndex the index of the vertex in the original graph
      * @param layer the index of the layer
-     * @param vertexLabel the label of the vertex
      * @return the new node
 	 */
-	public DAG.Node makeNodeInLayer(
-	        int vertexIndex, int layer, String vertexLabel) {
-        DAG.Node node = this.makeNode(vertexIndex, layer, vertexLabel);
+	public DAG.Node makeNodeInLayer(int vertexIndex, int layer) {
+        DAG.Node node = this.makeNode(vertexIndex, layer);
         if (layers.size() <= layer) {
           this.layers.add(new ArrayList<DAG.Node>());
         }

@@ -1,7 +1,5 @@
 package signature;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,30 +19,31 @@ public class DAGTester {
     @Test
     public void testColoring() {
         // C12CC1C1
-        DAG ring = new DAG(0, 4, "C");
+        DAG ring = new DAG(0, 4);
         DAG.Node root = ring.getRoot();
         
-        DAG.Node child1 = ring.makeNodeInLayer(1, 1, "C");
+        DAG.Node child1 = ring.makeNodeInLayer(1, 1);
         ring.addRelation(child1, root);
         
-        DAG.Node child2 = ring.makeNodeInLayer(2, 1, "C");
+        DAG.Node child2 = ring.makeNodeInLayer(2, 1);
         ring.addRelation(child2, root);
         
-        DAG.Node child3 = ring.makeNodeInLayer(3, 1, "C");
+        DAG.Node child3 = ring.makeNodeInLayer(3, 1);
         ring.addRelation(child3, root);
         
-        DAG.Node child4 = ring.makeNodeInLayer(3, 2, "C");
+        DAG.Node child4 = ring.makeNodeInLayer(3, 2);
         ring.addRelation(child4, child1);
         ring.addRelation(child4, child2);
         
-        DAG.Node child5 = ring.makeNodeInLayer(1, 2, "C");
+        DAG.Node child5 = ring.makeNodeInLayer(1, 2);
         ring.addRelation(child5, child3);
         
-        DAG.Node child6 = ring.makeNodeInLayer(2, 2, "C");
+        DAG.Node child6 = ring.makeNodeInLayer(2, 2);
         ring.addRelation(child6, child3);
         
         System.out.println(ring);
-        ring.initialize();
+        String[] labels = new String[] { "C", "C", "C", "C", "C" };
+        ring.initialize(labels);
         
         ring.updateNodeInvariants(DAG.Direction.UP);
         System.out.println(ring.copyInvariants());
@@ -83,23 +82,23 @@ public class DAGTester {
     
     @Test
     public void testColoringForUnlabelledThreeCycle() {
-        DAG dag = new DAG(0, 3, "C");
+        DAG dag = new DAG(0, 3);
         DAG.Node root = dag.getRoot();
         
-        DAG.Node childA = dag.makeNodeInLayer(1, 1, "C");
+        DAG.Node childA = dag.makeNodeInLayer(1, 1);
         dag.addRelation(childA, root);
         
-        DAG.Node childB = dag.makeNodeInLayer(2, 1, "C");
+        DAG.Node childB = dag.makeNodeInLayer(2, 1);
         dag.addRelation(childB, root);
         
-        DAG.Node childC = dag.makeNodeInLayer(2, 2, "C");
+        DAG.Node childC = dag.makeNodeInLayer(2, 2);
         dag.addRelation(childC, childA);
         
-        DAG.Node childD = dag.makeNodeInLayer(1, 2, "C");
+        DAG.Node childD = dag.makeNodeInLayer(1, 2);
         dag.addRelation(childD, childB);
         
         System.out.println(dag);
-        dag.initialize();
+        dag.initialize(new String[] {"C", "C", "C"});
         
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
@@ -116,7 +115,7 @@ public class DAGTester {
         //            / \
         //    1 - Node  2 - Node
 
-        DAG simpleDAG = new DAG(0, 3, "Node");
+        DAG simpleDAG = new DAG(0, 3);
 
 
         // First do all the initializations related to the nodes of the graph.
@@ -125,15 +124,15 @@ public class DAGTester {
         DAG.Node childNode;
         
         // Add the first child.
-        childNode = simpleDAG.makeNodeInLayer(1, 1, "Node");
+        childNode = simpleDAG.makeNodeInLayer(1, 1);
         simpleDAG.addRelation(childNode, parentNode);
         
         // Add the second child.
-        childNode = simpleDAG.makeNodeInLayer(2, 1, "Node");
+        childNode = simpleDAG.makeNodeInLayer(2, 1);
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.
-        simpleDAG.initialize();
+        simpleDAG.initialize(new String[] {"Node", "Node", "Node"});
 
         // Canonize DAG by a simple Hopcroft-Tarjan sweep.
         int [] nodeInvariants = {0, 0, 0};
@@ -175,21 +174,21 @@ public class DAGTester {
         //            / \
         //    1 - Node2  2 - Node1
 
-        DAG simpleDAG = new DAG(0, 3, "Node0");
+        DAG simpleDAG = new DAG(0, 3);
 
 
         // First do all the initializations related to the nodes of the graph.
         // Create the nodes.
         DAG.Node parentNode = simpleDAG.getRoot();
         // Add the first child.
-        DAG.Node childNode = simpleDAG.makeNodeInLayer(1, 1, "Node2");
+        DAG.Node childNode = simpleDAG.makeNodeInLayer(1, 1);
         simpleDAG.addRelation(childNode, parentNode);
         // Add the second child.
-        childNode = simpleDAG.makeNodeInLayer(2, 1, "Node1");
+        childNode = simpleDAG.makeNodeInLayer(2, 1);
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.
-        simpleDAG.initialize();
+        simpleDAG.initialize(new String[] {"Node0", "Node2", "Node1"});
 
         //System.out.println(simpleDAG.toString());
 
@@ -223,25 +222,25 @@ public class DAGTester {
     
     @Test
     public void dagWithEdgeLabels() {
-        DAG dag = new DAG(0, 4, "C");
+        DAG dag = new DAG(0, 4);
         DAG.Node root = dag.getRoot();
         
-        DAG.Node child = dag.makeNodeInLayer(1, 1, "C");
+        DAG.Node child = dag.makeNodeInLayer(1, 1);
         dag.addRelation(root, child);
         child.addEdgeColor(0, 2);
         root.addEdgeColor(1, 2);
         
-        child = dag.makeNodeInLayer(2, 1, "C");
+        child = dag.makeNodeInLayer(2, 1);
         dag.addRelation(root, child);
         child.addEdgeColor(0, 1);
         root.addEdgeColor(2, 1);
         
-        child = dag.makeNodeInLayer(3, 1, "H");
+        child = dag.makeNodeInLayer(3, 1);
         dag.addRelation(root, child);
         child.addEdgeColor(0, 1);
         root.addEdgeColor(3, 1);
         
-        dag.initialize(4);
+        dag.initialize(4, new String[] { "C", "C", "C", "H" });
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
     }

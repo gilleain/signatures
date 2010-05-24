@@ -116,10 +116,15 @@ public abstract class AbstractVertexSignature {
         this.height = height;
         vertexMapping = new HashMap<Integer, Integer>();
         vertexMapping.put(rootVertexIndex, 0);
-        dag = new DAG(0, graphVertexCount, getVertexSymbol(rootVertexIndex));
+        dag = new DAG(0, graphVertexCount);
         vertexCount = 1;
         build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
-        dag.initialize(vertexCount);
+        String[] vertexLabels = new String[vertexCount];
+        for (int internalIndex : vertexMapping.keySet()) {
+            int externalIndex = vertexMapping.get(internalIndex);
+            vertexLabels[internalIndex] = getVertexSymbol(externalIndex);
+        }
+        dag.initialize(vertexCount, vertexLabels);
     }
 
     private void build(int layer, 
@@ -172,8 +177,7 @@ public abstract class AbstractVertexSignature {
         
         // if there isn't, make a new node and add it to the layer
         if (existingNode == null) {
-            String vertexLabel = getVertexSymbol(vertexIndex);
-            existingNode = dag.makeNode(mappedVertexIndex, layer, vertexLabel);
+            existingNode = dag.makeNode(mappedVertexIndex, layer);
             nextLayer.add(existingNode);
         }
         
