@@ -390,7 +390,6 @@ public abstract class AbstractVertexSignature {
                     addedBranchSymbol = true;
                 }
                 arcs.add(arc);
-//                print(buffer, child, node, arcs, colorMap);
                 print(buffer, child, node, arcs);
             }
         }
