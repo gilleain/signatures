@@ -287,10 +287,6 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    this.initializeVertexInvariants();
 	}
 	
-	public void setVertexLabel(int vertexIndex, String label) {
-	    this.vertexLabels[vertexIndex] = label;
-	}
-	
 	public void setColor(int vertexIndex, int color) {
 	    this.invariants.setColor(vertexIndex, color);
 	}
