@@ -169,7 +169,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
             int c = o1s.compareTo(o2s);
             if (c == 0) {
                 if (o1.invariant < o2.invariant) {
-                    return - 1;
+                    return -1;
                 } else if (o1.invariant > o2.invariant) {
                     return 1;
                 } else {
@@ -202,7 +202,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
             int c = (o1n == o2n)? 0 :(o1n < o2n? -1 : 1);
             if (c == 0) {
                 if (o1.invariant < o2.invariant) {
-                    return - 1;
+                    return -1;
                 } else if (o1.invariant > o2.invariant) {
                     return 1;
                 } else {

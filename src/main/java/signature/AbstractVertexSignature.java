@@ -62,6 +62,7 @@ public abstract class AbstractVertexSignature {
     public AbstractVertexSignature() {
         this.vertexCount = 0;
         this.currentCanonicalLabelMapping = new ArrayList<Integer>();
+        useStringLabels = true;
     }
     
     /**
