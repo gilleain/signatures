@@ -287,7 +287,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	 * Initialize the invariants, assuming that the vertex count for the
 	 * signature is the same as the length of the label array.
 	 */
-	public void initialize(String[] vertexLabels) {
+	public void initializeWithStringLabels(String[] vertexLabels) {
 	    vertexCount = vertexLabels.length;
 	    this.invariants = new Invariants(vertexCount, nodes.size());
 	    
@@ -301,11 +301,30 @@ public class DAG implements Iterable<List<DAG.Node>> {
         
         if (pairs.size() == 0) return;
         
-        // initialize the node comparator here, as we know that all vertex
-        // labels have been set by this point
         nodeComparator = new NodeStringLabelComparator(vertexLabels);
+        setInitialInvariants(pairs);
+    }
+	
+	public void initializeWithIntLabels(int[] vertexLabels) {
+	    vertexCount = vertexLabels.length;
+        this.invariants = new Invariants(vertexCount, nodes.size());
         
-        int order = 1;
+        List<InvariantPair> pairs = new ArrayList<InvariantPair>();
+        for (int i = 0; i < vertexCount; i++) {
+            int l = vertexLabels[i];
+            int p = parentCounts[i];
+            pairs.add(new InvariantIntIntPair(l, p, i));
+        }
+        Collections.sort(pairs);
+        
+        if (pairs.size() == 0) return;
+        
+        nodeComparator = new NodeIntegerLabelComparator(vertexLabels);
+        setInitialInvariants(pairs);
+	}
+	
+	private void setInitialInvariants(List<InvariantPair> pairs) {
+	    int order = 1;
         InvariantPair first = pairs.get(0);
         invariants.setVertexInvariant(first.getOriginalIndex(), order);
         for (int i = 1; i < pairs.size(); i++) {
@@ -316,9 +335,7 @@ public class DAG implements Iterable<List<DAG.Node>> {
             }
             invariants.setVertexInvariant(b.getOriginalIndex(), order);
         }
-    }
-	
-	
+	}
 
     public void setColor(int vertexIndex, int color) {
 	    this.invariants.setColor(vertexIndex, color);

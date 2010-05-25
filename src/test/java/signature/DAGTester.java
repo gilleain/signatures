@@ -43,7 +43,7 @@ public class DAGTester {
         
         System.out.println(ring);
         String[] labels = new String[] { "C", "C", "C"};
-        ring.initialize(labels);
+        ring.initializeWithStringLabels(labels);
         
         ring.updateNodeInvariants(DAG.Direction.UP);
         System.out.println(ring.copyInvariants());
@@ -98,7 +98,7 @@ public class DAGTester {
         dag.addRelation(childD, childB);
         
         System.out.println(dag);
-        dag.initialize(new String[] {"C", "C"});
+        dag.initializeWithStringLabels(new String[] {"C", "C"});
         
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
@@ -132,7 +132,7 @@ public class DAGTester {
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.
-        simpleDAG.initialize(new String[] {"Node", "Node", "Node"});
+        simpleDAG.initializeWithStringLabels(new String[] {"Node", "Node", "Node"});
 
         // Canonize DAG by a simple Hopcroft-Tarjan sweep.
         int [] nodeInvariants = {0, 0, 0};
@@ -188,7 +188,7 @@ public class DAGTester {
         simpleDAG.addRelation(childNode, parentNode);
 
         // Initialize the all invariants.
-        simpleDAG.initialize(new String[] {"Node0", "Node2", "Node1"});
+        simpleDAG.initializeWithStringLabels(new String[] {"Node0", "Node2", "Node1"});
 
         //System.out.println(simpleDAG.toString());
 
@@ -240,7 +240,7 @@ public class DAGTester {
         child.addEdgeColor(0, 1);
         root.addEdgeColor(3, 1);
         
-        dag.initialize(new String[] { "C", "C", "C", "H" });
+        dag.initializeWithStringLabels(new String[] { "C", "C", "C", "H" });
         dag.updateVertexInvariants();
         System.out.println(dag.copyInvariants());
     }
