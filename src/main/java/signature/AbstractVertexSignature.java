@@ -140,6 +140,7 @@ public abstract class AbstractVertexSignature {
             createWithIntLabels();
         } else {
             // XXX TODO : unknown invariant type
+            System.err.println("unknown invariant type " + invariantType);
         }
     }
     

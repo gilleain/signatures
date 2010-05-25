@@ -11,8 +11,7 @@ public class MoleculeSignature extends AbstractGraphSignature {
     private InvariantType invariantType;
     
     public MoleculeSignature(Molecule molecule) {
-        super(" + ");
-        this.molecule = molecule;
+        this(molecule, InvariantType.STRING);
     }
     
     public MoleculeSignature(Molecule molecule, InvariantType invariantType) {
