@@ -291,7 +291,8 @@ public class DAG implements Iterable<List<DAG.Node>> {
 	    vertexCount = vertexLabels.length;
 	    this.invariants = new Invariants(vertexCount, nodes.size());
 	    
-        List<InvariantPair> pairs = new ArrayList<InvariantPair>();
+        List<InvariantIntStringPair> pairs = 
+            new ArrayList<InvariantIntStringPair>();
         for (int i = 0; i < vertexCount; i++) {
             String l = vertexLabels[i];
             int p = parentCounts[i];
@@ -302,14 +303,24 @@ public class DAG implements Iterable<List<DAG.Node>> {
         if (pairs.size() == 0) return;
         
         nodeComparator = new NodeStringLabelComparator(vertexLabels);
-        setInitialInvariants(pairs);
+        int order = 1;
+        InvariantIntStringPair first = pairs.get(0);
+        invariants.setVertexInvariant(first.getOriginalIndex(), order);
+        for (int i = 1; i < pairs.size(); i++) {
+            InvariantIntStringPair a = pairs.get(i - 1);
+            InvariantIntStringPair b = pairs.get(i);
+            if (!a.equals(b)) {
+                order++;
+            }
+            invariants.setVertexInvariant(b.getOriginalIndex(), order);
+        }
     }
 	
 	public void initializeWithIntLabels(int[] vertexLabels) {
 	    vertexCount = vertexLabels.length;
         this.invariants = new Invariants(vertexCount, nodes.size());
         
-        List<InvariantPair> pairs = new ArrayList<InvariantPair>();
+        List<InvariantIntIntPair> pairs = new ArrayList<InvariantIntIntPair>();
         for (int i = 0; i < vertexCount; i++) {
             int l = vertexLabels[i];
             int p = parentCounts[i];
@@ -320,23 +331,19 @@ public class DAG implements Iterable<List<DAG.Node>> {
         if (pairs.size() == 0) return;
         
         nodeComparator = new NodeIntegerLabelComparator(vertexLabels);
-        setInitialInvariants(pairs);
-	}
-	
-	private void setInitialInvariants(List<InvariantPair> pairs) {
-	    int order = 1;
-        InvariantPair first = pairs.get(0);
+        int order = 1;
+        InvariantIntIntPair first = pairs.get(0);
         invariants.setVertexInvariant(first.getOriginalIndex(), order);
         for (int i = 1; i < pairs.size(); i++) {
-            InvariantPair a = pairs.get(i - 1);
-            InvariantPair b = pairs.get(i);
+            InvariantIntIntPair a = pairs.get(i - 1);
+            InvariantIntIntPair b = pairs.get(i);
             if (!a.equals(b)) {
                 order++;
             }
             invariants.setVertexInvariant(b.getOriginalIndex(), order);
         }
 	}
-
+	
     public void setColor(int vertexIndex, int color) {
 	    this.invariants.setColor(vertexIndex, color);
 	}

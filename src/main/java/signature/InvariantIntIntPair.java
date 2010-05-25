@@ -1,6 +1,6 @@
 package signature;
 
-public class InvariantIntIntPair implements InvariantPair {
+public class InvariantIntIntPair implements Comparable<InvariantIntIntPair> {
     
     public int label;
     
@@ -22,8 +22,7 @@ public class InvariantIntIntPair implements InvariantPair {
         return this.value == o.value && this.label == o.label;
     }
 
-    public int compareTo(InvariantPair other) {
-        InvariantIntIntPair o = (InvariantIntIntPair) other;
+    public int compareTo(InvariantIntIntPair o) {
         int c = (this.label == o.label)? 0 :
             ((this.label < o.label)? -1 : 1);
         if (c == 0) {
