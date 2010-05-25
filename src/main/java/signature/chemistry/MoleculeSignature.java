@@ -7,9 +7,17 @@ public class MoleculeSignature extends AbstractGraphSignature {
     
     private Molecule molecule;
     
+    private boolean useStringLabels;
+    
     public MoleculeSignature(Molecule molecule) {
         super(" + ");
         this.molecule = molecule;
+    }
+    
+    public MoleculeSignature(Molecule molecule, boolean useStringLabels) {
+        super(" + ");
+        this.molecule = molecule;
+        this.useStringLabels = useStringLabels;
     }
     
     public static boolean isCanonicallyLabelled(Molecule molecule) {
@@ -27,30 +35,22 @@ public class MoleculeSignature extends AbstractGraphSignature {
 
     @Override
     public String signatureStringForVertex(int vertexIndex) {
-        AtomSignature atomSignature;
         int height = super.getHeight();
-        if (height == -1) {
-            atomSignature = new AtomSignature(this.molecule, vertexIndex);
-        } else {
-            atomSignature = new AtomSignature(this.molecule, vertexIndex, height);
-        }
+        AtomSignature atomSignature = 
+            new AtomSignature(molecule, vertexIndex, height, useStringLabels);
         return atomSignature.toCanonicalString();
     }
 
     @Override
     public String signatureStringForVertex(int vertexIndex, int height) {
-        AtomSignature atomSignature;
-        if (height == -1) {
-            atomSignature = new AtomSignature(molecule, vertexIndex);
-        } else {
-            atomSignature = new AtomSignature(molecule, vertexIndex, height);
-        }
+        AtomSignature atomSignature = 
+            new AtomSignature(molecule, vertexIndex, height, useStringLabels);
         return atomSignature.toCanonicalString();
     }
 
     @Override
     public AbstractVertexSignature signatureForVertex(int vertexIndex) {
-        return new AtomSignature(this.molecule, vertexIndex);
+        return new AtomSignature(this.molecule, vertexIndex, -1, useStringLabels);
     }
 
 }
