@@ -54,6 +54,8 @@ public abstract class AbstractVertexSignature {
     
     private List<Integer> canonicalLabelMapping;
     
+    private boolean useStringLabels;
+    
     /**
      * Create an abstract vertex signature.
      */
@@ -119,6 +121,27 @@ public abstract class AbstractVertexSignature {
         dag = new DAG(0, graphVertexCount);
         vertexCount = 1;
         build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
+        if (useStringLabels) {
+            createWithStringLabels();
+        } else {
+            createWithIntLabels();
+        }
+    }
+    
+    public void setUseStringLabels(boolean value) {
+        useStringLabels = value;
+    }
+    
+    private void createWithIntLabels() {
+        int[] vertexLabels = new int[vertexCount];
+        for (int externalIndex : vertexMapping.keySet()) {
+            int internalIndex = vertexMapping.get(externalIndex);
+            vertexLabels[internalIndex] = getIntLabel(externalIndex);
+        }
+        dag.initializeWithIntLabels(vertexLabels);
+    }
+    
+    private void createWithStringLabels() {
         String[] vertexLabels = new String[vertexCount];
         for (int externalIndex : vertexMapping.keySet()) {
             int internalIndex = vertexMapping.get(externalIndex);
@@ -315,6 +338,10 @@ public abstract class AbstractVertexSignature {
      */
     public int getVertexCount() {
         return this.vertexCount;
+    }
+    
+    public int getIntLabel(int vertexIndex) {
+        return -1;  // TODO : make this abstract!
     }
     
     /**
