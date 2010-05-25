@@ -2,22 +2,23 @@ package signature.chemistry;
 
 import signature.AbstractGraphSignature;
 import signature.AbstractVertexSignature;
+import signature.AbstractVertexSignature.InvariantType;
 
 public class MoleculeSignature extends AbstractGraphSignature {
     
     private Molecule molecule;
     
-    private boolean useStringLabels;
+    private InvariantType invariantType;
     
     public MoleculeSignature(Molecule molecule) {
         super(" + ");
         this.molecule = molecule;
     }
     
-    public MoleculeSignature(Molecule molecule, boolean useStringLabels) {
+    public MoleculeSignature(Molecule molecule, InvariantType invariantType) {
         super(" + ");
         this.molecule = molecule;
-        this.useStringLabels = useStringLabels;
+        this.invariantType = invariantType;
     }
     
     public static boolean isCanonicallyLabelled(Molecule molecule) {
@@ -37,20 +38,20 @@ public class MoleculeSignature extends AbstractGraphSignature {
     public String signatureStringForVertex(int vertexIndex) {
         int height = super.getHeight();
         AtomSignature atomSignature = 
-            new AtomSignature(molecule, vertexIndex, height, useStringLabels);
+            new AtomSignature(molecule, vertexIndex, height, invariantType);
         return atomSignature.toCanonicalString();
     }
 
     @Override
     public String signatureStringForVertex(int vertexIndex, int height) {
         AtomSignature atomSignature = 
-            new AtomSignature(molecule, vertexIndex, height, useStringLabels);
+            new AtomSignature(molecule, vertexIndex, height, invariantType);
         return atomSignature.toCanonicalString();
     }
 
     @Override
     public AbstractVertexSignature signatureForVertex(int vertexIndex) {
-        return new AtomSignature(this.molecule, vertexIndex, -1, useStringLabels);
+        return new AtomSignature(this.molecule, vertexIndex, -1, invariantType);
     }
 
 }

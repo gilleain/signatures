@@ -54,15 +54,27 @@ public abstract class AbstractVertexSignature {
     
     private List<Integer> canonicalLabelMapping;
     
-    private boolean useStringLabels;
+    public enum InvariantType { STRING, INTEGER };
+    
+    private InvariantType invariantType;
     
     /**
      * Create an abstract vertex signature.
      */
     public AbstractVertexSignature() {
+        this(InvariantType.STRING);
+    }
+    
+    /**
+     * Create an abstract vertex signature that uses the given invariant type
+     * for the initial invariants. 
+     * 
+     * @param invariantType
+     */
+    public AbstractVertexSignature(InvariantType invariantType) {
         this.vertexCount = 0;
         this.currentCanonicalLabelMapping = new ArrayList<Integer>();
-        useStringLabels = true;
+        this.invariantType = invariantType;
     }
     
     /**
@@ -122,15 +134,13 @@ public abstract class AbstractVertexSignature {
         dag = new DAG(0, graphVertexCount);
         vertexCount = 1;
         build(1, dag.getRootLayer(), new ArrayList<DAG.Arc>(), height);
-        if (useStringLabels) {
+        if (invariantType == InvariantType.STRING) {
             createWithStringLabels();
-        } else {
+        } else if (invariantType == InvariantType.INTEGER){
             createWithIntLabels();
+        } else {
+            // XXX TODO : unknown invariant type
         }
-    }
-    
-    public void setUseStringLabels(boolean value) {
-        useStringLabels = value;
     }
     
     private void createWithIntLabels() {

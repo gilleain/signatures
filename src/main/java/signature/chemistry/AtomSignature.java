@@ -19,10 +19,9 @@ public class AtomSignature extends AbstractVertexSignature {
     }
     
     public AtomSignature(Molecule molecule, int atomNumber, 
-            int height, boolean useStringsAsLabel) {
-        super();
+            int height, AbstractVertexSignature.InvariantType invariantType) {
+        super(invariantType);
         this.molecule = molecule;
-        super.setUseStringLabels(useStringsAsLabel);
         this.create(atomNumber, molecule.getAtomCount(), height);
     }
     
