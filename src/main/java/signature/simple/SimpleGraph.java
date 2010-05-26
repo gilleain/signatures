@@ -1,6 +1,7 @@
 package signature.simple;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,18 +12,36 @@ import java.util.List;
  */
 public class SimpleGraph {
     
-    public class Edge {
+    public class Edge implements Comparable<Edge> {
         public int a;
         public int b;
         
         public Edge(int a, int b) {
-            this.a = a;
-            this.b = b;
+            if (a < b) {
+                this.a = a;
+                this.b = b;
+            } else {
+                this.a = b;
+                this.b = a;
+            }
+        }
+        
+        public int compareTo(Edge other) {
+            if (this.a < other.a || (this.a == other.a && this.b < other.b)) {
+                return -1;
+            } else {
+                if (this.a == other.a && this.b == other.b) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
         }
         
         public String toString() {
             return this.a + "-" + this.b;
         }
+
     }
     
     public List<Edge> edges;
@@ -43,6 +62,13 @@ public class SimpleGraph {
         }
     }
     
+    public SimpleGraph(SimpleGraph graph, int[] permutation) {
+        this();
+        for (Edge e : graph.edges) {
+            makeEdge(permutation[e.a], permutation[e.b]);
+        }
+    }
+
     public void makeEdge(int a, int b) {
         if (a > maxVertexIndex) maxVertexIndex = a;
         if (b > maxVertexIndex) maxVertexIndex = b;
@@ -82,10 +108,6 @@ public class SimpleGraph {
         return connectedArray;
     }
     
-    public String toString() {
-        return edges.toString();
-    }
-
     public int degree(int vertexIndex) {
         int degreeCount = 0;
         for (Edge e : edges) {
@@ -94,6 +116,11 @@ public class SimpleGraph {
             }
         }
         return degreeCount;
+    }
+
+    public String toString() {
+        Collections.sort(edges);
+        return edges.toString();
     }
     
 }

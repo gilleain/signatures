@@ -340,6 +340,10 @@ public abstract class AbstractVertexSignature {
     public List<Integer> getCanonicalLabelMapping() {
         return this.canonicalLabelMapping;
     }
+    
+    public void accept(DAGVisitor visitor) {
+        dag.accept(visitor);
+    }
 
     /**
      * Get the number of vertices.
