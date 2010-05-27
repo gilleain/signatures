@@ -32,7 +32,6 @@ public class CanonicalLabellingTest {
             if (index < labels.length) {
                 labels[index] = node.vertexIndex;
             }
-//            System.out.println("visiting node " + node + " " + Arrays.toString(labels));
             index++;
             for (Node child : node.children) {
                 child.accept(this);
@@ -121,8 +120,10 @@ public class CanonicalLabellingTest {
             SimpleGraph permutation = permutor.next();
             int[] labels = getLabelsB(permutation);
             SimpleGraph relabelled = new SimpleGraph(permutation, labels);
+            boolean isIdentity = isIdentity(labels);
             System.out.println(
-                Arrays.toString(labels) + " " + permutation + " " + relabelled);
+                Arrays.toString(labels) + " " + permutation + " " + relabelled 
+                + " " + isIdentity);
             relabelledStrings.add(relabelled.toString());
         }
         
@@ -133,14 +134,24 @@ public class CanonicalLabellingTest {
         }
     }
     
+    public boolean isIdentity(int[] permutation) {
+        if (permutation.length < 1) return true;
+        int prev = permutation[0];
+        for (int i = 1; i < permutation.length; i++) {
+            if (permutation[i] < prev) return false;
+            prev = permutation[i];
+        }
+        return true;
+    }
+    
     @Test
     public void fourCycleTest() {
-        permuteTest(new SimpleGraph("0:1,0:3,1:2,2:3"));
+        permuteTestB(new SimpleGraph("0:1,0:3,1:2,2:3"));
     }
     
     @Test
     public void fiveCycleTest() {
-        permuteTest(new SimpleGraph("0:1,0:4,1:2,2:3,3:4"));
+        permuteTestB(new SimpleGraph("0:1,0:4,1:2,2:3,3:4"));
     }
     
     @Test
