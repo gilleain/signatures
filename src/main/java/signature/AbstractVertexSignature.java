@@ -325,16 +325,31 @@ public abstract class AbstractVertexSignature {
     }
 
     /**
-     * Get a canonical labelling for this signature.
+     * Get a canonical labelling for this signature. Note that a signature that
+     * does not cover the graph (has a height < graph diameter) will not have
+     * labels for every vertex. Unlabelled vertices will have a value of -1. To
+     * handle all cases, the total number of vertices must be passed to the 
+     * method.
+     * 
+     * @param totalVertexCount the number of vertices in the graph
      * 
      * @return 
      *    the permutation necessary to transform the graph into a canonical form
      */
-    public int[] getCanonicalLabelling() {
+    public int[] getCanonicalLabelling(int totalVertexCount) {
+        // TODO : get the totalVertexCount from the graph?
+        canonize(0, new StringBuffer());
         CanonicalLabellingVisitor labeller = 
-            new CanonicalLabellingVisitor(this.getVertexCount());
+            new CanonicalLabellingVisitor(getVertexCount(), dag.nodeComparator);
         this.dag.accept(labeller);
-        return labeller.getLabelling();
+        int[] internalLabels = labeller.getLabelling();
+        int[] externalLabels = new int[totalVertexCount];
+        Arrays.fill(externalLabels, -1);
+        for (int i = 0; i < getVertexCount(); i++) {
+            int externalIndex = getOriginalVertexIndex(i);
+            externalLabels[externalIndex] = internalLabels[i]; 
+        }
+        return externalLabels;    
     }
     
     public List<Integer> getCanonicalLabelMapping() {
