@@ -1,6 +1,8 @@
 package signature;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CanonicalLabellingVisitor implements DAGVisitor {
     
@@ -8,10 +10,14 @@ public class CanonicalLabellingVisitor implements DAGVisitor {
     
     private int currentLabel;
     
-    public CanonicalLabellingVisitor(int vertexCount) {
-        this.labelling = new int[vertexCount];
-        Arrays.fill(this.labelling, -1);
-        this.currentLabel = 0;
+    private Comparator<DAG.Node> comparator;
+    
+    
+    public CanonicalLabellingVisitor(
+            int vertexCount, Comparator<DAG.Node> comparator) {
+        labelling = new int[vertexCount];
+        Arrays.fill(labelling, -1);
+        currentLabel = 0;
     }
 
     public void visit(DAG.Node node) {
@@ -20,6 +26,7 @@ public class CanonicalLabellingVisitor implements DAGVisitor {
             this.labelling[node.vertexIndex] = this.currentLabel;
             this.currentLabel++;
         }
+        Collections.sort(node.children, comparator);
         for (DAG.Node child : node.children) {
             child.accept(this);
         }
