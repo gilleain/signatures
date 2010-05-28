@@ -27,8 +27,6 @@ public abstract class AbstractGraphSignature {
     
     private String graphSignature; // XXX
     
-    private List<List<Integer>> canonicalLabelMapping;  // XXX
-    
     /**
      * Create a graph signature with a default separator.
      */
@@ -63,8 +61,6 @@ public abstract class AbstractGraphSignature {
     public AbstractGraphSignature(String separator, int height) {
         this.separator = separator;
         this.height = height;
-        
-        this.canonicalLabelMapping = new ArrayList<List<Integer>>();
     }
     
     /**
@@ -293,33 +289,20 @@ public abstract class AbstractGraphSignature {
         builder.makeFromColoredTree(tree);
     }
     
-    public List<Integer> canonicalLabel() {
-        List<Integer> mapping = new ArrayList<Integer>();
-
-        int elementToChange = 0;
-        while (!this.isCanonicallyLabelled()) {
-            // Reorder the vertices of the graph.
-            // Look for the vertexSignature corresponding to the graphSignature 
-            // that has the lowest vertexId in the elementToChange position.
-            int el = 0; 
-            int minValue = this.getVertexCount();
-            List<Integer> currentLabels =  this.canonicalLabelMapping.get(el);
-            for (String vertexSignature : this.getVertexSignatureStrings()) {
-                if ( this.graphSignature.equals(vertexSignature) ) {
-                    int i = currentLabels.get(elementToChange);
-                    if (minValue > i) {
-                        minValue = i;
-                    }
-                }
-                el++;
+    public int[] getCanonicalLabels() {
+        int n = getVertexCount();
+        AbstractVertexSignature canonicalSignature = null;
+        String canonicalSignatureString = null;
+        for (int i = 0; i < n; i++) {
+            AbstractVertexSignature signatureForVertexI = signatureForVertex(i);
+            String signatureString = signatureForVertexI.toCanonicalString();
+            if (canonicalSignature == null ||
+                    signatureString.compareTo(canonicalSignatureString) < 0) {
+                canonicalSignature = signatureForVertexI;
+                canonicalSignatureString = signatureString;
             }
-            // Swap the order of vertexId minValue and elementToChange.
-            // do the swapping here.
-            mapping.add(minValue);
-            elementToChange++;
         }
-
-        return mapping;
+        return canonicalSignature.getCanonicalLabelling(n);
     }
     
     public boolean isInIncreasingOrder(List<Integer> integerList) {
