@@ -79,13 +79,14 @@ public class CanonicalLabellingTest {
         SimpleGraphSignature signature = new SimpleGraphSignature(graph);
         AbstractVertexSignature canon = getCanonicalSignature(signature);
         int n = graph.getVertexCount();
-        CanonicalDAGVisitor cdv = new CanonicalDAGVisitor(n);
-        canon.accept(cdv);
-        int[] labels = new int[n];
-        for (int i = 0; i < n; i++) {
-            labels[canon.getOriginalVertexIndex(cdv.labels[i])] = i;
-        }
-        return labels;
+//        CanonicalDAGVisitor cdv = new CanonicalDAGVisitor(n);
+//        canon.accept(cdv);
+//        int[] labels = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            labels[canon.getOriginalVertexIndex(cdv.labels[i])] = i;
+//        }
+//        return labels;
+        return canon.getCanonicalLabelling(n);
     }
     
     public void permuteTest(SimpleGraph graph) {
