@@ -307,4 +307,17 @@ public class Molecule {
         }
         return edgeString.toString();
     }
+
+    public int getFirstInBond(int bondIndex) {
+        return bonds.get(bondIndex).a.index;
+    }
+    
+    public int getSecondInBond(int bondIndex) {
+        return bonds.get(bondIndex).b.index;
+    }
+
+    public int getBondOrder(int bondIndex) {
+        return bonds.get(bondIndex).order;
+    }
+
 }

@@ -41,10 +41,8 @@ public class MoleculeReader {
     public static List<Molecule> readSDFFile(String filename) {
 
         File file = new File(filename);
-        FileInputStream fi;
         try {
-            fi = new FileInputStream(file);
-            return readSDFfromStream(fi);
+            return readSDFfromStream(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             System.err.println(e.toString());
         }
@@ -59,7 +57,7 @@ public class MoleculeReader {
     public static List<Molecule> readSDFfromStream(InputStream stream) {
         List<Molecule> molecules = new ArrayList<Molecule>();
         try {
-            InputStreamReader ir=new InputStreamReader(stream);
+            InputStreamReader ir = new InputStreamReader(stream);
             
             BufferedReader reader = new BufferedReader(ir);
             String line;

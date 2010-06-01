@@ -10,7 +10,7 @@ import signature.simple.SimpleGraphBuilder;
 import signature.simple.SimpleGraphSignature;
 import signature.simple.SimpleVertexSignature;
 
-public class SimpleGraphTest extends AbstractSimpleGraphTest {
+public class SimpleGraphTest {
     
     public SimpleGraphSignature signatureFromString(String string) {
         SimpleGraph graph = new SimpleGraph(string);
@@ -50,7 +50,7 @@ public class SimpleGraphTest extends AbstractSimpleGraphTest {
     
     @Test
     public void signatureHeightTest() {
-        SimpleGraph g = AbstractSimpleGraphTest.makeCuneane();
+        SimpleGraph g = SimpleGraphFactory.makeCuneane();
         SimpleGraphSignature signature = new SimpleGraphSignature(g);
         for (int h = 1; h < g.getVertexCount(); h++) {
             for (int i = 0; i < g.getVertexCount(); i++) {

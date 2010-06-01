@@ -8,7 +8,7 @@ import signature.AbstractVertexSignature;
 import signature.ColoredTree;
 import signature.SymmetryClass;
 
-public class ReconstructionTest extends AbstractSimpleGraphTest {
+public class ReconstructionTest {
 
     // XXX DOES NOT YET WORK - reconstructed graph may be isomorphic, 
     // but not automorphic
@@ -25,13 +25,13 @@ public class ReconstructionTest extends AbstractSimpleGraphTest {
 
     @Test
     public void petersensGraphTest() {
-        SimpleGraph petersens = AbstractSimpleGraphTest.makePetersensGraph();
+        SimpleGraph petersens = SimpleGraphFactory.makePetersensGraph();
 //        reconstruct(petersens);
     }
     
     @Test
     public void bowtieaneTest() {
-        SimpleGraph bowtie = AbstractSimpleGraphTest.makeBowtieane();
+        SimpleGraph bowtie = SimpleGraphFactory.makeBowtieane();
         String tmp = new SimpleGraphSignature(bowtie).signatureStringForVertex(6);
         System.out.println(tmp);
         System.out.println("----------------------------------------");
