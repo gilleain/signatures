@@ -48,6 +48,8 @@ public class SimpleGraph {
     
     public int maxVertexIndex;
     
+    public String name;
+    
     public SimpleGraph() {
         this.edges = new ArrayList<Edge>();
     }

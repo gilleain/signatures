@@ -1,14 +1,11 @@
 package signature.chemistry;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import signature.AbstractVertexSignature;
 import signature.ColoredTree;
 import signature.SymmetryClass;
 import signature.chemistry.AtomPermutor;
@@ -135,120 +132,42 @@ public class MoleculeSignatureTest {
             MoleculeSignature signatureCanLabel = new MoleculeSignature(molecule);
             Assert.assertEquals(true, signatureCanLabel.isCanonicallyLabelled() );
         }
-        
-        Molecule molecule = MoleculeReader.readSDFFile(filename).get(0);
-        this.testCanonicalIsUnique(molecule);
     }
     
     public void testCanonicalIsUnique(Molecule molecule) {
-//        List<Molecule> canonical = new ArrayList<Molecule>();
-//        List<int[]> permutations = new ArrayList<int[]>();
-//        boolean orderedA = molecule.bondsOrdered();
-//        MoleculeSignature sigM = new MoleculeSignature(molecule);
-//        List<SymmetryClass> symmetryClassesA = sigM.getSymmetryClasses();
-//        AbstractVertexSignature firstM = sigM.signatureForVertex(0);
-//        firstM.toCanonicalString();
-//        List<Integer> groupwiseM = 
-//            firstM.groupwiseCanonicalLabelling(symmetryClassesA);
-//        
-//        MoleculeBuilder builderA = new MoleculeBuilder();
-//        sigM.reconstructCanonicalGraph(sigM.signatureForVertex(0), builderA);
-//        String resultA = "";
-//        Molecule reconstructionA = builderA.getMolecule(); 
-//        if (reconstructionA.identical(molecule)) {
-//            resultA = "CANON2";
-//        }
-//        if (sigM.isCanonicallyLabelled()) {
-//            canonical.add(molecule);
-//            permutations.add(new int[] {});
-//            System.out.println(molecule + "\tCANON" 
-//                               + "\t" + orderedA
-//                               + "\t" + resultA
-//                               + "\t" + groupwiseM);
-//        } else {
-//            System.out.println(molecule 
-//                    + "\t" + orderedA + "\t" + groupwiseM + "\t" + resultA);
-//        }
-//        
-//        AtomPermutor permutor = new AtomPermutor(molecule);
-//        List<Molecule> examples = new ArrayList<Molecule>();
-//        examples.add(molecule);
-//        while (permutor.hasNext()) {
-//            Molecule permutation = permutor.next();
-//            
-//            int group = assignAutomorphism(permutation, examples);
-//            boolean ordered = permutation.bondsOrdered();
-//            MoleculeSignature sig = new MoleculeSignature(permutation);
-//            
-////            MoleculeBuilder builder = new MoleculeBuilder();
-////            sig.reconstructCanonicalGraph(sig.signatureForVertex(0), builder);
-////            String result = "";
-////            Molecule reconstruction = builder.getMolecule(); 
-////            if (reconstruction.identical(permutation)) {
-////                result = "CANON2";
-////            }
-//            String canonicalEdgeString = sig.reconstructCanonicalEdgeString();
-//            String permutationEdgeString = permutation.toEdgeString();
-//            String result = "";
-//            if (canonicalEdgeString.equals(permutationEdgeString)) {
-//                result = "CANON2";
-//            }
-//            
-//            AbstractVertexSignature first = sig.signatureForVertex(0);
-//            first.toCanonicalString();
-//            List<SymmetryClass> symmetryClasses = sig.getSymmetryClasses();
-//            List<Integer> sorted = first.getCanonicalLabelMapping();
-//            List<Integer> unsorted = first.postorderCanonicalLabelling();
-//            List<Integer> groupwise = 
-//                first.groupwiseCanonicalLabelling(symmetryClasses);
-//            if (sig.isCanonicallyLabelled()) {
-//                System.out.println(permutor.getRank() + "\t" 
-//                        + permutation + "\t" 
-//                        + canonicalEdgeString + "\t"
-//                        + permutationEdgeString + "\t"
-//                        + Arrays.toString(permutor.getCurrentPermutation())
-//                        + "\t" + group
-//                        + "\tCANON" + result + "\t"
-//                        + "\t" + ordered
-//                        + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
-//                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted)
-//                        + "\t" + groupwise + "\t" + sig.isInIncreasingOrder(groupwise));
-//                if (ordered) {
-//                    canonical.add(permutation);
-//                }
-//                permutations.add(permutor.getCurrentPermutation());
-//            } else {
-//                System.out.println(permutor.getRank() + "\t" 
-//                        + permutation + "\t"
-//                        + canonicalEdgeString + "\t"
-//                        + permutationEdgeString + "\t"
-//                        + Arrays.toString(permutor.getCurrentPermutation())
-//                        + "\t" + group
-//                        + "\t" + result
-//                        + "\t" + ordered
-//                        + "\t" + sorted + "\t" + sig.isInIncreasingOrder(sorted)
-//                        + "\t" + unsorted + "\t" + sig.isInIncreasingOrder(unsorted)
-//                        + "\t" + groupwise + "\t" + sig.isInIncreasingOrder(groupwise));
-//            }
-//        }
-//        for (int i = 0; i < canonical.size(); i++) { 
-////            System.out.println(canonical.get(i) 
-////                    + "\t" + Arrays.toString(permutations.get(i)));
-//        }
-////        Assert.assertTrue("No canonical example", canonical.size() > 0);
-////        Assert.assertTrue("More than one canonical", canonical.size() == 1);
-    }
-    
-    public int assignAutomorphism(Molecule molecule, List<Molecule> examples) {
-        for (int i = 0; i < examples.size(); i++) {
-            Molecule example = examples.get(i);
-            if (molecule.identical(example)) {
-                return i;
+        System.out.println("isUnique?" + molecule);
+        AtomPermutor permutor = new AtomPermutor(molecule);
+        String canonicalStringForm = null;
+        boolean isUnique = true;
+        boolean atLeastOneCanonicalExample = false;
+        
+        MoleculeSignature initialMolSig = new MoleculeSignature(molecule);
+        if (initialMolSig.isCanonicallyLabelled()) {
+            atLeastOneCanonicalExample = true;
+            canonicalStringForm = initialMolSig.reconstructCanonicalEdgeString();
+        }
+        
+        while (permutor.hasNext()) {
+            Molecule permutation = permutor.next();
+            MoleculeSignature molSig = new MoleculeSignature(permutation);
+            if (molSig.isCanonicallyLabelled()) {
+                String stringForm = molSig.reconstructCanonicalEdgeString();
+                if (canonicalStringForm == null) {
+                    canonicalStringForm = stringForm;
+                    atLeastOneCanonicalExample = true;
+                } else {
+                    if (canonicalStringForm.equals(stringForm)) {
+                        continue;
+                    } else {
+                        // not unique if there is more than one string form
+                        isUnique = false;
+                        break;
+                    }
+                }
             }
         }
-        int groupID = examples.size();
-        examples.add(molecule);
-        return groupID;
+        Assert.assertTrue("Canonical example is not unique", isUnique);
+        Assert.assertTrue("No canonical example", atLeastOneCanonicalExample);
     }
     
     @Test

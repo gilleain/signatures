@@ -259,27 +259,16 @@ public abstract class AbstractGraphSignature {
      * @return true if the vertices are in a canonical order
      */
     public boolean isCanonicallyLabelled() {
-        
-        // get the first signature string, to compare with the others
-        AbstractVertexSignature first = this.signatureForVertex(0); 
-        String firstString = first.toCanonicalString();
-
-        // the vertex indices must be ordered
-        List<Integer> labels = first.getCanonicalLabelMapping();
-        List<Integer> postLabels = first.postorderCanonicalLabelling(); 
-        if (isInIncreasingOrder(labels) || isInIncreasingOrder(postLabels)) {
-            
-            // check that no subsequent string is lexicographically smaller
-            for (int i = 1; i < this.getVertexCount(); i++) {
-                AbstractVertexSignature a = this.signatureForVertex(i);
-                if (firstString.compareTo(a.toCanonicalString()) > 0) {
-                    return false;
-                }
+        int[] labels = getCanonicalLabels();
+        int previousLabel = -1;
+        for (int i = 0; i < labels.length; i++) {
+            if (previousLabel == -1 || labels[i] > previousLabel) {
+                previousLabel = labels[i];
+            } else {
+                return false;
             }
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
     
     public void reconstructCanonicalGraph(
@@ -303,15 +292,6 @@ public abstract class AbstractGraphSignature {
             }
         }
         return canonicalSignature.getCanonicalLabelling(n);
-    }
-    
-    public boolean isInIncreasingOrder(List<Integer> integerList) {
-        for (int i = 1; i < integerList.size(); i++) {
-            if (integerList.get(i - 1) > integerList.get(i)) {
-                return false;
-            }
-        }
-        return true;
     }
     
     public String reconstructCanonicalEdgeString() {

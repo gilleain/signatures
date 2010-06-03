@@ -114,6 +114,8 @@ public class Molecule {
     
     private List<Bond> bonds;
     
+    public String name;
+    
     public Molecule() {
         this.atoms = new ArrayList<Atom>();
         this.bonds = new ArrayList<Bond>();
