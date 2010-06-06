@@ -50,10 +50,6 @@ public abstract class AbstractVertexSignature {
      */
     private Map<Integer, Integer> vertexMapping;
     
-    private List<Integer> currentCanonicalLabelMapping;
-    
-    private List<Integer> canonicalLabelMapping;
-    
     public enum InvariantType { STRING, INTEGER };
     
     private InvariantType invariantType;
@@ -73,7 +69,6 @@ public abstract class AbstractVertexSignature {
      */
     public AbstractVertexSignature(InvariantType invariantType) {
         this.vertexCount = 0;
-        this.currentCanonicalLabelMapping = new ArrayList<Integer>();
         this.invariantType = invariantType;
     }
     
@@ -273,15 +268,6 @@ public abstract class AbstractVertexSignature {
         // assume that the atom invariants have been initialized
         if (this.getVertexCount() == 0) return;
         
-        // Only add a new list of Integers if this is the first time this 
-        // function is called for a particular root vertex.
-        // The labelling that corresponds to the mapping for the vertex
-        // signature should be the only one stored.
-
-        if ( color == 0 ) {
-            this.currentCanonicalLabelMapping = new ArrayList<Integer>();
-        }
-        
         this.dag.updateVertexInvariants();
         int[] parents = dag.getParentsInFinalString();
 //        System.out.println("pars\t" + Arrays.toString(parents));
@@ -306,7 +292,6 @@ public abstract class AbstractVertexSignature {
             if (cmp > 0) {
 //                System.out.println(TMP_COLORING_COUNT + " replacing " + signature + " old= " + canonicalVertexSignature);
                 canonicalVertexSignature.replace(0, l, signature);
-                this.canonicalLabelMapping = this.currentCanonicalLabelMapping;
             } else {
 //                System.out.println(TMP_COLORING_COUNT + " rejecting " + cmp + " " + signature);
             }
@@ -350,10 +335,6 @@ public abstract class AbstractVertexSignature {
             externalLabels[externalIndex] = internalLabels[i]; 
         }
         return externalLabels;    
-    }
-    
-    public List<Integer> getCanonicalLabelMapping() {
-        return this.canonicalLabelMapping;
     }
     
     public void accept(DAGVisitor visitor) {
@@ -415,11 +396,6 @@ public abstract class AbstractVertexSignature {
     private void print(StringBuffer buffer, DAG.Node node,
             DAG.Node parent, List<DAG.Arc> arcs) {
         int vertexIndex = getOriginalVertexIndex(node.vertexIndex);
-        
-        // Add the vertexIndex to the labels if it hasn't already been added.
-        if (!(this.currentCanonicalLabelMapping.contains(vertexIndex))) {
-            this.currentCanonicalLabelMapping.add(vertexIndex);
-        }
         
         // print out any symbol for the edge in the input graph
         if (parent != null) {
