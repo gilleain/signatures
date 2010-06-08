@@ -26,6 +26,13 @@ public class SimpleQuotientGraphTest {
         }
     }
     
+    public void check4Regularity(SimpleGraph graph) {
+        System.out.println(graph);
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            Assert.assertEquals("failed for " + i, 4, graph.degree(i));
+        }
+    }
+    
     public void checkParameters(SimpleQuotientGraph qGraph,
                                 int expectedVertexCount, 
                                 int expectedEdgeCount, 
@@ -35,6 +42,14 @@ public class SimpleQuotientGraphTest {
         Assert.assertEquals(expectedEdgeCount, qGraph.getEdgeCount());
         Assert.assertEquals(expectedLoopEdgeCount, qGraph.numberOfLoopEdges());
         
+    }
+    
+    @Test
+    public void fourRegularExampleTest() {
+        SimpleGraph fourRegular = SimpleGraphFactory.makeFourRegularExample();
+        check4Regularity(fourRegular);
+        SimpleQuotientGraph qgraph = new SimpleQuotientGraph(fourRegular);
+        checkParameters(qgraph, 1, 1, 1);
     }
    
     @Test
