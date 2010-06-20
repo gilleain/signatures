@@ -77,7 +77,7 @@ public abstract class AbstractGraphSignature {
      * 
      * @return the vertex count
      */
-    public abstract int getVertexCount();
+    protected abstract int getVertexCount();
     
     /**
      * Return the canonical signature string for the vertex at index 

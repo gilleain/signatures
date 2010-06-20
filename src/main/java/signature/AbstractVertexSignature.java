@@ -352,9 +352,14 @@ public abstract class AbstractVertexSignature {
         return this.vertexCount;
     }
     
-    public int getIntLabel(int vertexIndex) {
-        return -1;  // TODO : make this abstract!
-    }
+    /**
+     * Get the integer label for a vertex - in chemistry implementations this
+     * will be the element mass.
+     * 
+     * @param vertexIndex the index of the vertex in the input graph
+     * @return an integer label
+     */
+    protected abstract int getIntLabel(int vertexIndex);
     
     /**
      * Get the symbol to use in the output signature string for this vertex of 
@@ -363,7 +368,7 @@ public abstract class AbstractVertexSignature {
      * @param vertexIndex the index of the vertex in the input graph
      * @return a String symbol
      */
-    public abstract String getVertexSymbol(int vertexIndex);
+    protected abstract String getVertexSymbol(int vertexIndex);
     
     /**
      * Get a list of the indices of the vertices connected to the vertex with 
@@ -372,7 +377,7 @@ public abstract class AbstractVertexSignature {
      * @param vertexIndex the index of the vertex to use
      * @return the indices of connected vertices in the input graph
      */
-    public abstract int[] getConnected(int vertexIndex);
+    protected abstract int[] getConnected(int vertexIndex);
     
     /**
      * Get the symbol (if any) for the edge between the vertices with these two
@@ -382,7 +387,7 @@ public abstract class AbstractVertexSignature {
      * @param otherVertexIndex the index of the other vertex in the edge 
      * @return a string symbol for this edge
      */
-    public abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
+    protected abstract String getEdgeLabel(int vertexIndex, int otherVertexIndex);
     
     /**
      * Recursively print the signature into the buffer.

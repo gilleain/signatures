@@ -35,5 +35,10 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
     public String getVertexSymbol(int vertexIndex) {
         return ".";
     }
+
+    @Override
+    protected int getIntLabel(int vertexIndex) {
+        return -1;
+    }
     
 }
