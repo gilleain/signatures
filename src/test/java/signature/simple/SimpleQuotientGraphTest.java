@@ -132,6 +132,13 @@ public class SimpleQuotientGraphTest {
     }
     
     @Test
+    public void quadricyclaneTest() {
+        SimpleGraph quadricyclane = SimpleGraphFactory.makeQuadricyclane();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(quadricyclane);
+        checkParameters(quotientGraph, 3, 3, 1);
+    }
+    
+    @Test
     public void spiroPentagonTest() {
         SimpleGraph spiroPentagons = SimpleGraphFactory.makeSpiroPentagons();
         SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(spiroPentagons);

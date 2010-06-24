@@ -2,6 +2,21 @@ package signature.simple;
 
 public class SimpleGraphFactory {
     
+    public static SimpleGraph makeQuadricyclane() {
+        SimpleGraph g = new SimpleGraph();
+        g.makeEdge(0, 1);
+        g.makeEdge(0, 5);
+        g.makeEdge(0, 6);
+        g.makeEdge(1, 2);
+        g.makeEdge(2, 3);
+        g.makeEdge(2, 4);
+        g.makeEdge(3, 4);
+        g.makeEdge(3, 6);
+        g.makeEdge(4, 5);
+        g.makeEdge(5, 6);
+        return g;
+    }
+    
     public static SimpleGraph makeFourRegularExample() {
         SimpleGraph g = new SimpleGraph();
         g.makeEdge(0, 1);
