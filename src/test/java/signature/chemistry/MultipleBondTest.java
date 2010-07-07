@@ -9,6 +9,20 @@ import signature.chemistry.Molecule.BondOrder;
 public class MultipleBondTest {
     
     @Test
+    public void aromaticTest() {
+        Molecule benzene = new Molecule();
+        benzene.addMultipleAtoms(6, "C");
+        benzene.addBond(0, 1, BondOrder.AROMATIC);
+        benzene.addBond(1, 2, BondOrder.AROMATIC);
+        benzene.addBond(2, 3, BondOrder.AROMATIC);
+        benzene.addBond(3, 4, BondOrder.AROMATIC);
+        benzene.addBond(4, 5, BondOrder.AROMATIC);
+        benzene.addBond(5, 0, BondOrder.AROMATIC);
+        MoleculeSignature molSig = new MoleculeSignature(benzene);
+        System.out.println(molSig.toCanonicalString());
+    }
+    
+    @Test
     public void cocoTest() {
         Molecule moleculeA = new Molecule();
         int chainLength = 6;
