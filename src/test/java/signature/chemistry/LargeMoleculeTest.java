@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
+import signature.chemistry.Molecule.BondOrder;
 import signature.display.TreeDrawer;
 
 public class LargeMoleculeTest {
@@ -61,36 +62,37 @@ public class LargeMoleculeTest {
     public void dodecahedraneTest() {
         Molecule mol = new Molecule();
         for (int i = 0; i < 20; i++) { mol.addAtom("C"); }
-        mol.addBond(0, 1, 1);
-        mol.addBond(0, 4, 1);
-        mol.addBond(0, 5, 2);
-        mol.addBond(1, 2, 1);
-        mol.addBond(1, 6, 2);
-        mol.addBond(2, 3, 2);
-        mol.addBond(2, 7, 1);
-        mol.addBond(3, 4, 1);
-        mol.addBond(3, 8, 1);
-        mol.addBond(4, 9, 2);
-        mol.addBond(5, 10, 1);
-        mol.addBond(5, 11, 1);
-        mol.addBond(6, 11, 1);
-        mol.addBond(6, 12, 1);
-        mol.addBond(7, 12, 2);
-        mol.addBond(7, 13, 1);
-        mol.addBond(8, 13, 2);
-        mol.addBond(8, 14, 1);
-        mol.addBond(9, 10, 1);
-        mol.addBond(9, 14, 1);
-        mol.addBond(10, 15, 2);
-        mol.addBond(11, 16, 2);
-        mol.addBond(12, 17, 1);
-        mol.addBond(13, 18, 1);
-        mol.addBond(14, 19, 2);
-        mol.addBond(15, 16, 1);
-        mol.addBond(15, 19, 1);
-        mol.addBond(16, 17, 1);
-        mol.addBond(17, 18, 2);
-        mol.addBond(18, 19, 1);
+        mol.addSingleBond(0, 1);
+        mol.addSingleBond(0, 4);
+        mol.addSingleBond(1, 2);
+        mol.addSingleBond(2, 7);
+        mol.addSingleBond(3, 4);
+        mol.addSingleBond(3, 8);
+        mol.addSingleBond(5, 10);
+        mol.addSingleBond(5, 11);
+        mol.addSingleBond(6, 11);
+        mol.addSingleBond(6, 12);
+        mol.addSingleBond(7, 13);
+        mol.addSingleBond(8, 14);
+        mol.addSingleBond(9, 10);
+        mol.addSingleBond(9, 14);
+        mol.addSingleBond(12, 17);
+        mol.addSingleBond(13, 18);
+        mol.addSingleBond(15, 16);
+        mol.addSingleBond(15, 19);
+        mol.addSingleBond(16, 17);
+        mol.addSingleBond(18, 19);
+        
+        mol.addBond(0, 5, BondOrder.DOUBLE);
+        mol.addBond(1, 6, BondOrder.DOUBLE);
+        mol.addBond(2, 3, BondOrder.DOUBLE);
+        mol.addBond(4, 9, BondOrder.DOUBLE);
+        mol.addBond(7, 12, BondOrder.DOUBLE);
+        mol.addBond(8, 13, BondOrder.DOUBLE);
+        mol.addBond(10, 15, BondOrder.DOUBLE);
+        mol.addBond(11, 16, BondOrder.DOUBLE);
+        mol.addBond(17, 18, BondOrder.DOUBLE);
+        mol.addBond(14, 19, BondOrder.DOUBLE);
         
         for (int i = 0; i < 20; i++) {
             Assert.assertEquals("Atom " + i + " has wrong order", 
@@ -173,7 +175,7 @@ public class LargeMoleculeTest {
     public void buckyballWithoutMultipleBonds() {
         Molecule molecule = MoleculeReader.readMolfile("data/buckyball.mol");
         for (Molecule.Bond bond : molecule.bonds()) {
-            bond.order = 1;
+            bond.order = BondOrder.SINGLE;
         }
         MoleculeQuotientGraph mqg = new MoleculeQuotientGraph(molecule);
 //        drawTrees(mqg, "tmp3");

@@ -64,7 +64,7 @@ public class MoleculeWriter {
             BufferedWriter writer, Molecule molecule, int i) throws IOException {
         int f = molecule.getFirstInBond(i) + 1;
         int s = molecule.getSecondInBond(i) + 1;
-        int o = molecule.getBondOrder(i);
+        int o = molecule.getBondOrderAsInt(i);
         writer.write(String.format("%3d%3d%3d  0  0  0  0", f, s, o));
         writer.newLine();
     }

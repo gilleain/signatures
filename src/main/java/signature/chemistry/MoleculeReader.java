@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import signature.chemistry.Molecule.BondOrder;
+
 public class MoleculeReader {
 
     public static Molecule readMolfile(String filename) {
@@ -112,10 +114,21 @@ public class MoleculeReader {
                 int atomNumberB = 
                     Integer.parseInt(bondLine.substring(3, 6).trim());
                 int order = Integer.parseInt(bondLine.substring(7, 10).trim());
-                molecule.addBond(atomNumberA - 1, atomNumberB - 1, order);
+                BondOrder o = convertIntToBondOrder(order);
+                molecule.addBond(atomNumberA - 1, atomNumberB - 1, o);
         	}
         }
         return molecule;
+    }
+    
+    private static BondOrder convertIntToBondOrder(int o) {
+        switch (o) {
+            case 1: return BondOrder.SINGLE;
+            case 2: return BondOrder.DOUBLE;
+            case 3: return BondOrder.TRIPLE;
+            case 4: return BondOrder.AROMATIC;
+            default : return BondOrder.SINGLE; 
+        }
     }
 
 }

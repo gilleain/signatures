@@ -1,6 +1,7 @@
 package signature.chemistry;
 
 import signature.AbstractVertexSignature;
+import signature.chemistry.Molecule.BondOrder;
 
 public class AtomSignature extends AbstractVertexSignature {
     
@@ -47,13 +48,13 @@ public class AtomSignature extends AbstractVertexSignature {
 
     @Override
     public String getEdgeLabel(int vertexIndex, int otherVertexIndex) {
-        int bondOrder = molecule.getBondOrder(vertexIndex, otherVertexIndex);
-//        return "";
+        BondOrder bondOrder = 
+            molecule.getBondOrder(vertexIndex, otherVertexIndex);
         switch (bondOrder) {
-//            case 1: return "-";
-            case 1: return "";
-            case 2: return "=";
-            case 3: return "#";
+            case SINGLE: return "";
+            case DOUBLE: return "=";
+            case TRIPLE: return "#";
+            case AROMATIC: return "p";
             default: return "";
         }
     }

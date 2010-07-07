@@ -9,6 +9,7 @@ import org.junit.Test;
 import signature.chemistry.AtomPermutor;
 import signature.chemistry.Molecule;
 import signature.chemistry.MoleculeSignature;
+import signature.chemistry.Molecule.BondOrder;
 
 public class PermutationTest {
     
@@ -70,8 +71,8 @@ public class PermutationTest {
         molecule.addAtom("C");
         molecule.addAtom("N");
         molecule.addAtom("O");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(1, 2, 1);
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(1, 2);
         permuteCompletely(molecule);
     }
     
@@ -84,11 +85,11 @@ public class PermutationTest {
         molecule.addAtom("C");
         molecule.addAtom("S");
         molecule.addAtom("C");
-        molecule.addBond(0, 1, 2);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(2, 3, 1);
-        molecule.addBond(3, 4, 1);
-        molecule.addBond(4, 5, 1);
+        molecule.addBond(0, 1, BondOrder.DOUBLE);
+        molecule.addSingleBond(1, 2);
+        molecule.addSingleBond(2, 3);
+        molecule.addSingleBond(3, 4);
+        molecule.addSingleBond(4, 5);
         permuteCompletely(molecule);
     }
     
@@ -101,11 +102,11 @@ public class PermutationTest {
         molecule.addAtom("O");
         molecule.addAtom("C");
         molecule.addAtom("O");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(2, 3, 1);
-        molecule.addBond(3, 4, 1);
-        molecule.addBond(4, 5, 2);
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(1, 2);
+        molecule.addSingleBond(2, 3);
+        molecule.addSingleBond(3, 4);
+        molecule.addBond(4, 5, BondOrder.DOUBLE);
 //        molecule.addBond(4, 5, 1);
         permuteCompletely(molecule);
     }
@@ -123,7 +124,7 @@ public class PermutationTest {
         for (int i = 0; i < chainLength - 2; i++) {
             molecule.addSingleBond(i, i+1);
         }
-        molecule.addBond(chainLength - 2, chainLength - 1, 2);
+        molecule.addBond(chainLength - 2, chainLength - 1, BondOrder.DOUBLE);
         String sigA = toSignatureString(molecule);
 //        permuteCompletely(molecule);
 //        testSpecificPermutation(molecule, new int[] {0,1,3,4,2,5});
@@ -134,11 +135,11 @@ public class PermutationTest {
         moleculeB.addAtom("C");
         moleculeB.addAtom("O");
         moleculeB.addAtom("O");
-        moleculeB.addBond(0, 1, 1);
-        moleculeB.addBond(1, 3, 1);
-        moleculeB.addBond(2, 4, 1);
-        moleculeB.addBond(2, 5, 2);
-        moleculeB.addBond(3, 4, 1);
+        moleculeB.addSingleBond(0, 1);
+        moleculeB.addSingleBond(1, 3);
+        moleculeB.addSingleBond(2, 4);
+        moleculeB.addBond(2, 5, BondOrder.DOUBLE);
+        moleculeB.addSingleBond(3, 4);
         
         String sigB = toSignatureString(moleculeB);
 //        MoleculeSignature molSig = new MoleculeSignature(moleculeB);

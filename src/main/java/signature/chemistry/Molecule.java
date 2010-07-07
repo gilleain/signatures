@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Molecule {
     
+    public enum BondOrder { NONE, SINGLE, DOUBLE, TRIPLE, AROMATIC }
+    
     public class Atom {
         
         public int index;
@@ -45,9 +47,9 @@ public class Molecule {
         
         public Atom b;
         
-        public int order;
+        public BondOrder order;
         
-        public Bond(Atom a, Atom b, int order) {
+        public Bond(Atom a, Atom b, BondOrder order) {
             this.a = a;
             this.b = b;
             this.order = order;
@@ -197,20 +199,31 @@ public class Molecule {
         return false;
     }
     
-    public int getBondOrder(int atomIndex, int otherAtomIndex) {
+    public BondOrder getBondOrder(int atomIndex, int otherAtomIndex) {
         for (Bond bond : this.bonds) {
             if (bond.hasBoth(atomIndex, otherAtomIndex)) {
                 return bond.order;
             }
         }
-        return -1;
+        return BondOrder.NONE;
+    }
+    
+    public int convertBondOrderToInt(BondOrder bondOrder) {
+        switch (bondOrder) {
+            case NONE : return 0;
+            case SINGLE : return 1;
+            case DOUBLE : return 2;
+            case TRIPLE : return 3;
+            case AROMATIC : return 4;   // hmmm...
+            default : return 1;
+        }
     }
     
     public int getTotalOrder(int atomIndex) {
         int totalOrder = 0;
         for (Bond bond : bonds) {
             if (bond.a.index == atomIndex || bond.b.index == atomIndex) {
-                totalOrder += bond.order;
+                totalOrder += convertBondOrderToInt(bond.order);
             }
         }
         return totalOrder;
@@ -248,7 +261,7 @@ public class Molecule {
     }
     
     public void addSingleBond(int atomNumberA, int atomNumberB) {
-        this.addBond(atomNumberA, atomNumberB, 1);
+        this.addBond(atomNumberA, atomNumberB, BondOrder.SINGLE);
     }
 
     public void addMultipleSingleBonds(int i, int...js) {
@@ -257,7 +270,7 @@ public class Molecule {
         }
     }
 
-    public void addBond(int atomNumberA, int atomNumberB, int order) {
+    public void addBond(int atomNumberA, int atomNumberB, BondOrder order) {
         Atom a = this.atoms.get(atomNumberA);
         Atom b = this.atoms.get(atomNumberB);
         this.bonds.add(new Bond(a, b, order));
@@ -318,8 +331,12 @@ public class Molecule {
         return bonds.get(bondIndex).b.index;
     }
 
-    public int getBondOrder(int bondIndex) {
+    public BondOrder getBondOrder(int bondIndex) {
         return bonds.get(bondIndex).order;
+    }
+    
+    public int getBondOrderAsInt(int bondIndex) {
+        return convertBondOrderToInt(bonds.get(bondIndex).order);
     }
 
 }

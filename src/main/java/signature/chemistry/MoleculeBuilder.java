@@ -2,6 +2,7 @@ package signature.chemistry;
 
 import signature.AbstractGraphBuilder;
 import signature.ColoredTree;
+import signature.chemistry.Molecule.BondOrder;
 
 public class MoleculeBuilder extends AbstractGraphBuilder {
     
@@ -16,11 +17,11 @@ public class MoleculeBuilder extends AbstractGraphBuilder {
             int vertexIndex1, int vertexIndex2, 
             String symbolA, String symbolB, String edgeLabel) {
         if (edgeLabel.equals("")) {
-            this.molecule.addBond(vertexIndex1, vertexIndex2, 1);
+            this.molecule.addBond(vertexIndex1, vertexIndex2, BondOrder.SINGLE);
         } else if (edgeLabel.equals("=")) {
-            this.molecule.addBond(vertexIndex1, vertexIndex2, 2);
+            this.molecule.addBond(vertexIndex1, vertexIndex2, BondOrder.DOUBLE);
         } else if (edgeLabel.equals("#")) {
-            this.molecule.addBond(vertexIndex1, vertexIndex2, 3);
+            this.molecule.addBond(vertexIndex1, vertexIndex2, BondOrder.TRIPLE);
         }
         
     }

@@ -40,11 +40,11 @@ public class TestMultipleTrees {
         molecule.addAtom("O");
         molecule.addAtom("P");
         molecule.addAtom("S");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(0, 2, 1);
-        molecule.addBond(2, 3, 1);
-        molecule.addBond(2, 4, 1);
-        molecule.addBond(3, 5, 1);
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(0, 2);
+        molecule.addSingleBond(2, 3);
+        molecule.addSingleBond(2, 4);
+        molecule.addSingleBond(3, 5);
         
         f.setLayout(new GridLayout(1, 6));
         MoleculeSignature molSig = new MoleculeSignature(molecule);

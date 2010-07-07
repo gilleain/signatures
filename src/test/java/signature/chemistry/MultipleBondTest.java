@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import signature.chemistry.Molecule.BondOrder;
+
 public class MultipleBondTest {
     
     @Test
@@ -19,7 +21,7 @@ public class MultipleBondTest {
         for (int i = 0; i < chainLength - 2; i++) {
             moleculeA.addSingleBond(i, i+1);
         }
-        moleculeA.addBond(chainLength - 2, chainLength - 1, 2);
+        moleculeA.addBond(chainLength - 2, chainLength - 1, BondOrder.DOUBLE);
 //        moleculeA.addBond(chainLength - 2, chainLength - 1, 1);
         
         Molecule moleculeB = new Molecule();
@@ -29,12 +31,12 @@ public class MultipleBondTest {
         moleculeB.addAtom("C");
         moleculeB.addAtom("O");
         moleculeB.addAtom("O");
-        moleculeB.addBond(0, 1, 1);
-        moleculeB.addBond(1, 3, 1);
-        moleculeB.addBond(2, 4, 1);
-        moleculeB.addBond(2, 5, 2);
+        moleculeB.addSingleBond(0, 1);
+        moleculeB.addSingleBond(1, 3);
+        moleculeB.addSingleBond(2, 4);
+        moleculeB.addBond(2, 5, BondOrder.DOUBLE);
 //        moleculeB.addBond(2, 5, 1);
-        moleculeB.addBond(3, 4, 1);
+        moleculeB.addSingleBond(3, 4);
         
         MoleculeSignature molSigA = new MoleculeSignature(moleculeA);
         String sigA = molSigA.signatureStringForVertex(3);
@@ -53,9 +55,9 @@ public class MultipleBondTest {
         molA.addAtom("C");
         molA.addAtom("C");
         molA.addAtom("H");
-        molA.addBond(0, 1, 2);
-        molA.addBond(0, 2, 1);
-        molA.addBond(0, 3, 1);
+        molA.addBond(0, 1, BondOrder.DOUBLE);
+        molA.addSingleBond(0, 2);
+        molA.addSingleBond(0, 3);
         
         MoleculeSignature molSig = new MoleculeSignature(molA);
         String signatureFor0A = molSig.signatureStringForVertex(0);
@@ -66,9 +68,9 @@ public class MultipleBondTest {
         molB.addAtom("C");
         molB.addAtom("C");
         molB.addAtom("H");
-        molB.addBond(0, 1, 1);
-        molB.addBond(0, 2, 2);  // NOTE change of bond order here
-        molB.addBond(0, 3, 1);
+        molB.addSingleBond(0, 1);
+        molB.addBond(0, 2, BondOrder.DOUBLE);
+        molB.addSingleBond(0, 3);
         
         molSig = new MoleculeSignature(molB);
         String signatureFor0B = molSig.signatureStringForVertex(0);
@@ -83,10 +85,10 @@ public class MultipleBondTest {
         for (int i = 0; i < 4; i++) {
             mol.addAtom("C");
         }
-        mol.addBond(0, 1, 1);
-        mol.addBond(0, 2, 2);
-        mol.addBond(1, 3, 1);
-        mol.addBond(2, 3, 1);
+        mol.addSingleBond(0, 1);
+        mol.addBond(0, 2, BondOrder.DOUBLE);
+        mol.addSingleBond(1, 3);
+        mol.addSingleBond(2, 3);
         MoleculeSignature molSignature = new MoleculeSignature(mol);
         System.out.println(molSignature.toCanonicalString());
     }
@@ -98,10 +100,10 @@ public class MultipleBondTest {
         for (int i = 0; i < 4; i++) {
             mol.addAtom("C");
         }
-        mol.addBond(0, 1, 1);
-        mol.addBond(0, 2, 2);
-        mol.addBond(1, 3, 2);
-        mol.addBond(2, 3, 1);
+        mol.addSingleBond(0, 1);
+        mol.addBond(0, 2, BondOrder.DOUBLE);
+        mol.addBond(1, 3, BondOrder.DOUBLE);
+        mol.addSingleBond(2, 3);
         MoleculeSignature molSignature = new MoleculeSignature(mol);
         System.out.println(molSignature.toCanonicalString());
     }
@@ -112,12 +114,12 @@ public class MultipleBondTest {
         for (int i = 0; i < 6; i++) {
             mol.addAtom("C");
         }
-        mol.addBond(0, 1, 1);
-        mol.addBond(1, 2, 2);
-        mol.addBond(2, 3, 1);
-        mol.addBond(3, 4, 2);
-        mol.addBond(4, 5, 1);
-        mol.addBond(5, 0, 2);
+        mol.addSingleBond(0, 1);
+        mol.addBond(1, 2, BondOrder.DOUBLE);
+        mol.addSingleBond(2, 3);
+        mol.addBond(3, 4, BondOrder.DOUBLE);
+        mol.addSingleBond(4, 5);
+        mol.addBond(5, 0, BondOrder.DOUBLE);
         MoleculeSignature molSig = new MoleculeSignature(mol);
         String sigString0 = molSig.signatureStringForVertex(0);
         for (int i = 1; i < 6; i++) {

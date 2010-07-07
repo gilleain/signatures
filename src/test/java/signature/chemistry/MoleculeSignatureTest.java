@@ -25,9 +25,9 @@ public class MoleculeSignatureTest {
         molecule.addAtom(1, "N");
         molecule.addAtom(2, "Cl");
         molecule.addAtom(3, "O");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(1, 3, 1);
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(1, 2);
+        molecule.addSingleBond(1, 3);
         MoleculeSignature signature = new MoleculeSignature(molecule);
         String moleculeSignature = signature.getGraphSignature();
         //System.out.println("molsig : " + moleculeSignature);
@@ -37,9 +37,9 @@ public class MoleculeSignatureTest {
         permutation.addAtom(1, "N");
         permutation.addAtom(2, "O");
         permutation.addAtom(3, "Cl");
-        permutation.addBond(0, 1, 1);
-        permutation.addBond(1, 2, 1);
-        permutation.addBond(1, 3, 1);
+        permutation.addSingleBond(0, 1);
+        permutation.addSingleBond(1, 2);
+        permutation.addSingleBond(1, 3);
         MoleculeSignature permSignature = new MoleculeSignature(molecule);
         String permSignatureString = permSignature.getGraphSignature();
         //System.out.println("molsig : " + permSignatureString);
@@ -84,10 +84,10 @@ public class MoleculeSignatureTest {
        molecule.addAtom("C");
        molecule.addAtom("C");
        molecule.addAtom("C");
-       molecule.addBond(0, 1, 1);
-       molecule.addBond(0, 3, 1);
-       molecule.addBond(1, 2, 1);
-       molecule.addBond(2, 3, 1);
+       molecule.addSingleBond(0, 1);
+       molecule.addSingleBond(0, 3);
+       molecule.addSingleBond(1, 2);
+       molecule.addSingleBond(2, 3);
        AtomSignature atomSignature = new AtomSignature(molecule, 0);
        String signatureString = atomSignature.toCanonicalString();
        ColoredTree tree = AtomSignature.parse(signatureString);
@@ -376,11 +376,11 @@ public class MoleculeSignatureTest {
         molecule.addAtom("C");
         molecule.addAtom("C");
         molecule.addAtom("C");
-        molecule.addBond(0, 1, 1);
-        molecule.addBond(1, 2, 1);
-        molecule.addBond(1, 3, 1);
-        molecule.addBond(2, 4, 1);
-        molecule.addBond(2, 5, 1);
+        molecule.addSingleBond(0, 1);
+        molecule.addSingleBond(1, 2);
+        molecule.addSingleBond(1, 3);
+        molecule.addSingleBond(2, 4);
+        molecule.addSingleBond(2, 5);
         this.testCanonicalIsUnique(molecule);
     }
 
