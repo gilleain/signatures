@@ -2,6 +2,31 @@ package signature.simple;
 
 public class SimpleGraphFactory {
     
+    public static SimpleGraph makeGrotschGraph() {
+        SimpleGraph g = new SimpleGraph();
+        g.makeEdge(0, 1);
+        g.makeEdge(0, 2);
+        g.makeEdge(0, 3);
+        g.makeEdge(0, 4);
+        g.makeEdge(0, 5);
+        g.makeEdge(1, 7);
+        g.makeEdge(1, 10);
+        g.makeEdge(2, 6);
+        g.makeEdge(2, 8);
+        g.makeEdge(3, 7);
+        g.makeEdge(3, 9);
+        g.makeEdge(4, 8);
+        g.makeEdge(4, 10);
+        g.makeEdge(5, 6);
+        g.makeEdge(5, 9);
+        g.makeEdge(6, 7);
+        g.makeEdge(6, 10);
+        g.makeEdge(7, 8);
+        g.makeEdge(8, 9);
+        g.makeEdge(9, 10);
+        return g;
+    }
+    
     public static SimpleGraph makeQuadricyclane() {
         SimpleGraph g = new SimpleGraph();
         g.makeEdge(0, 1);
