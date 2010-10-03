@@ -28,6 +28,9 @@ public abstract class AbstractGraphBuilder {
         for (ColoredTree.Node child : root.children) {
             this.makeFromColoredTreeNode(root, child, 0);
         }
+        
+        // Important! resets the vertex count so the builder can be used again
+        this.vertexCount = 0;
     }
     
     private void makeFromColoredTreeNode(
