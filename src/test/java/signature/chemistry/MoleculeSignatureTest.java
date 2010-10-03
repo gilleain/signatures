@@ -88,11 +88,17 @@ public class MoleculeSignatureTest {
        molecule.addSingleBond(0, 3);
        molecule.addSingleBond(1, 2);
        molecule.addSingleBond(2, 3);
+       
        AtomSignature atomSignature = new AtomSignature(molecule, 0);
        String signatureString = atomSignature.toCanonicalString();
+       
        ColoredTree tree = AtomSignature.parse(signatureString);
        MoleculeBuilder builder = new MoleculeBuilder();
        Molecule builtMolecule = builder.fromTree(tree);
+       Assert.assertEquals(molecule.toString(), builtMolecule.toString());
+       
+       // test that this can be done more than once
+       builtMolecule = builder.fromTree(tree);
        Assert.assertEquals(molecule.toString(), builtMolecule.toString());
    }
     

@@ -29,8 +29,9 @@ public abstract class AbstractGraphBuilder {
             this.makeFromColoredTreeNode(root, child, 0);
         }
         
-        // Important! resets the vertex count so the builder can be used again
+        // Important! resets so that the builder can be used again
         this.vertexCount = 0;
+        colorToVertexIndexMap.clear();
     }
     
     private void makeFromColoredTreeNode(
