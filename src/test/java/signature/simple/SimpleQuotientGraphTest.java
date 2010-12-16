@@ -132,6 +132,27 @@ public class SimpleQuotientGraphTest {
     }
     
     @Test
+    public void symmetric1TwistaneTest() {
+        SimpleGraph symmetric1Twistane = SimpleGraphFactory.makeSymmetric1Twistane();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(symmetric1Twistane);
+        checkParameters(quotientGraph, 2, 2, 1);
+    }
+    
+    @Test
+    public void symmetric2TwistaneTest() {
+        SimpleGraph symmetric2Twistane = SimpleGraphFactory.makeSymmetric2Twistane();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(symmetric2Twistane);
+        checkParameters(quotientGraph, 2, 3, 2);
+    }
+    
+    @Test
+    public void diamantaneTest() {
+        SimpleGraph diamantane = SimpleGraphFactory.makeDiamantane();
+        SimpleQuotientGraph qGraph = new SimpleQuotientGraph(diamantane);
+        checkParameters(qGraph, 3, 3, 1);
+    }
+    
+    @Test
     public void grotschGraphTest() {
         SimpleGraph grotschGraph = SimpleGraphFactory.makeGrotschGraph();
         SimpleQuotientGraph qgraph = new SimpleQuotientGraph(grotschGraph);
