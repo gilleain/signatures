@@ -146,6 +146,13 @@ public class SimpleQuotientGraphTest {
     }
     
     @Test
+    public void herschelGraphTest() {
+        SimpleGraph herschel = SimpleGraphFactory.makeHerschelGraph();
+        SimpleQuotientGraph quotientGraph = new SimpleQuotientGraph(herschel);
+        checkParameters(quotientGraph, 3, 2, 0);
+    }
+    
+    @Test
     public void diamantaneTest() {
         SimpleGraph diamantane = SimpleGraphFactory.makeDiamantane();
         SimpleQuotientGraph qGraph = new SimpleQuotientGraph(diamantane);

@@ -2,6 +2,29 @@ package signature.simple;
 
 public class SimpleGraphFactory {
     
+    public static SimpleGraph makeHerschelGraph() {
+        SimpleGraph g = new SimpleGraph();
+        g.makeEdge(0, 1);
+        g.makeEdge(0, 3);
+        g.makeEdge(0, 5);
+        g.makeEdge(1, 2);
+        g.makeEdge(1, 6);
+        g.makeEdge(2, 3);
+        g.makeEdge(2, 7);
+        g.makeEdge(2, 8);
+        g.makeEdge(3, 4);
+        g.makeEdge(4, 5);
+        g.makeEdge(4, 8);
+        g.makeEdge(4, 10);
+        g.makeEdge(5, 6);
+        g.makeEdge(6, 7);
+        g.makeEdge(6, 10);
+        g.makeEdge(7, 9);
+        g.makeEdge(8, 9);
+        g.makeEdge(9, 10);
+        return g;
+    }
+    
     public static SimpleGraph makeGrotschGraph() {
         SimpleGraph g = new SimpleGraph();
         g.makeEdge(0, 1);
