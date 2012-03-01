@@ -1,6 +1,24 @@
 package signature.simple;
 
 public class SimpleGraphFactory {
+	
+	public static SimpleGraph make4Cube() {
+		SimpleGraph g = new SimpleGraph();
+		g.makeEdges(0, 1, 7, 9, 15);
+		g.makeEdges(1, 2, 8, 10);
+		g.makeEdges(2, 3, 9, 11);
+		g.makeEdges(3, 4, 10, 12);
+		g.makeEdges(4, 5, 11, 13);
+		g.makeEdges(5, 6, 12, 14);
+		g.makeEdges(6, 7, 13, 15);
+		g.makeEdges(7, 8, 14);
+		g.makeEdges(8, 11, 13);
+		g.makeEdges(9, 12, 14);
+		g.makeEdges(10, 13, 15);
+		g.makeEdges(11, 14);
+		g.makeEdges(12, 15);
+		return g;
+	}
     
     public static SimpleGraph makeHerschelGraph() {
         SimpleGraph g = new SimpleGraph();

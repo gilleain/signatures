@@ -77,6 +77,12 @@ public class SimpleGraph {
         this.edges.add(new Edge(a, b));
     }
     
+    public void makeEdges(int a, int... bs) {
+    	for (int b : bs) {
+    		makeEdge(a, b);
+    	}
+    }
+    
     public int getVertexCount() {
         return this.maxVertexIndex + 1;
     }

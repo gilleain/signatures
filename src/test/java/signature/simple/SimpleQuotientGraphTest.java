@@ -45,6 +45,14 @@ public class SimpleQuotientGraphTest {
     }
     
     @Test
+    public void fourCubeTest() {
+        SimpleGraph fourCube = SimpleGraphFactory.make4Cube();
+        check4Regularity(fourCube);
+        SimpleQuotientGraph qgraph = new SimpleQuotientGraph(fourCube);
+        checkParameters(qgraph, 1, 1, 1);
+    }
+    
+    @Test
     public void fourRegularExampleTest() {
         SimpleGraph fourRegular = SimpleGraphFactory.makeFourRegularExample();
         check4Regularity(fourRegular);
