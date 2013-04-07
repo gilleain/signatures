@@ -40,5 +40,10 @@ public class SimpleVertexSignature extends AbstractVertexSignature {
     protected int getIntLabel(int vertexIndex) {
         return -1;
     }
+
+    @Override
+    protected int convertEdgeLabelToColor(String label) {
+        return 1;
+    }
     
 }

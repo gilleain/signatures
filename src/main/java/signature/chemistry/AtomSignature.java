@@ -64,4 +64,16 @@ public class AtomSignature extends AbstractVertexSignature {
         return this.molecule.getSymbolFor(vertexIndex);
     }
 
+    @Override
+    protected int convertEdgeLabelToColor(String label) {
+        if (label.equals("-")) {
+            return 1;
+        } else if (label.equals("=")) {
+            return 2;
+        } else if (label.equals("#")) {
+            return 3;
+        }
+        return 1;
+    }
+
 }

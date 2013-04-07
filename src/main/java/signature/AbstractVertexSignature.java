@@ -215,24 +215,12 @@ public abstract class AbstractVertexSignature {
         int originalParentIndex = 
             getOriginalVertexIndex(parentNode.vertexIndex);
         String edgeLabel = getEdgeLabel(originalParentIndex, vertexIndex);
-        int edgeColor = convertLabelToColor(edgeLabel);
+        int edgeColor = convertEdgeLabelToColor(edgeLabel);
         existingNode.addEdgeColor(parentNode.vertexIndex, edgeColor);
         parentNode.addEdgeColor(mappedVertexIndex, edgeColor);
         
         dag.addRelation(existingNode, parentNode);
         layerArcs.add(arc);
-    }
-    
-    // XXX tmp
-    private int convertLabelToColor(String label) {
-        if (label.equals("-")) {
-            return 1;
-        } else if (label.equals("=")) {
-            return 2;
-        } else if (label.equals("#")) {
-            return 3;
-        }
-        return 1;
     }
     
     /**
@@ -353,10 +341,21 @@ public abstract class AbstractVertexSignature {
     }
     
     /**
+     * Convert the edge label (if any) to an integer color, for example the bond
+     * order in a chemistry implementation.
+     * 
+     * @param label
+     *            the label for an edge
+     * @return an int color
+     */
+    protected abstract int convertEdgeLabelToColor(String label);
+    
+    /**
      * Get the integer label for a vertex - in chemistry implementations this
      * will be the element mass.
      * 
-     * @param vertexIndex the index of the vertex in the input graph
+     * @param vertexIndex
+     *            the index of the vertex in the input graph
      * @return an integer label
      */
     protected abstract int getIntLabel(int vertexIndex);
