@@ -23,11 +23,11 @@ public class ReconstructionTest {
         }
     }
 
-    @Test
-    public void petersensGraphTest() {
-        SimpleGraph petersens = SimpleGraphFactory.makePetersensGraph();
-        reconstruct(petersens);
-    }
+//    @Test
+//    public void petersensGraphTest() {
+//        SimpleGraph petersens = SimpleGraphFactory.makePetersensGraph();
+//        reconstruct(petersens);
+//    }
     
     @Test
     public void bowtieaneTest() {
