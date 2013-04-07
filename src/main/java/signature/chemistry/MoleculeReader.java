@@ -26,6 +26,7 @@ public class MoleculeReader {
                 block.add(line);
             }
             molecule = makeMolecule(block);
+            reader.close();
         } catch (IOException ioe) {
             System.err.println(ioe.toString());
         } catch (Exception e) {

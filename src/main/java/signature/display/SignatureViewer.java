@@ -13,7 +13,9 @@ import signature.ColoredTree;
 
 public class SignatureViewer extends JPanel implements ActionListener {
     
-    private ColoredTreePanel treePanel;
+	private static final long serialVersionUID = -6803621893829833590L;
+
+	private ColoredTreePanel treePanel;
     
     private JTextField signatureStringField;
     

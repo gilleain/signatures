@@ -218,6 +218,7 @@ public class LargeMoleculeTest {
             System.out.println(count);
             sigs.add(sig);
         }
+        reader.close();
         return sigs;
     }
     
@@ -231,6 +232,7 @@ public class LargeMoleculeTest {
             String sig = bits[3];
             sigs.add(sig);
         }
+        reader.close();
         Collections.reverse(sigs);
         return sigs;
     }

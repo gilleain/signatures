@@ -9,7 +9,9 @@ import signature.ColoredTree;
 
 public class ColoredTreePanel extends JPanel {
     
-    public int maxDepth;
+	private static final long serialVersionUID = 2144237936253828531L;
+
+	public int maxDepth;
     
     private DisplayableColoredTree displayTree;
     
