@@ -44,7 +44,7 @@ public class EdgeColoredGraph {
         }
         
         public String toString() {
-            return this.a + "-" + this.b;
+            return this.a + "-" + this.b + "(" + this.edgeLabel + ")";
         }
 
     }
