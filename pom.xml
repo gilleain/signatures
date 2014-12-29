@@ -1,12 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>signatures</groupId>
+  <groupId>com.github.gilleain.signatures</groupId>
   <artifactId>signatures</artifactId>
   <packaging>jar</packaging>
   <name>Signatures</name>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
+  <url>https://github.com/gilleain/signatures</url>
   <description>A graph signature library</description>
   <inceptionYear>2009</inceptionYear>
+  <licenses>
+    <license>
+      <name>MIT licence</name>
+      <url>http://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/gilleain/signatures</url>
+    <connection>scm:git:git://github.com/gilleain/signatures.git</connection>
+    <developerConnection>scm:git:git@github.com:gilleain/signatures.git</developerConnection>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/johnmay/beam/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+  <developers>
+    <developer>
+      <name>Gilleain Torrance</name>
+      <email>https://github.com/gilleain</email>
+      <url>http://www.github.com/gilleain/</url>
+    </developer>
+  </developers>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -22,26 +56,26 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.4</version>
-       <configuration>
-			<excludes>
-				<exclude>signature/chemistry/*</exclude>
-				<exclude>signature/display/*</exclude>
-				<exclude>signature/edgecolored/*</exclude>
-				<exclude>signature/simple/*</exclude>
-				<exclude>*Test.class</exclude>
-			</excludes>
+        <configuration>
+          <excludes>
+            <exclude>signature/chemistry/*</exclude>
+            <exclude>signature/display/*</exclude>
+            <exclude>signature/edgecolored/*</exclude>
+            <exclude>signature/simple/*</exclude>
+            <exclude>*Test.class</exclude>
+          </excludes>
         </configuration>
-       </plugin>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
-            <execution>
-                <id>attach-sources</id>
-                <goals>
-                    <goal>jar</goal>
-                </goals>
-            </execution>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -51,6 +85,66 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>ossrh</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.3</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
