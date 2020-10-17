@@ -70,7 +70,7 @@ public class HeightTest {
         }
     }
     
-    @Test
+//    @Test
     public void torusTest() {
         int width = 6;
         int height = 6;
