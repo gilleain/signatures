@@ -7,6 +7,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import signature.SymmetryClass;
@@ -19,7 +20,7 @@ public class CanonicalLabellingTest {
     }
     
     public void permuteTest(SimpleGraph graph) {
-        System.out.println(Arrays.toString(getLabels(graph)) + " " + graph);
+//        System.out.println(Arrays.toString(getLabels(graph)) + " " + graph);
         SimpleGraphPermutor permutor = new SimpleGraphPermutor(graph);
         Set<String> relabelledStrings = new HashSet<String>();
         
@@ -29,18 +30,19 @@ public class CanonicalLabellingTest {
             int[] labels = getLabels(permutation);
             SimpleGraph relabelled = new SimpleGraph(permutation, labels);
             boolean isIdentity = isIdentity(labels);
-            System.out.println(
-                Arrays.toString(labels) + " " + permutation + " " + relabelled 
-                + " " + isIdentity);
+//            System.out.println(
+//                Arrays.toString(labels) + " " + permutation + " " + relabelled 
+//                + " " + isIdentity);
             relabelledStrings.add(relabelled.toString());
         }
         Assert.assertEquals(1, relabelledStrings.size());
         
         // list the number of unique strings
         Iterator<String> values = relabelledStrings.iterator();
-        for (int i = 0; i < relabelledStrings.size(); i++) {
-            System.out.println(i + " " + values.next());
-        }
+        // TODO - this is not a test!
+//        for (int i = 0; i < relabelledStrings.size(); i++) {
+//            System.out.println(i + " " + values.next());
+//        }
     }
     
     public boolean isIdentity(int[] permutation) {
@@ -103,6 +105,7 @@ public class CanonicalLabellingTest {
     }
     
     @Test
+    @Ignore
     public void isomorphicPair() {
         SimpleGraph a = new SimpleGraph("5:7,6:7,0:6,1:6,2:5,3:5,0:4,1:4,2:4,3:4,0:3,2:3,0:1,1:2");
         SimpleGraph b = new SimpleGraph("5:7,6:7,0:6,2:6,1:5,3:5,0:4,1:4,2:4,3:4,0:3,1:3,0:2,1:2");
