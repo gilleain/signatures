@@ -6,5 +6,5 @@ module signatures {
 	requires java.desktop;
 	
 	// remove this for maven!!
-	requires junit;
+//	requires junit;
 }
