@@ -53,20 +53,7 @@
         	<release>9</release>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <excludes>
-            <exclude>signature/chemistry/*</exclude>
-            <exclude>signature/display/*</exclude>
-            <exclude>signature/edgecolored/*</exclude>
-            <exclude>signature/simple/*</exclude>
-            <exclude>*Test.class</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -87,6 +74,58 @@
     </plugins>
   </build>
   <profiles>
+    <profile>
+        <id>basic</id>
+        <build>
+          <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                 <executions>
+                    <execution>
+                        <id>basic</id>
+                        <phase>package</phase>
+                        <goals>
+                           <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/basic.xml</descriptor> 
+                            </descriptors>
+                        </configuration>
+                 </execution>
+               </executions>
+            </plugin>
+          </plugins>
+        </build>
+    </profile>
+    
+    
+    <profile>
+        <id>graph</id>
+        <build>
+          <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                 <executions>
+                    <execution>
+                        <id>graph</id>
+                        <phase>package</phase>
+                        <goals>
+                           <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/graph.xml</descriptor> 
+                            </descriptors>
+                        </configuration>
+                  </execution>
+                </executions>
+            </plugin>
+          </plugins>
+        </build>
+    </profile>
+  
+  
     <profile>
       <id>ossrh</id>
       <build>
